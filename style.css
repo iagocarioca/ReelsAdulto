@@ -1,0 +1,15 @@
+/*
+Theme Name: tikporn
+Theme URI: https://example.com/tikporn
+Author: Iago
+Author URI: https://example.com
+Description: Tema estilo TikTok para catálogo de vídeos de modelos. Feed vertical, cadastro, login, área da modelo e perfil público.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: tikporn
+*/
+
+/* O CSS de layout fica em assets/css/main.css, carregado pelo functions.php. */

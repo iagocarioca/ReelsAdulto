@@ -1,0 +1,14 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependências (o tema não usa build, mas por garantia)
+node_modules/
+vendor/
+
+# Ferramentas locais
+.playwright-mcp/
