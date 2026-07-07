@@ -21,12 +21,13 @@ jobs:
   deploy:
     name: Deploy via FTP
     runs-on: ubuntu-latest
+    environment: ReelsAdulto
     permissions:
       contents: read
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Verifica configuração de FTP
         shell: bash
