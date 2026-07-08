@@ -10,6 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Taxonomia canônica de categoria dos vídeos.
+ *
+ * Usamos a 'category' padrão do WordPress porque é a taxonomia que a
+ * integração (Aurora) envia via REST (rest_base=categories). Assim os vídeos
+ * importados já vêm categorizados. A antiga 'categoria_video' continua
+ * registrada por retrocompatibilidade, mas o front usa esta constante.
+ */
+if ( ! defined( 'TIKPORN_TAX_CAT' ) ) {
+	define( 'TIKPORN_TAX_CAT', 'category' );
+}
+
+/**
  * Tipo de conteúdo: vídeo.
  */
 function tikporn_registrar_video() {
@@ -36,7 +48,7 @@ function tikporn_registrar_video() {
 		'menu_position'       => 5,
 		'rewrite'             => array( 'slug' => 'video' ),
 		'supports'            => array( 'title', 'editor', 'thumbnail', 'author', 'custom-fields' ),
-		'taxonomies'          => array( 'categoria_video', 'tag_video' ),
+		'taxonomies'          => array( 'category', 'categoria_video', 'tag_video' ),
 		// Usa permissões próprias (edit_videos, publish_videos etc.).
 		'capability_type'     => array( 'video', 'videos' ),
 		'map_meta_cap'        => true,
@@ -45,6 +57,19 @@ function tikporn_registrar_video() {
 	register_post_type( 'video', $args );
 }
 add_action( 'init', 'tikporn_registrar_video' );
+
+/**
+ * Anexa a taxonomia 'category' (padrão do WP) ao CPT vídeo.
+ *
+ * Necessário para que os vídeos aceitem as categorias que o Aurora envia via
+ * REST em rest_base=categories. Roda tarde (prioridade 20) para garantir que
+ * a 'category' do core já esteja registrada. Sem isto, o WP ignora o vínculo
+ * silenciosamente e o count fica em 0.
+ */
+function tikporn_anexar_category_ao_video() {
+	register_taxonomy_for_object_type( 'category', 'video' );
+}
+add_action( 'init', 'tikporn_anexar_category_ao_video', 20 );
 
 /**
  * Categoria de vídeo (taxonomia hierárquica).

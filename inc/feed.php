@@ -36,7 +36,7 @@ function tikporn_video_para_feed( $post_id ) {
 	}
 
 	$autor = (int) get_post_field( 'post_author', $post_id );
-	$terms = get_the_terms( $post_id, 'categoria_video' );
+	$terms = get_the_terms( $post_id, TIKPORN_TAX_CAT );
 	$terms = ( $terms && ! is_wp_error( $terms ) ) ? $terms : array();
 
 	$cats = array();

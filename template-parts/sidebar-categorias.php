@@ -10,7 +10,7 @@ $tp_limite = 15; // chips visíveis antes de "Mais categorias".
 
 $tp_cats = get_terms(
 	array(
-		'taxonomy'   => 'categoria_video',
+		'taxonomy'   => TIKPORN_TAX_CAT,
 		'hide_empty' => false,
 		'number'     => 40,
 		'orderby'    => 'count',

@@ -11,7 +11,7 @@ $tp_url_env  = tikporn_eh_modelo() ? site_url( '/area-modelo/#enviar' ) : site_u
 $tp_url_user = $tp_logado ? site_url( '/minha-conta/' ) : site_url( '/entrar/' );
 
 $tp_menu_cats = get_terms(
-	array( 'taxonomy' => 'categoria_video', 'hide_empty' => false, 'number' => 40, 'orderby' => 'count', 'order' => 'DESC' )
+	array( 'taxonomy' => TIKPORN_TAX_CAT, 'hide_empty' => false, 'number' => 40, 'orderby' => 'count', 'order' => 'DESC' )
 );
 $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 ?>

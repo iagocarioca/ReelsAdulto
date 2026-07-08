@@ -11,7 +11,7 @@ get_header();
 // ── Playlists (mapeadas nas categorias com mais vídeos) ──────────────
 $tp_playlists = get_terms(
 	array(
-		'taxonomy'   => 'categoria_video',
+		'taxonomy'   => TIKPORN_TAX_CAT,
 		'hide_empty' => true,
 		'number'     => 4,
 		'orderby'    => 'count',
@@ -35,7 +35,7 @@ $tp_grade = new WP_Query(
 // ── Categorias (chips da sidebar) ────────────────────────────────────
 $tp_cats = get_terms(
 	array(
-		'taxonomy'   => 'categoria_video',
+		'taxonomy'   => TIKPORN_TAX_CAT,
 		'hide_empty' => false,
 		'number'     => 24,
 		'orderby'    => 'count',
@@ -53,7 +53,7 @@ function tikporn_capa_categoria( $term_id ) {
 			'no_found_rows'  => true,
 			'tax_query'      => array(
 				array(
-					'taxonomy' => 'categoria_video',
+					'taxonomy' => TIKPORN_TAX_CAT,
 					'field'    => 'term_id',
 					'terms'    => (int) $term_id,
 				),

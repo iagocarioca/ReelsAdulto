@@ -7,7 +7,7 @@
  */
 
 $tp_id   = get_the_ID();
-$tp_terms = wp_get_post_terms( $tp_id, 'categoria_video', array( 'fields' => 'ids' ) );
+$tp_terms = wp_get_post_terms( $tp_id, TIKPORN_TAX_CAT, array( 'fields' => 'ids' ) );
 
 $tp_args = array(
 	'post_type'           => 'video',
@@ -23,7 +23,7 @@ $tp_args = array(
 if ( ! empty( $tp_terms ) && ! is_wp_error( $tp_terms ) ) {
 	$tp_args['tax_query'] = array(
 		array(
-			'taxonomy' => 'categoria_video',
+			'taxonomy' => TIKPORN_TAX_CAT,
 			'field'    => 'term_id',
 			'terms'    => $tp_terms,
 		),
