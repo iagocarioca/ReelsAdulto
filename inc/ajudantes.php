@@ -17,6 +17,39 @@ function tikporn_url_perfil( $modelo_id ) {
 }
 
 /**
+ * Capa de uma categoria: thumbnail do vídeo mais recente dela.
+ * Usada na home e no arquivo de categoria.
+ */
+if ( ! function_exists( 'tikporn_capa_categoria' ) ) {
+	function tikporn_capa_categoria( $term_id ) {
+		$q = new WP_Query(
+			array(
+				'post_type'      => 'video',
+				'posts_per_page' => 1,
+				'no_found_rows'  => true,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => TIKPORN_TAX_CAT,
+						'field'    => 'term_id',
+						'terms'    => (int) $term_id,
+					),
+				),
+				'meta_query'     => array(
+					array( 'key' => '_thumbnail_id', 'compare' => 'EXISTS' ),
+				),
+			)
+		);
+		$url = '';
+		if ( $q->have_posts() ) {
+			$q->the_post();
+			$url = tikporn_capa_url( get_the_ID(), 'tikporn_miniatura' );
+		}
+		wp_reset_postdata();
+		return $url;
+	}
+}
+
+/**
  * Foto de perfil da modelo (usa a foto enviada ou o avatar padrão).
  */
 function tikporn_foto_perfil( $modelo_id, $tamanho = 96 ) {

@@ -72,6 +72,23 @@ function tikporn_anexar_category_ao_video() {
 add_action( 'init', 'tikporn_anexar_category_ao_video', 20 );
 
 /**
+ * Faz o arquivo de categoria listar os vídeos do CPT 'video'.
+ *
+ * Por padrão o WP consulta só 'post' no arquivo de categoria. Como agora os
+ * vídeos usam a taxonomia 'category', incluímos o CPT 'video' (só ele) para
+ * que a página da categoria mostre os vídeos, no mesmo layout da playlist.
+ */
+function tikporn_categoria_lista_videos( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+	if ( $query->is_category() ) {
+		$query->set( 'post_type', array( 'video' ) );
+	}
+}
+add_action( 'pre_get_posts', 'tikporn_categoria_lista_videos' );
+
+/**
  * Categoria de vídeo (taxonomia hierárquica).
  */
 function tikporn_registrar_taxonomias() {

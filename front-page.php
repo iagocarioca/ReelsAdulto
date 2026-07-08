@@ -44,33 +44,6 @@ $tp_cats = get_terms(
 );
 $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 
-/** Capa de uma categoria: thumbnail do vídeo mais recente dela. */
-function tikporn_capa_categoria( $term_id ) {
-	$q = new WP_Query(
-		array(
-			'post_type'      => 'video',
-			'posts_per_page' => 1,
-			'no_found_rows'  => true,
-			'tax_query'      => array(
-				array(
-					'taxonomy' => TIKPORN_TAX_CAT,
-					'field'    => 'term_id',
-					'terms'    => (int) $term_id,
-				),
-			),
-			'meta_query'     => array(
-				array( 'key' => '_thumbnail_id', 'compare' => 'EXISTS' ),
-			),
-		)
-	);
-	$url = '';
-	if ( $q->have_posts() ) {
-		$q->the_post();
-		$url = tikporn_capa_url( get_the_ID(), 'tikporn_miniatura' );
-	}
-	wp_reset_postdata();
-	return $url;
-}
 ?>
 
 <div class="xf-home">
