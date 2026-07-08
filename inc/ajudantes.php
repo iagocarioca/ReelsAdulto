@@ -114,6 +114,10 @@ function tikporn_views( $post_id ) {
  * Registra uma visualização (1x por visitante/vídeo a cada 6h).
  */
 function tikporn_registrar_view( $post_id ) {
+	// Respeita a opção "Contar visualizações" (Opções do tema).
+	if ( function_exists( 'tikporn_opcao' ) && ! tikporn_opcao( 'registrar_views' ) ) {
+		return;
+	}
 	$ip  = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	$key = 'tp_view_' . md5( $ip . '_' . (int) $post_id );
 	if ( get_transient( $key ) ) {

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '1.1.3' );
+define( 'TIKPORN_VERSION', '1.3.0' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -69,6 +69,12 @@ function tikporn_assets() {
 	// Layout tube (estilo "xfree"): design claro do cabeçalho, home e cards.
 	wp_enqueue_style( 'tikporn-tube', TIKPORN_URI . '/assets/css/tube.css', array( 'tikporn-main' ), TIKPORN_VERSION );
 
+	// Cor de destaque definida nas Opções do tema (sobrescreve as vars do CSS).
+	$css_cor = tikporn_css_cor_destaque();
+	if ( $css_cor ) {
+		wp_add_inline_style( 'tikporn-tube', $css_cor );
+	}
+
 	wp_enqueue_script( 'tikporn-main', TIKPORN_URI . '/assets/js/main.js', array(), TIKPORN_VERSION, true );
 
 	// Feed vertical (estilo Reelix) na página do vídeo.
@@ -95,6 +101,7 @@ function tikporn_assets() {
 add_action( 'wp_enqueue_scripts', 'tikporn_assets' );
 
 // Módulos do tema.
+require_once TIKPORN_DIR . '/inc/opcoes-tema.php';      // Página de opções (Aparência → Opções do tema).
 require_once TIKPORN_DIR . '/inc/tipos-de-conteudo.php'; // Tipo de conteúdo "vídeo".
 require_once TIKPORN_DIR . '/inc/papeis.php';            // Papel "modelo".
 require_once TIKPORN_DIR . '/inc/autenticacao.php';      // Cadastro, login, logout.

@@ -62,12 +62,18 @@ function tikporn_processar_envio_video() {
 			wp_delete_post( $post_id, true );
 			tikporn_redirecionar_com_erro( '/area-modelo/', __( 'Falha ao enviar o vídeo: ', 'tikporn' ) . $anexo->get_error_message() );
 		}
-		update_post_meta( $post_id, '_tikporn_video_url', wp_get_attachment_url( $anexo ) );
+		$url_arquivo = wp_get_attachment_url( $anexo );
+		update_post_meta( $post_id, '_tikporn_video_url', $url_arquivo );
 		update_post_meta( $post_id, '_tikporn_video_tipo', 'arquivo' );
+		// Espelha nas chaves públicas (as mesmas usadas pela REST).
+		update_post_meta( $post_id, 'tikporn_video_url', $url_arquivo );
+		update_post_meta( $post_id, 'tikporn_video_tipo', 'arquivo' );
 	} elseif ( ! empty( $link ) ) {
 		// Link incorporado (YouTube, Vimeo, arquivo externo).
 		update_post_meta( $post_id, '_tikporn_video_url', $link );
 		update_post_meta( $post_id, '_tikporn_video_tipo', 'incorporado' );
+		update_post_meta( $post_id, 'tikporn_video_url', $link );
+		update_post_meta( $post_id, 'tikporn_video_tipo', 'incorporado' );
 	} else {
 		wp_delete_post( $post_id, true );
 		tikporn_redirecionar_com_erro( '/area-modelo/', __( 'Envie um arquivo ou informe um link do vídeo.', 'tikporn' ) );
