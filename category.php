@@ -40,7 +40,13 @@ $tp_capa   = ( $tp_termo && ! is_wp_error( $tp_termo ) && function_exists( 'tikp
 						<?php echo esc_html( sprintf( _n( '%d vídeo', '%d vídeos', $tp_total, 'tikporn' ), $tp_total ) ); ?>
 					</div>
 					<?php if ( $tp_desc ) : ?>
-						<p class="xf-plhead__desc"><?php echo esc_html( wp_strip_all_tags( $tp_desc ) ); ?></p>
+						<div class="xf-plhead__desc" data-ver-mais>
+							<div class="xf-plhead__desc-texto"><?php echo esc_html( wp_strip_all_tags( $tp_desc ) ); ?></div>
+							<button type="button" class="xf-plhead__desc-mais" data-ver-mais-btn>
+								<span class="xf-vm-abrir"><?php esc_html_e( 'Ver mais', 'tikporn' ); ?></span>
+								<span class="xf-vm-fechar"><?php esc_html_e( 'Ver menos', 'tikporn' ); ?></span>
+							</button>
+						</div>
 					<?php endif; ?>
 				</div>
 			</div>

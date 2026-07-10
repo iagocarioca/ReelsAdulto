@@ -611,7 +611,7 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-btn--sm { padding: 10px 20px; font-size: 14px; }
 
 /* Cabeçalho da página da playlist */
-.xf-plhead { display: flex; gap: 18px; align-items: flex-end; margin-bottom: 22px; }
+.xf-plhead { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 22px; }
 .xf-plhead__cover {
 	position: relative; overflow: hidden;
 	flex: 0 0 auto; width: 200px; aspect-ratio: 16 / 10; border-radius: var(--xf-raio);
@@ -628,7 +628,22 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-plhead__title { font-size: 28px; font-weight: 800; margin: 4px 0 8px; line-height: 1.15; }
 .xf-plhead__meta { font-size: 14px; color: var(--xf-muted); }
 .xf-plhead__meta a { color: var(--xf-texto); font-weight: 700; }
-.xf-plhead__desc { font-size: 14px; line-height: 1.5; color: #444; margin: 10px 0 0; max-width: 640px; }
+/* Descrição da categoria/playlist: recolhida em 3 linhas com "ver mais" */
+.xf-plhead__desc { font-size: 14px; line-height: 1.55; color: #4a4a4a; margin: 10px 0 0; max-width: 680px; }
+.xf-plhead__desc-texto {
+	display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+	overflow: hidden; overflow-wrap: anywhere; word-break: break-word;
+}
+.xf-plhead__desc.is-aberto .xf-plhead__desc-texto { -webkit-line-clamp: unset; }
+.xf-plhead__desc-mais {
+	display: none; margin-top: 4px; padding: 0; border: 0; background: none;
+	color: var(--xf-roxo); font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.xf-plhead__desc-mais:hover { text-decoration: underline; }
+.xf-plhead__desc.tem-mais .xf-plhead__desc-mais { display: inline-block; }
+.xf-plhead__desc .xf-vm-fechar { display: none; }
+.xf-plhead__desc.is-aberto .xf-vm-abrir { display: none; }
+.xf-plhead__desc.is-aberto .xf-vm-fechar { display: inline; }
 .xf-plhead__acoes { display: flex; gap: 10px; margin-top: 14px; }
 .xf-btn-sm { border: 1px solid var(--xf-borda); background: #fff; color: var(--xf-texto); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
 .xf-btn-sm:hover { background: var(--xf-suave); }

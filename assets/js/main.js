@@ -118,10 +118,46 @@
 		} );
 	}
 
+	/* --------- Descrição recolhível ("ver mais / ver menos") --------- */
+	function iniciarVerMais() {
+		document.querySelectorAll( '[data-ver-mais]' ).forEach( function ( bloco ) {
+			var texto = bloco.querySelector( '.xf-plhead__desc-texto' );
+			var botao = bloco.querySelector( '[data-ver-mais-btn]' );
+			if ( ! texto || ! botao ) {
+				return;
+			}
+
+			// Só mostra o botão se o texto realmente ultrapassa o clamp.
+			function avaliar() {
+				var estava = bloco.classList.contains( 'is-aberto' );
+				bloco.classList.remove( 'is-aberto' );
+				var excede = texto.scrollHeight - texto.clientHeight > 2;
+				bloco.classList.toggle( 'tem-mais', excede );
+				if ( estava ) {
+					bloco.classList.add( 'is-aberto' );
+				}
+			}
+
+			avaliar();
+
+			botao.addEventListener( 'click', function () {
+				bloco.classList.toggle( 'is-aberto' );
+			} );
+
+			// Reavalia se a largura muda (troca de layout mobile/desktop).
+			var t;
+			window.addEventListener( 'resize', function () {
+				clearTimeout( t );
+				t = setTimeout( avaliar, 150 );
+			} );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
 		iniciarCurtir();
 		iniciarSeguir();
+		iniciarVerMais();
 	} );
 } )();
