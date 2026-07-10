@@ -18,13 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 function tikporn_opcoes_padrao() {
 	return array(
 		// Aparência.
-		'cor_destaque'    => '#FC30B7',
+		'cor_destaque'         => '#FC30B7',
+		// Página inicial (Home) — textos.
+		'home_playlists_titulo' => 'Playlist & Chill',
+		'home_playlists_link'   => 'Todas as Playlists',
+		'home_tendencias_titulo' => 'Tendências porno móvel e vídeos de sexo',
+		// Página inicial (Home) — quantidades.
+		'home_qtd_playlists'   => 4,
+		'home_qtd_videos'      => 18,
+		'home_qtd_categorias'  => 24,
+		// Textos gerais.
+		'busca_placeholder'    => 'Pesquisar vídeos...',
 		// Aurora5 (vídeo por UUID).
-		'aurora5_secret'  => '',
-		'aurora5_base'    => 'https://api.aurora5.com/secure-video/',
-		'aurora5_ttl'     => 1800,
+		'aurora5_secret'       => '',
+		'aurora5_base'         => 'https://api.aurora5.com/secure-video/',
+		'aurora5_ttl'          => 1800,
 		// Geral.
-		'registrar_views' => 1,
+		'registrar_views'      => 1,
 	);
 }
 
@@ -94,6 +104,59 @@ function tikporn_opcoes_registrar() {
 		'tikporn_secao_aparencia'
 	);
 
+	// Seção: Página inicial (Home).
+	add_settings_section(
+		'tikporn_secao_home',
+		__( 'Página inicial', 'tikporn' ),
+		function () {
+			echo '<p>' . esc_html__( 'Títulos e quantidades exibidas na home. Deixe um título em branco para usar o texto padrão.', 'tikporn' ) . '</p>';
+		},
+		'tikporn-opcoes'
+	);
+	add_settings_field(
+		'home_playlists_titulo',
+		__( 'Título da seção de playlists', 'tikporn' ),
+		'tikporn_campo_home_playlists_titulo',
+		'tikporn-opcoes',
+		'tikporn_secao_home'
+	);
+	add_settings_field(
+		'home_playlists_link',
+		__( 'Texto do link "ver todas"', 'tikporn' ),
+		'tikporn_campo_home_playlists_link',
+		'tikporn-opcoes',
+		'tikporn_secao_home'
+	);
+	add_settings_field(
+		'home_tendencias_titulo',
+		__( 'Título da grade de vídeos', 'tikporn' ),
+		'tikporn_campo_home_tendencias_titulo',
+		'tikporn-opcoes',
+		'tikporn_secao_home'
+	);
+	add_settings_field(
+		'home_quantidades',
+		__( 'Quantidades', 'tikporn' ),
+		'tikporn_campo_home_quantidades',
+		'tikporn-opcoes',
+		'tikporn_secao_home'
+	);
+
+	// Seção: Textos gerais.
+	add_settings_section(
+		'tikporn_secao_textos',
+		__( 'Textos gerais', 'tikporn' ),
+		'__return_false',
+		'tikporn-opcoes'
+	);
+	add_settings_field(
+		'busca_placeholder',
+		__( 'Texto do campo de busca', 'tikporn' ),
+		'tikporn_campo_busca_placeholder',
+		'tikporn-opcoes',
+		'tikporn_secao_textos'
+	);
+
 	// Seção: Vídeo por UUID (Aurora5).
 	add_settings_section(
 		'tikporn_secao_aurora5',
@@ -157,6 +220,24 @@ function tikporn_opcoes_sanitizar( $entrada ) {
 		}
 	}
 
+	// Página inicial — textos (vazio = usa o padrão via tikporn_opcao).
+	foreach ( array( 'home_playlists_titulo', 'home_playlists_link', 'home_tendencias_titulo', 'busca_placeholder' ) as $chave_txt ) {
+		if ( isset( $entrada[ $chave_txt ] ) ) {
+			$saida[ $chave_txt ] = sanitize_text_field( wp_unslash( $entrada[ $chave_txt ] ) );
+		}
+	}
+
+	// Página inicial — quantidades (limites sensatos).
+	if ( isset( $entrada['home_qtd_playlists'] ) ) {
+		$saida['home_qtd_playlists'] = min( 12, max( 0, absint( $entrada['home_qtd_playlists'] ) ) );
+	}
+	if ( isset( $entrada['home_qtd_videos'] ) ) {
+		$saida['home_qtd_videos'] = min( 60, max( 1, absint( $entrada['home_qtd_videos'] ) ) );
+	}
+	if ( isset( $entrada['home_qtd_categorias'] ) ) {
+		$saida['home_qtd_categorias'] = min( 60, max( 0, absint( $entrada['home_qtd_categorias'] ) ) );
+	}
+
 	// Aurora5.
 	if ( isset( $entrada['aurora5_secret'] ) ) {
 		$saida['aurora5_secret'] = sanitize_text_field( $entrada['aurora5_secret'] );
@@ -185,6 +266,66 @@ function tikporn_campo_cor_destaque() {
 		esc_attr( $valor )
 	);
 	echo '<p class="description">' . esc_html__( 'Cor principal do tema (botões, links, destaques).', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_home_playlists_titulo() {
+	printf(
+		'<input type="text" name="tikporn_opcoes[home_playlists_titulo]" value="%s" class="regular-text" placeholder="%s" />',
+		esc_attr( tikporn_opcao( 'home_playlists_titulo' ) ),
+		esc_attr__( 'Playlist & Chill', 'tikporn' )
+	);
+	echo '<p class="description">' . esc_html__( 'Título da fileira de playlists no topo da home.', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_home_playlists_link() {
+	printf(
+		'<input type="text" name="tikporn_opcoes[home_playlists_link]" value="%s" class="regular-text" placeholder="%s" />',
+		esc_attr( tikporn_opcao( 'home_playlists_link' ) ),
+		esc_attr__( 'Todas as Playlists', 'tikporn' )
+	);
+	echo '<p class="description">' . esc_html__( 'Texto do link à direita do título de playlists.', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_home_tendencias_titulo() {
+	printf(
+		'<input type="text" name="tikporn_opcoes[home_tendencias_titulo]" value="%s" class="large-text" placeholder="%s" />',
+		esc_attr( tikporn_opcao( 'home_tendencias_titulo' ) ),
+		esc_attr__( 'Tendências porno móvel e vídeos de sexo', 'tikporn' )
+	);
+	echo '<p class="description">' . esc_html__( 'Título da grade principal de vídeos da home.', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_home_quantidades() {
+	$pl  = (int) tikporn_opcao( 'home_qtd_playlists' );
+	$vid = (int) tikporn_opcao( 'home_qtd_videos' );
+	$cat = (int) tikporn_opcao( 'home_qtd_categorias' );
+	echo '<div class="tikporn-qtd-grid">';
+	printf(
+		'<label>%s<input type="number" min="0" max="12" name="tikporn_opcoes[home_qtd_playlists]" value="%d" class="small-text" /></label>',
+		esc_html__( 'Playlists', 'tikporn' ),
+		$pl
+	);
+	printf(
+		'<label>%s<input type="number" min="1" max="60" name="tikporn_opcoes[home_qtd_videos]" value="%d" class="small-text" /></label>',
+		esc_html__( 'Vídeos na grade', 'tikporn' ),
+		$vid
+	);
+	printf(
+		'<label>%s<input type="number" min="0" max="60" name="tikporn_opcoes[home_qtd_categorias]" value="%d" class="small-text" /></label>',
+		esc_html__( 'Categorias na barra lateral', 'tikporn' ),
+		$cat
+	);
+	echo '</div>';
+	echo '<p class="description">' . esc_html__( 'Quantos itens exibir em cada seção da home.', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_busca_placeholder() {
+	printf(
+		'<input type="text" name="tikporn_opcoes[busca_placeholder]" value="%s" class="regular-text" placeholder="%s" />',
+		esc_attr( tikporn_opcao( 'busca_placeholder' ) ),
+		esc_attr__( 'Pesquisar vídeos...', 'tikporn' )
+	);
+	echo '<p class="description">' . esc_html__( 'Texto de exemplo dentro do campo de busca do cabeçalho.', 'tikporn' ) . '</p>';
 }
 
 function tikporn_campo_aurora5_secret() {
@@ -239,6 +380,36 @@ function tikporn_opcoes_assets( $hook ) {
 		'wp-color-picker',
 		'jQuery(function($){ $(".tikporn-cor").wpColorPicker(); });'
 	);
+
+	// Visual da página de opções (cartões por seção + grid de quantidades).
+	$css = '
+		.tikporn-opcoes-wrap { max-width: 820px; }
+		.tikporn-opcoes-wrap h1 { display: flex; align-items: center; gap: 10px; }
+		.tikporn-opcoes-wrap h1 .dashicons { color: #FC30B7; font-size: 30px; width: 30px; height: 30px; }
+		.tikporn-opcoes-wrap form > h2 {
+			margin: 30px 0 0; padding: 16px 20px 0; font-size: 15px; font-weight: 600;
+			background: #fff; border: 1px solid #e2e4e7; border-bottom: 0;
+			border-radius: 10px 10px 0 0;
+		}
+		.tikporn-opcoes-wrap form > p {
+			margin: 0; padding: 4px 20px 0; color: #646970; font-size: 13px;
+			background: #fff; border-left: 1px solid #e2e4e7; border-right: 1px solid #e2e4e7;
+		}
+		.tikporn-opcoes-wrap form > .form-table {
+			margin-top: 0; padding: 8px 20px 16px;
+			background: #fff; border: 1px solid #e2e4e7; border-top: 0;
+			border-radius: 0 0 10px 10px;
+		}
+		.tikporn-opcoes-wrap .form-table th { padding-left: 0; }
+		.tikporn-qtd-grid { display: flex; flex-wrap: wrap; gap: 18px; }
+		.tikporn-qtd-grid label {
+			display: flex; flex-direction: column; gap: 5px;
+			font-weight: 600; font-size: 13px; color: #1d2327;
+		}
+		.tikporn-qtd-grid input { width: 90px; }
+		.tikporn-opcoes-wrap .submit { margin-top: 22px; }
+	';
+	wp_add_inline_style( 'wp-color-picker', $css );
 }
 add_action( 'admin_enqueue_scripts', 'tikporn_opcoes_assets' );
 
@@ -307,8 +478,8 @@ function tikporn_opcoes_pagina() {
 		return;
 	}
 	?>
-	<div class="wrap">
-		<h1><?php echo esc_html__( 'Opções do tema', 'tikporn' ); ?></h1>
+	<div class="wrap tikporn-opcoes-wrap">
+		<h1><span class="dashicons dashicons-admin-appearance"></span> <?php echo esc_html__( 'Opções do tema', 'tikporn' ); ?></h1>
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'tikporn_opcoes_grupo' );

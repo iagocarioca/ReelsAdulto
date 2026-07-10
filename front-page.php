@@ -8,16 +8,24 @@
 
 get_header();
 
+// Textos e quantidades configuráveis (Aparência → Opções do tema).
+$tp_titulo_playlists  = tikporn_opcao( 'home_playlists_titulo' );
+$tp_link_playlists    = tikporn_opcao( 'home_playlists_link' );
+$tp_titulo_tendencias = tikporn_opcao( 'home_tendencias_titulo' );
+$tp_qtd_playlists     = (int) tikporn_opcao( 'home_qtd_playlists' );
+$tp_qtd_videos        = (int) tikporn_opcao( 'home_qtd_videos' );
+$tp_qtd_categorias    = (int) tikporn_opcao( 'home_qtd_categorias' );
+
 // ── Playlists (mapeadas nas categorias com mais vídeos) ──────────────
-$tp_playlists = get_terms(
+$tp_playlists = $tp_qtd_playlists > 0 ? get_terms(
 	array(
 		'taxonomy'   => TIKPORN_TAX_CAT,
 		'hide_empty' => true,
-		'number'     => 4,
+		'number'     => $tp_qtd_playlists,
 		'orderby'    => 'count',
 		'order'      => 'DESC',
 	)
-);
+) : array();
 $tp_playlists = is_wp_error( $tp_playlists ) ? array() : $tp_playlists;
 
 // ── Grade de tendências (vídeos mais recentes) ───────────────────────
@@ -25,7 +33,7 @@ $tp_grade = new WP_Query(
 	array(
 		'post_type'      => 'video',
 		'post_status'    => 'publish',
-		'posts_per_page' => 18,
+		'posts_per_page' => max( 1, $tp_qtd_videos ),
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 		'no_found_rows'  => true,
@@ -33,15 +41,15 @@ $tp_grade = new WP_Query(
 );
 
 // ── Categorias (chips da sidebar) ────────────────────────────────────
-$tp_cats = get_terms(
+$tp_cats = $tp_qtd_categorias > 0 ? get_terms(
 	array(
 		'taxonomy'   => TIKPORN_TAX_CAT,
 		'hide_empty' => false,
-		'number'     => 24,
+		'number'     => $tp_qtd_categorias,
 		'orderby'    => 'count',
 		'order'      => 'DESC',
 	)
-);
+) : array();
 $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 
 ?>
@@ -53,10 +61,12 @@ $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 		<?php if ( ! empty( $tp_playlists ) ) : ?>
 			<section class="xf-secao">
 				<div class="xf-secao__cab">
-					<h2 class="xf-secao__titulo"><?php esc_html_e( 'Playlist &amp; Chill', 'tikporn' ); ?></h2>
-					<a class="xf-secao__link" href="<?php echo esc_url( get_post_type_archive_link( 'video' ) ); ?>">
-						<?php esc_html_e( 'Todas as Playlists', 'tikporn' ); ?> &rsaquo;
-					</a>
+					<h2 class="xf-secao__titulo"><?php echo esc_html( $tp_titulo_playlists ); ?></h2>
+					<?php if ( '' !== $tp_link_playlists ) : ?>
+						<a class="xf-secao__link" href="<?php echo esc_url( get_post_type_archive_link( 'video' ) ); ?>">
+							<?php echo esc_html( $tp_link_playlists ); ?> &rsaquo;
+						</a>
+					<?php endif; ?>
 				</div>
 
 				<div class="xf-playlists">
@@ -82,7 +92,7 @@ $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 
 		<section class="xf-secao">
 			<div class="xf-secao__cab">
-				<h2 class="xf-secao__titulo"><?php esc_html_e( 'Tendências porno móvel e vídeos de sexo', 'tikporn' ); ?></h2>
+				<h2 class="xf-secao__titulo"><?php echo esc_html( $tp_titulo_tendencias ); ?></h2>
 			</div>
 
 			<?php if ( $tp_grade->have_posts() ) : ?>

@@ -43,7 +43,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 				</button>
 				<input type="search" class="xf-busca__campo" name="s" data-busca-input
 					value="<?php echo esc_attr( get_search_query() ); ?>"
-					placeholder="<?php esc_attr_e( 'Pesquisar vídeos...', 'tikporn' ); ?>"
+					placeholder="<?php echo esc_attr( tikporn_opcao( 'busca_placeholder' ) ); ?>"
 					autocomplete="off">
 				<button type="button" class="xf-busca__fechar" data-busca-close aria-label="<?php esc_attr_e( 'Fechar', 'tikporn' ); ?>">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
