@@ -7,8 +7,8 @@
 
 $tp_id   = get_the_ID();
 $tp_capa = tikporn_capa_url( $tp_id );
-// Sem contador de views ainda: usamos as curtidas como métrica exibida.
-$tp_num  = tikporn_numero_k( tikporn_curtidas( $tp_id ) );
+// Métrica exibida no badge: visualizações do vídeo.
+$tp_num  = tikporn_numero_k( tikporn_views( $tp_id ) );
 ?>
 <a class="xf-card" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
 	<div class="xf-card__thumb">

@@ -107,3 +107,21 @@ function tikporn_ajax_feed() {
 }
 add_action( 'wp_ajax_tikporn_feed', 'tikporn_ajax_feed' );
 add_action( 'wp_ajax_nopriv_tikporn_feed', 'tikporn_ajax_feed' );
+
+/**
+ * Endpoint AJAX: registra uma visualização do vídeo em foco no feed.
+ *
+ * Chamado pelo feed.js quando um vídeo entra na tela (troca por scroll/pushState),
+ * já que essa navegação não recarrega a página. A deduplicação por visitante/6h
+ * é feita dentro de tikporn_registrar_view().
+ */
+function tikporn_ajax_view() {
+	$id = absint( $_POST['video_id'] ?? $_GET['video_id'] ?? 0 );
+	if ( ! $id || 'video' !== get_post_type( $id ) ) {
+		wp_send_json_error();
+	}
+	tikporn_registrar_view( $id );
+	wp_send_json_success( array( 'views' => tikporn_views( $id ) ) );
+}
+add_action( 'wp_ajax_tikporn_view', 'tikporn_ajax_view' );
+add_action( 'wp_ajax_nopriv_tikporn_view', 'tikporn_ajax_view' );

@@ -129,7 +129,26 @@
 		}
 		if ( item._data ) { buildPanel( item._data ); document.title = item._data.title; }
 
+		registrarView( item );
 		precarregarVizinhos( item );
+	}
+
+	// Conta a visualização do vídeo em foco (1x por item nesta sessão de página).
+	function registrarView( item ) {
+		if ( ! item || item._viewRegistrada ) { return; }
+		var id = item.dataset.id;
+		if ( ! id ) { return; }
+		item._viewRegistrada = true;
+		ajax( 'tikporn_view', { video_id: id }, 'POST' ).then( function ( res ) {
+			if ( res && res.success && item._data ) {
+				item._data.views = res.data.views;
+				// Atualiza o número no painel se este item ainda é o ativo.
+				if ( active === item ) {
+					var alvo = document.querySelector( '.xf-watch__views strong' );
+					if ( alvo ) { alvo.textContent = res.data.views; }
+				}
+			}
+		} );
 	}
 
 	function precarregarVizinhos( item ) {
