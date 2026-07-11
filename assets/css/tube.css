@@ -370,13 +370,12 @@ body.xf-body {
 	}
 	.xf-playlists::-webkit-scrollbar { display: none; }
 	.xf-playlist { flex: 0 0 46%; }
-	/* Grade: 2 colunas, cards quadrados e maiores, quase colados */
+	/* Grade: 2 colunas, cards mais altos, quase colados */
 	.xf-grade { grid-template-columns: repeat(2, 1fr); gap: 3px; }
-	.xf-card__thumb { aspect-ratio: 1; border-radius: 6px; }
-	/* Sem hover no toque: mostra sempre o título e esconde as views (evita sobrepor) */
-	.xf-card__titulo { opacity: 1; transform: none; border-radius: 0 0 6px 6px; font-size: 13px; }
-	.xf-card:hover .xf-card__stat { opacity: 1; } /* neutraliza o hover herdado */
-	.xf-card__stat { display: none; }
+	.xf-card__thumb { aspect-ratio: 3 / 4; border-radius: 6px; }
+	/* Igual ao desktop: sem título, mostrando as views no card */
+	.xf-card__titulo { display: none; }
+	.xf-card__stat { display: inline-flex; }
 	/* Título de seção pode quebrar em 2 linhas (sem cortar) + recuo p/ liberar a aba Categorias */
 	.xf-secao__cab { min-width: 0; padding-left: 42px; }
 	.xf-secao__titulo {
