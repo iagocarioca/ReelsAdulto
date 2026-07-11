@@ -275,12 +275,20 @@ function tikporn_opcoes_sanitizar( $entrada ) {
  * ---------------------------------------------------------------------- */
 
 function tikporn_campo_cor_destaque() {
-	$valor = tikporn_opcao( 'cor_destaque' );
-	printf(
-		'<input type="text" name="tikporn_opcoes[cor_destaque]" value="%s" class="tikporn-cor" data-default-color="#FC30B7" />',
-		esc_attr( $valor )
-	);
-	echo '<p class="description">' . esc_html__( 'Cor principal do tema (botões, links, destaques).', 'tikporn' ) . '</p>';
+	$valor = sanitize_hex_color( tikporn_opcao( 'cor_destaque' ) ) ?: '#FC30B7';
+	?>
+	<div class="tp-cor" data-tp-cor>
+		<label class="tp-cor__swatch">
+			<input type="color" value="<?php echo esc_attr( $valor ); ?>" data-tp-cor-picker aria-label="<?php esc_attr_e( 'Escolher cor', 'tikporn' ); ?>" />
+		</label>
+		<input type="text" name="tikporn_opcoes[cor_destaque]" value="<?php echo esc_attr( $valor ); ?>"
+			class="tp-cor__hex" data-tp-cor-hex maxlength="7" spellcheck="false" aria-label="<?php esc_attr_e( 'Código da cor', 'tikporn' ); ?>" />
+		<button type="button" class="tp-cor__reset" data-tp-cor-reset title="<?php esc_attr_e( 'Voltar ao padrão', 'tikporn' ); ?>">
+			<?php esc_html_e( 'Padrão', 'tikporn' ); ?>
+		</button>
+	</div>
+	<p class="description"><?php esc_html_e( 'Cor principal do tema (botões, links, destaques).', 'tikporn' ); ?></p>
+	<?php
 }
 
 function tikporn_campo_home_playlists_titulo() {
@@ -405,11 +413,13 @@ function tikporn_opcoes_assets( $hook ) {
 	if ( 'appearance_page_tikporn-opcoes' !== $hook ) {
 		return;
 	}
-	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_script( 'wp-color-picker' );
+	// Estilo próprio (não depende mais do color picker do WP).
+	wp_register_style( 'tikporn-opcoes', false, array(), TIKPORN_VERSION );
+	wp_enqueue_style( 'tikporn-opcoes' );
+	wp_add_inline_style( 'tikporn-opcoes', tikporn_opcoes_css() );
 
-	wp_add_inline_style( 'wp-color-picker', tikporn_opcoes_css() );
-	wp_add_inline_script( 'wp-color-picker', tikporn_opcoes_js() );
+	// JS depende só do jQuery (sempre presente no admin).
+	wp_add_inline_script( 'jquery-core', tikporn_opcoes_js() );
 }
 add_action( 'admin_enqueue_scripts', 'tikporn_opcoes_assets' );
 
@@ -477,7 +487,7 @@ function tikporn_opcoes_css() {
 	--tp-success: var(--tp-green-500);
 	--tp-warning: var(--tp-amber-500);
 
-	max-width: 940px; margin: var(--tp-space-6) var(--tp-space-5) 0 0;
+	max-width: 860px; margin: var(--tp-space-6) var(--tp-space-5) 0 0;
 	font-family: var(--tp-font-sans);
 	/* Pinta o próprio painel: o dark mode do painel vale mesmo se o admin for claro */
 	background: var(--tp-bg); color: var(--tp-text);
@@ -621,13 +631,13 @@ function tikporn_opcoes_css() {
 /* -------- Componente: INPUTS ------------------------------------------ */
 .tp-opt input[type=text], .tp-opt input[type=url], .tp-opt input[type=password],
 .tp-opt input[type=number], .tp-opt input[type=search] {
-	width: 100%; max-width: 480px; margin: 0;
+	width: 100%; margin: 0;
 	padding: 11px 14px; border-radius: var(--tp-radius-md);
 	border: 1px solid var(--tp-border); background: var(--tp-surface-raised); color: var(--tp-text);
 	font-size: var(--tp-text-base); line-height: 1.3; box-shadow: none;
 	transition: border-color var(--tp-duration-fast) var(--tp-ease), box-shadow var(--tp-duration-fast) var(--tp-ease), background var(--tp-duration-fast) var(--tp-ease);
 }
-.tp-opt input[type=number] { width: 92px; max-width: 92px; text-align: center; }
+.tp-opt input[type=number] { width: 88px; text-align: center; }
 .tp-opt input:focus {
 	outline: 0; background: var(--tp-surface);
 	border-color: var(--tp-accent); box-shadow: 0 0 0 3px var(--tp-accent-ring);
@@ -657,9 +667,32 @@ function tikporn_opcoes_css() {
 .tp-opt__field-control input[type=checkbox]:checked::after { transform: translateX(19px); }
 .tp-opt__field-control input[type=checkbox]:focus-visible { box-shadow: 0 0 0 3px var(--tp-accent-ring); }
 
-/* Color picker do WP integrado */
-.tp-opt .wp-picker-container { display: inline-block; }
-.tp-opt .wp-color-result.button { border-radius: var(--tp-radius-md); height: 40px; border: 1px solid var(--tp-border); }
+/* -------- Componente: SELETOR DE COR ---------------------------------- */
+.tp-cor { --tp-cor: var(--tp-accent); display: inline-flex; align-items: center; gap: var(--tp-space-3); }
+.tp-cor__swatch {
+	position: relative; display: block; width: 44px; height: 44px; flex: 0 0 auto;
+	border-radius: var(--tp-radius-md); cursor: pointer; overflow: hidden;
+	background: var(--tp-cor); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 2px rgba(16,24,40,.1);
+	transition: transform var(--tp-duration-fast) var(--tp-ease);
+}
+.tp-cor__swatch:hover { transform: scale(1.05); }
+.tp-cor__swatch input[type=color] {
+	position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px);
+	border: 0; padding: 0; margin: 0; cursor: pointer; opacity: 0;
+}
+.tp-cor__hex {
+	width: 108px !important; max-width: 108px !important; text-align: left;
+	font-family: var(--tp-font-mono, ui-monospace, "SFMono-Regular", Menlo, monospace);
+	text-transform: lowercase; letter-spacing: .02em;
+}
+.tp-cor__reset {
+	border: 1px solid var(--tp-border); background: var(--tp-surface); color: var(--tp-text-muted);
+	border-radius: var(--tp-radius-md); padding: 9px 14px; cursor: pointer;
+	font-size: var(--tp-text-sm); font-weight: var(--tp-weight-medium);
+	transition: color var(--tp-duration-fast) var(--tp-ease), border-color var(--tp-duration-fast) var(--tp-ease), background var(--tp-duration-fast) var(--tp-ease);
+}
+.tp-cor__reset:hover { color: var(--tp-text); background: var(--tp-surface-raised); }
+.tp-cor__reset:focus-visible { outline: 2px solid var(--tp-accent); outline-offset: 2px; }
 
 /* -------- Componente: AÇÕES (rodapé sticky) --------------------------- */
 .tp-opt__actions {
@@ -704,16 +737,34 @@ jQuery(function ($) {
 	var $wrap = $('.tp-opt');
 	if (!$wrap.length) { return; }
 
-	/* Color picker com preview ao vivo no hero */
-	$('.tikporn-cor').wpColorPicker({
-		change: function (event, ui) {
-			var c = ui.color.toString();
-			$wrap.css('--tp-accent', c);
-		},
-		clear: function () {
-			$wrap.css('--tp-accent', '#FC30B7');
+	/* Seletor de cor nativo: swatch + campo hex sincronizados, preview ao vivo */
+	(function () {
+		var box = document.querySelector('[data-tp-cor]');
+		if (!box) { return; }
+		var picker = box.querySelector('[data-tp-cor-picker]');
+		var hex    = box.querySelector('[data-tp-cor-hex]');
+		var reset  = box.querySelector('[data-tp-cor-reset]');
+		var PADRAO = '#FC30B7';
+
+		function normalizar(v) {
+			v = String(v || '').trim();
+			if (v[0] !== '#') { v = '#' + v; }
+			return /^#[0-9a-fA-F]{6}$/.test(v) ? v.toLowerCase() : null;
 		}
-	});
+		function aplicar(v, origem) {
+			var c = normalizar(v);
+			if (!c) { return; }
+			$wrap[0].style.setProperty('--tp-accent', c);
+			box.style.setProperty('--tp-cor', c);
+			if (origem !== 'picker') { picker.value = c; }
+			if (origem !== 'hex') { hex.value = c; }
+		}
+		box.style.setProperty('--tp-cor', hex.value || PADRAO);
+		picker.addEventListener('input', function () { aplicar(picker.value, 'picker'); });
+		hex.addEventListener('input', function () { aplicar(hex.value, 'hex'); });
+		hex.addEventListener('blur', function () { if (!normalizar(hex.value)) { aplicar(picker.value, 'hex'); } });
+		reset.addEventListener('click', function () { aplicar(PADRAO); });
+	})();
 
 	/* Navegação por abas (persiste a aba ativa em sessionStorage) */
 	function ativar(id) {
