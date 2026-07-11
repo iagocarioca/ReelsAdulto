@@ -419,177 +419,272 @@ add_action( 'admin_enqueue_scripts', 'tikporn_opcoes_assets' );
  */
 function tikporn_opcoes_css() {
 	return <<<CSS
-/* ---- Tokens ---- */
+/* =========================================================================
+ * Painel de Opções — Design System (tokens: primitivo → semântico → componente)
+ * ===================================================================== */
+
+/* -------- 1) Tokens PRIMITIVOS + escalas fixas (não mudam com o tema) ---- */
 .tp-opt {
-	--tp-bg: #f6f7fb;
-	--tp-surface: #ffffff;
-	--tp-surface-2: #f9fafc;
-	--tp-border: #e5e7ef;
-	--tp-text: #1c1f2b;
-	--tp-muted: #6b7280;
-	--tp-radius: 14px;
-	--tp-shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px -12px rgba(16,24,40,.18);
-	--tp-accent-ink: #fff;
-	max-width: 1080px; margin: 20px 20px 0 2px;
+	/* Cor primitiva — cinzas */
+	--tp-gray-0: #ffffff;  --tp-gray-50: #f7f8fb; --tp-gray-100: #eef0f6;
+	--tp-gray-200: #e3e6ef; --tp-gray-300: #cfd3e0; --tp-gray-400: #9aa0b2;
+	--tp-gray-500: #6b7280; --tp-gray-600: #4b5163; --tp-gray-700: #343a49;
+	--tp-gray-800: #232733; --tp-gray-900: #171a22; --tp-gray-950: #0e1017;
+	/* Cor primitiva — feedback */
+	--tp-green-500: #22c55e; --tp-amber-500: #f59e0b; --tp-red-500: #ef4444;
+
+	/* Tipografia */
+	--tp-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	--tp-text-xs: 12px; --tp-text-sm: 13px; --tp-text-base: 14px;
+	--tp-text-lg: 16px; --tp-text-xl: 18px; --tp-text-2xl: 22px;
+	--tp-weight-medium: 500; --tp-weight-semibold: 600; --tp-weight-bold: 700; --tp-weight-black: 800;
+	--tp-leading-tight: 1.2; --tp-leading-normal: 1.5;
+	--tp-tracking-tight: -0.02em;
+
+	/* Espaçamento (escala 4px) */
+	--tp-space-1: 4px; --tp-space-2: 8px; --tp-space-3: 12px; --tp-space-4: 16px;
+	--tp-space-5: 20px; --tp-space-6: 24px; --tp-space-7: 28px; --tp-space-8: 32px;
+
+	/* Raio */
+	--tp-radius-sm: 8px; --tp-radius-md: 10px; --tp-radius-lg: 14px; --tp-radius-xl: 18px; --tp-radius-full: 999px;
+
+	/* Movimento */
+	--tp-duration-fast: 120ms; --tp-duration-normal: 180ms; --tp-duration-slow: 260ms;
+	--tp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	/* Camadas */
+	--tp-z-sticky: 200;
 }
+
+/* -------- 2) Tokens SEMÂNTICOS — tema claro (padrão) -------------------- */
+.tp-opt {
+	--tp-bg: var(--tp-gray-50);
+	--tp-surface: var(--tp-gray-0);
+	--tp-surface-raised: var(--tp-gray-50);
+	--tp-border: var(--tp-gray-200);
+	--tp-border-strong: var(--tp-gray-300);
+	--tp-text: var(--tp-gray-900);
+	--tp-text-muted: var(--tp-gray-500);
+	--tp-text-on-accent: #ffffff;
+	--tp-shadow-sm: 0 1px 2px rgba(16,24,40,.05);
+	--tp-shadow-md: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px -12px rgba(16,24,40,.18);
+	--tp-shadow-accent: 0 8px 20px -8px var(--tp-accent);
+
+	/* --tp-accent é injetado inline no wrap (cor de destaque do tema) */
+	--tp-accent-hover: color-mix(in srgb, var(--tp-accent) 88%, #000);
+	--tp-accent-soft: color-mix(in srgb, var(--tp-accent) 12%, transparent);
+	--tp-accent-ring: color-mix(in srgb, var(--tp-accent) 20%, transparent);
+	--tp-success: var(--tp-green-500);
+	--tp-warning: var(--tp-amber-500);
+
+	max-width: 1080px; margin: var(--tp-space-5) var(--tp-space-5) 0 2px;
+	font-family: var(--tp-font-sans);
+	/* Pinta o próprio painel: o dark mode do painel vale mesmo se o admin for claro */
+	background: var(--tp-bg); color: var(--tp-text);
+	padding: var(--tp-space-4); border-radius: var(--tp-radius-xl);
+	transition: background var(--tp-duration-normal) var(--tp-ease), color var(--tp-duration-normal) var(--tp-ease);
+}
+
+/* -------- 3) Tema escuro — override semântico -------------------------- */
 @media (prefers-color-scheme: dark) {
-	.tp-opt {
-		--tp-bg: #14161d; --tp-surface: #1c1f2a; --tp-surface-2: #22252f;
-		--tp-border: #2e323d; --tp-text: #e7e9ef; --tp-muted: #9aa0ac;
-		--tp-shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.6);
+	.tp-opt:not([data-tp-theme="light"]) {
+		--tp-bg: var(--tp-gray-950);
+		--tp-surface: var(--tp-gray-900);
+		--tp-surface-raised: var(--tp-gray-800);
+		--tp-border: var(--tp-gray-700);
+		--tp-border-strong: var(--tp-gray-600);
+		--tp-text: var(--tp-gray-50);
+		--tp-text-muted: var(--tp-gray-400);
+		--tp-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+		--tp-shadow-md: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.6);
 	}
 }
-.tp-opt * { box-sizing: border-box; }
+.tp-opt[data-tp-theme="dark"] {
+	--tp-bg: var(--tp-gray-950);
+	--tp-surface: var(--tp-gray-900);
+	--tp-surface-raised: var(--tp-gray-800);
+	--tp-border: var(--tp-gray-700);
+	--tp-border-strong: var(--tp-gray-600);
+	--tp-text: var(--tp-gray-50);
+	--tp-text-muted: var(--tp-gray-400);
+	--tp-shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+	--tp-shadow-md: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.6);
+}
 
-/* Remove notices/whitespace herdados do WP dentro do wrap */
+.tp-opt, .tp-opt * { box-sizing: border-box; }
 .tp-opt .notice { display: none; }
 
-/* ---- Hero ---- */
+/* Acessibilidade: respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+	.tp-opt *, .tp-opt *::before, .tp-opt *::after {
+		animation-duration: .01ms !important; transition-duration: .01ms !important;
+	}
+}
+
+/* -------- Componente: HERO ---------------------------------------------- */
 .tp-opt__hero {
 	position: relative; overflow: hidden;
-	display: flex; align-items: center; justify-content: space-between; gap: 16px;
-	padding: 26px 28px; margin-bottom: 22px;
-	border-radius: 18px; color: #fff;
+	display: flex; align-items: center; justify-content: space-between; gap: var(--tp-space-4);
+	padding: var(--tp-space-6) var(--tp-space-7); margin-bottom: var(--tp-space-6);
+	border-radius: var(--tp-radius-xl); color: #fff;
 	background:
 		radial-gradient(1200px 200px at 0% 0%, rgba(255,255,255,.18), transparent 60%),
 		linear-gradient(120deg, var(--tp-accent), color-mix(in srgb, var(--tp-accent) 55%, #7b2ff7));
 	box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--tp-accent) 70%, #000);
 }
-.tp-opt__hero-brand { display: flex; align-items: center; gap: 16px; }
+.tp-opt__hero-brand { display: flex; align-items: center; gap: var(--tp-space-4); }
 .tp-opt__logo {
 	display: grid; place-items: center; width: 52px; height: 52px; flex: 0 0 auto;
-	border-radius: 14px; background: rgba(255,255,255,.18);
+	border-radius: var(--tp-radius-lg); background: rgba(255,255,255,.18);
 	backdrop-filter: blur(6px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
 }
 .tp-opt__logo svg { width: 26px; height: 26px; }
-.tp-opt__title { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.02em; color: #fff; }
-.tp-opt__subtitle { margin: 3px 0 0; font-size: 13px; opacity: .9; }
+.tp-opt__title { margin: 0; font-size: var(--tp-text-2xl); font-weight: var(--tp-weight-black); letter-spacing: var(--tp-tracking-tight); color: #fff; }
+.tp-opt__subtitle { margin: 3px 0 0; font-size: var(--tp-text-sm); opacity: .9; }
 .tp-opt__hero-status {
-	display: inline-flex; align-items: center; gap: 6px;
-	padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 13px;
+	display: inline-flex; align-items: center; gap: var(--tp-space-2);
+	padding: var(--tp-space-2) var(--tp-space-4); border-radius: var(--tp-radius-full);
+	font-weight: var(--tp-weight-bold); font-size: var(--tp-text-sm);
 	background: rgba(255,255,255,.2); backdrop-filter: blur(6px);
-	animation: tpFade .3s ease;
+	animation: tpFade var(--tp-duration-normal) var(--tp-ease);
 }
+.tp-opt__hero-status[hidden] { display: none; }
 .tp-opt__hero-status .dashicons { font-size: 18px; width: 18px; height: 18px; }
 @keyframes tpFade { from { opacity: 0; transform: translateY(-4px); } }
+.tp-opt__hero-side { display: flex; align-items: center; gap: var(--tp-space-3); }
+.tp-opt__theme {
+	display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto;
+	border: 0; cursor: pointer; border-radius: var(--tp-radius-md); color: #fff;
+	background: rgba(255,255,255,.18); backdrop-filter: blur(6px);
+	box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+	transition: background var(--tp-duration-fast) var(--tp-ease), transform var(--tp-duration-fast) var(--tp-ease);
+}
+.tp-opt__theme:hover { background: rgba(255,255,255,.3); }
+.tp-opt__theme:active { transform: scale(.94); }
+.tp-opt__theme:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.tp-opt__theme svg { width: 20px; height: 20px; }
+/* Um ícone por vez. Controlado pelo estado resolvido em data-tp-scheme (JS). */
+.tp-opt__theme-light { display: block; }
+.tp-opt__theme-dark { display: none; }
+.tp-opt[data-tp-scheme="dark"] .tp-opt__theme-light { display: none; }
+.tp-opt[data-tp-scheme="dark"] .tp-opt__theme-dark { display: block; }
 
-/* ---- Layout ---- */
-.tp-opt__layout { display: grid; grid-template-columns: 232px 1fr; gap: 22px; align-items: start; }
+/* -------- Componente: LAYOUT + NAV ------------------------------------- */
+.tp-opt__layout { display: grid; grid-template-columns: 232px 1fr; gap: var(--tp-space-6); align-items: start; }
 
-/* ---- Navegação lateral ---- */
 .tp-opt__nav {
-	position: sticky; top: 42px;
-	display: flex; flex-direction: column; gap: 4px;
-	padding: 8px; border-radius: var(--tp-radius);
-	background: var(--tp-surface); border: 1px solid var(--tp-border); box-shadow: var(--tp-shadow);
+	position: sticky; top: 42px; z-index: var(--tp-z-sticky);
+	display: flex; flex-direction: column; gap: var(--tp-space-1);
+	padding: var(--tp-space-2); border-radius: var(--tp-radius-lg);
+	background: var(--tp-surface); border: 1px solid var(--tp-border); box-shadow: var(--tp-shadow-md);
 }
 .tp-opt__nav-item {
 	display: flex; align-items: center; gap: 11px; width: 100%;
 	padding: 11px 13px; border: 0; cursor: pointer; text-align: left;
-	border-radius: 10px; background: transparent; color: var(--tp-text);
-	font-size: 13.5px; font-weight: 600; line-height: 1.2;
-	transition: background .15s ease, color .15s ease, transform .1s ease;
+	border-radius: var(--tp-radius-md); background: transparent; color: var(--tp-text);
+	font-size: var(--tp-text-sm); font-weight: var(--tp-weight-semibold); line-height: var(--tp-leading-tight);
+	transition: background var(--tp-duration-fast) var(--tp-ease), color var(--tp-duration-fast) var(--tp-ease), transform var(--tp-duration-fast) var(--tp-ease);
 }
-.tp-opt__nav-item:hover { background: var(--tp-surface-2); }
+.tp-opt__nav-item:hover { background: var(--tp-surface-raised); }
 .tp-opt__nav-item:active { transform: scale(.99); }
-.tp-opt__nav-item .dashicons { font-size: 19px; width: 19px; height: 19px; color: var(--tp-muted); transition: color .15s; }
+.tp-opt__nav-item:focus-visible { outline: 2px solid var(--tp-accent); outline-offset: 2px; }
+.tp-opt__nav-item .dashicons { font-size: 19px; width: 19px; height: 19px; color: var(--tp-text-muted); transition: color var(--tp-duration-fast) var(--tp-ease); }
 .tp-opt__nav-item.is-active {
-	background: color-mix(in srgb, var(--tp-accent) 12%, transparent);
+	background: var(--tp-accent-soft);
 	color: color-mix(in srgb, var(--tp-accent) 72%, var(--tp-text));
 }
 .tp-opt__nav-item.is-active .dashicons { color: var(--tp-accent); }
 
-/* ---- Painéis ---- */
-.tp-opt__panel { animation: tpSlide .25s ease; }
+/* -------- Componente: PAINEL + CARD DE CAMPO --------------------------- */
+.tp-opt__panel { animation: tpSlide var(--tp-duration-slow) var(--tp-ease); }
 @keyframes tpSlide { from { opacity: 0; transform: translateY(6px); } }
-.tp-opt__panel-head { margin: 2px 0 16px; }
-.tp-opt__panel-head h2 { margin: 0; font-size: 18px; font-weight: 800; color: var(--tp-text); letter-spacing: -.01em; }
-.tp-opt__panel-head p { margin: 4px 0 0; font-size: 13px; color: var(--tp-muted); }
+.tp-opt__panel-head { margin: 2px 0 var(--tp-space-4); }
+.tp-opt__panel-head h2 { margin: 0; font-size: var(--tp-text-xl); font-weight: var(--tp-weight-black); color: var(--tp-text); letter-spacing: -0.01em; }
+.tp-opt__panel-head p { margin: var(--tp-space-1) 0 0; font-size: var(--tp-text-sm); color: var(--tp-text-muted); }
 
-.tp-opt__cards { display: flex; flex-direction: column; gap: 12px; }
+.tp-opt__cards { display: flex; flex-direction: column; gap: var(--tp-space-3); }
 .tp-opt__field {
-	display: grid; grid-template-columns: 240px 1fr; gap: 18px; align-items: start;
-	padding: 18px 20px; border-radius: var(--tp-radius);
-	background: var(--tp-surface); border: 1px solid var(--tp-border); box-shadow: var(--tp-shadow);
-	transition: border-color .15s ease;
+	display: grid; grid-template-columns: 240px 1fr; gap: var(--tp-space-5); align-items: start;
+	padding: var(--tp-space-5) var(--tp-space-5); border-radius: var(--tp-radius-lg);
+	background: var(--tp-surface); border: 1px solid var(--tp-border); box-shadow: var(--tp-shadow-sm);
+	transition: border-color var(--tp-duration-fast) var(--tp-ease), box-shadow var(--tp-duration-fast) var(--tp-ease);
 }
-.tp-opt__field:focus-within { border-color: color-mix(in srgb, var(--tp-accent) 45%, var(--tp-border)); }
-.tp-opt__field-label { font-size: 13.5px; font-weight: 700; color: var(--tp-text); padding-top: 8px; }
+.tp-opt__field:focus-within { border-color: var(--tp-accent); box-shadow: var(--tp-shadow-md); }
+.tp-opt__field-label { font-size: var(--tp-text-sm); font-weight: var(--tp-weight-bold); color: var(--tp-text); padding-top: var(--tp-space-2); }
 .tp-opt__field-control { min-width: 0; }
-.tp-opt__field-control .description { margin: 8px 0 0; color: var(--tp-muted); font-size: 12.5px; font-style: normal; }
+.tp-opt__field-control .description { margin: var(--tp-space-2) 0 0; color: var(--tp-text-muted); font-size: var(--tp-text-xs); font-style: normal; line-height: var(--tp-leading-normal); }
 
-/* ---- Inputs (sobrescreve o visual padrão do WP) ---- */
+/* -------- Componente: INPUTS ------------------------------------------ */
 .tp-opt input[type=text], .tp-opt input[type=url], .tp-opt input[type=password],
 .tp-opt input[type=number], .tp-opt input[type=search] {
 	width: 100%; max-width: 460px; margin: 0;
-	padding: 10px 13px; border-radius: 10px;
-	border: 1.5px solid var(--tp-border); background: var(--tp-surface-2); color: var(--tp-text);
-	font-size: 14px; line-height: 1.3; box-shadow: none;
-	transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+	padding: var(--tp-space-3) 13px; border-radius: var(--tp-radius-md);
+	border: 1.5px solid var(--tp-border); background: var(--tp-surface-raised); color: var(--tp-text);
+	font-size: var(--tp-text-base); line-height: 1.3; box-shadow: none;
+	transition: border-color var(--tp-duration-fast) var(--tp-ease), box-shadow var(--tp-duration-fast) var(--tp-ease), background var(--tp-duration-fast) var(--tp-ease);
 }
 .tp-opt input[type=number] { width: 96px; max-width: 96px; }
 .tp-opt input:focus {
 	outline: 0; background: var(--tp-surface);
-	border-color: var(--tp-accent);
-	box-shadow: 0 0 0 4px color-mix(in srgb, var(--tp-accent) 18%, transparent);
+	border-color: var(--tp-accent); box-shadow: 0 0 0 4px var(--tp-accent-ring);
 }
-.tp-opt input::placeholder { color: var(--tp-muted); opacity: .7; }
+.tp-opt input::placeholder { color: var(--tp-text-muted); opacity: .7; }
 
-/* Grid de quantidades: pílulas com stepper */
-.tikporn-qtd-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+.tikporn-qtd-grid { display: flex; flex-wrap: wrap; gap: var(--tp-space-3); }
 .tikporn-qtd-grid label {
 	display: flex; flex-direction: column; gap: 7px;
-	font-size: 12.5px; font-weight: 700; color: var(--tp-text);
+	font-size: var(--tp-text-xs); font-weight: var(--tp-weight-bold); color: var(--tp-text);
 }
 
-/* Toggle switch para checkbox */
-.tp-opt__field-control label { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; color: var(--tp-text); cursor: pointer; }
+/* -------- Componente: TOGGLE ------------------------------------------ */
+.tp-opt__field-control label { display: inline-flex; align-items: center; gap: var(--tp-space-3); font-size: var(--tp-text-base); color: var(--tp-text); cursor: pointer; }
 .tp-opt__field-control input[type=checkbox] {
 	appearance: none; -webkit-appearance: none; position: relative; flex: 0 0 auto;
-	width: 46px; height: 26px; margin: 0; border-radius: 999px; cursor: pointer;
-	background: var(--tp-border); border: 0; transition: background .2s ease;
+	width: 46px; height: 26px; margin: 0; border-radius: var(--tp-radius-full); cursor: pointer;
+	background: var(--tp-border-strong); border: 0; transition: background var(--tp-duration-normal) var(--tp-ease);
 }
 .tp-opt__field-control input[type=checkbox]::after {
 	content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
-	border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3);
-	transition: transform .2s cubic-bezier(.2,.8,.2,1);
+	border-radius: var(--tp-radius-full); background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3);
+	transition: transform var(--tp-duration-normal) var(--tp-ease);
 }
 .tp-opt__field-control input[type=checkbox]:checked { background: var(--tp-accent); }
 .tp-opt__field-control input[type=checkbox]:checked::after { transform: translateX(20px); }
-.tp-opt__field-control input[type=checkbox]:focus-visible { box-shadow: 0 0 0 4px color-mix(in srgb, var(--tp-accent) 22%, transparent); }
+.tp-opt__field-control input[type=checkbox]:focus-visible { box-shadow: 0 0 0 4px var(--tp-accent-ring); }
 
-/* Color picker do WP integrado ao tema */
+/* Color picker do WP integrado */
 .tp-opt .wp-picker-container { display: inline-block; }
-.tp-opt .wp-color-result.button { border-radius: 10px; height: 42px; border: 1.5px solid var(--tp-border); }
+.tp-opt .wp-color-result.button { border-radius: var(--tp-radius-md); height: 42px; border: 1.5px solid var(--tp-border); }
 
-/* ---- Rodapé de ações (sticky) ---- */
+/* -------- Componente: AÇÕES (rodapé sticky) --------------------------- */
 .tp-opt__actions {
-	position: sticky; bottom: 0; z-index: 5;
-	display: flex; justify-content: flex-end; gap: 12px;
-	margin-top: 22px; padding: 16px 4px;
+	position: sticky; bottom: 0; z-index: var(--tp-z-sticky);
+	display: flex; justify-content: flex-end; gap: var(--tp-space-3);
+	margin-top: var(--tp-space-6); padding: var(--tp-space-4) var(--tp-space-1);
 	background: linear-gradient(to top, var(--tp-bg) 55%, transparent);
 }
 .tp-opt .tp-opt__save.button-primary {
-	height: auto; padding: 11px 26px; border-radius: 11px;
-	font-size: 14px; font-weight: 700; border: 0;
-	background: var(--tp-accent); box-shadow: 0 8px 20px -8px var(--tp-accent);
-	transition: transform .1s ease, filter .15s ease;
+	height: auto; padding: 11px var(--tp-space-6); border-radius: 11px;
+	font-size: var(--tp-text-base); font-weight: var(--tp-weight-bold); border: 0;
+	background: var(--tp-accent); color: var(--tp-text-on-accent); box-shadow: var(--tp-shadow-accent);
+	transition: transform var(--tp-duration-fast) var(--tp-ease), background var(--tp-duration-fast) var(--tp-ease);
 }
-.tp-opt .tp-opt__save.button-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.tp-opt .tp-opt__save.button-primary:hover { background: var(--tp-accent-hover); transform: translateY(-1px); }
 .tp-opt .tp-opt__save.button-primary:active { transform: translateY(0); }
+.tp-opt .tp-opt__save.button-primary:focus-visible { outline: 2px solid var(--tp-accent); outline-offset: 3px; }
 
-/* ---- Responsivo ---- */
+/* -------- Responsivo -------------------------------------------------- */
 @media (max-width: 782px) {
-	.tp-opt { margin-right: 12px; }
+	.tp-opt { margin-right: var(--tp-space-3); }
 	.tp-opt__layout { grid-template-columns: 1fr; }
 	.tp-opt__nav {
-		position: static; flex-direction: row; overflow-x: auto; gap: 6px;
+		position: static; flex-direction: row; overflow-x: auto; gap: var(--tp-space-2);
 		scrollbar-width: none;
 	}
 	.tp-opt__nav::-webkit-scrollbar { display: none; }
 	.tp-opt__nav-item { flex: 0 0 auto; }
 	.tp-opt__nav-label { white-space: nowrap; }
-	.tp-opt__field { grid-template-columns: 1fr; gap: 10px; }
+	.tp-opt__field { grid-template-columns: 1fr; gap: var(--tp-space-3); }
 	.tp-opt__field-label { padding-top: 0; }
 	.tp-opt__hero { flex-direction: column; align-items: flex-start; }
 }
@@ -635,6 +730,40 @@ jQuery(function ($) {
 	var saved;
 	try { saved = sessionStorage.getItem('tpOptTab'); } catch (e) {}
 	if (saved && $('.tp-opt__nav-item[data-tp-tab="' + saved + '"]').length) { ativar(saved); }
+
+	/* Alternância de tema do painel (claro → escuro → sistema), persistida.
+	   Segue o padrão de theming da design system: data-tp-theme + prefers-color-scheme. */
+	var wrapEl = $wrap[0];
+	var mqDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false, addEventListener: function () {} };
+
+	function aplicarTema(modo) {
+		if (modo === 'light' || modo === 'dark') {
+			wrapEl.setAttribute('data-tp-theme', modo);
+		} else {
+			modo = 'system';
+			wrapEl.removeAttribute('data-tp-theme'); // segue o SO
+		}
+		// Esquema efetivo (resolve 'system' pelo SO) — controla o ícone do botão.
+		var efetivo = modo === 'system' ? (mqDark.matches ? 'dark' : 'light') : modo;
+		wrapEl.setAttribute('data-tp-scheme', efetivo);
+		try { localStorage.setItem('tpOptTheme', modo); } catch (e) {}
+	}
+
+	var temaSalvo = 'system';
+	try { temaSalvo = localStorage.getItem('tpOptTheme') || 'system'; } catch (e) {}
+	aplicarTema(temaSalvo);
+
+	// Se estiver em 'system', reage à troca do SO em tempo real.
+	mqDark.addEventListener && mqDark.addEventListener('change', function () {
+		var modo = wrapEl.getAttribute('data-tp-theme') || 'system';
+		if (modo === 'system') { aplicarTema('system'); }
+	});
+
+	$('[data-tp-theme-toggle]').on('click', function () {
+		var atual = wrapEl.getAttribute('data-tp-theme') || 'system';
+		var proximo = atual === 'light' ? 'dark' : (atual === 'dark' ? 'system' : 'light');
+		aplicarTema(proximo);
+	});
 
 	/* Aviso "Salvo" após redirect com settings-updated */
 	if (/settings-updated=true/.test(window.location.search)) {
@@ -781,8 +910,15 @@ function tikporn_opcoes_pagina() {
 					<p class="tp-opt__subtitle"><?php echo esc_html( sprintf( __( 'tikporn • versão %s', 'tikporn' ), defined( 'TIKPORN_VERSION' ) ? TIKPORN_VERSION : '' ) ); ?></p>
 				</div>
 			</div>
-			<div class="tp-opt__hero-status" data-tp-saved hidden>
-				<span class="dashicons dashicons-yes-alt"></span> <?php esc_html_e( 'Salvo', 'tikporn' ); ?>
+			<div class="tp-opt__hero-side">
+				<div class="tp-opt__hero-status" data-tp-saved hidden>
+					<span class="dashicons dashicons-yes-alt"></span> <?php esc_html_e( 'Salvo', 'tikporn' ); ?>
+				</div>
+				<button type="button" class="tp-opt__theme" data-tp-theme-toggle
+					aria-label="<?php esc_attr_e( 'Alternar tema claro/escuro', 'tikporn' ); ?>" title="<?php esc_attr_e( 'Alternar tema', 'tikporn' ); ?>">
+					<svg class="tp-opt__theme-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+					<svg class="tp-opt__theme-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+				</button>
 			</div>
 		</header>
 
