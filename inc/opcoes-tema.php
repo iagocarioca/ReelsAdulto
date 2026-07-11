@@ -407,42 +407,243 @@ function tikporn_opcoes_assets( $hook ) {
 	}
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_script( 'wp-color-picker' );
-	wp_add_inline_script(
-		'wp-color-picker',
-		'jQuery(function($){ $(".tikporn-cor").wpColorPicker(); });'
-	);
 
-	// Visual da página de opções (cartões por seção + grid de quantidades).
-	$css = '
-		.tikporn-opcoes-wrap { max-width: 820px; }
-		.tikporn-opcoes-wrap h1 { display: flex; align-items: center; gap: 10px; }
-		.tikporn-opcoes-wrap h1 .dashicons { color: #FC30B7; font-size: 30px; width: 30px; height: 30px; }
-		.tikporn-opcoes-wrap form > h2 {
-			margin: 30px 0 0; padding: 16px 20px 0; font-size: 15px; font-weight: 600;
-			background: #fff; border: 1px solid #e2e4e7; border-bottom: 0;
-			border-radius: 10px 10px 0 0;
-		}
-		.tikporn-opcoes-wrap form > p {
-			margin: 0; padding: 4px 20px 0; color: #646970; font-size: 13px;
-			background: #fff; border-left: 1px solid #e2e4e7; border-right: 1px solid #e2e4e7;
-		}
-		.tikporn-opcoes-wrap form > .form-table {
-			margin-top: 0; padding: 8px 20px 16px;
-			background: #fff; border: 1px solid #e2e4e7; border-top: 0;
-			border-radius: 0 0 10px 10px;
-		}
-		.tikporn-opcoes-wrap .form-table th { padding-left: 0; }
-		.tikporn-qtd-grid { display: flex; flex-wrap: wrap; gap: 18px; }
-		.tikporn-qtd-grid label {
-			display: flex; flex-direction: column; gap: 5px;
-			font-weight: 600; font-size: 13px; color: #1d2327;
-		}
-		.tikporn-qtd-grid input { width: 90px; }
-		.tikporn-opcoes-wrap .submit { margin-top: 22px; }
-	';
-	wp_add_inline_style( 'wp-color-picker', $css );
+	wp_add_inline_style( 'wp-color-picker', tikporn_opcoes_css() );
+	wp_add_inline_script( 'wp-color-picker', tikporn_opcoes_js() );
 }
 add_action( 'admin_enqueue_scripts', 'tikporn_opcoes_assets' );
+
+/**
+ * CSS do painel moderno (injetado só na página de opções).
+ * Usa tokens, respeita o modo escuro do admin e é responsivo.
+ */
+function tikporn_opcoes_css() {
+	return <<<CSS
+/* ---- Tokens ---- */
+.tp-opt {
+	--tp-bg: #f6f7fb;
+	--tp-surface: #ffffff;
+	--tp-surface-2: #f9fafc;
+	--tp-border: #e5e7ef;
+	--tp-text: #1c1f2b;
+	--tp-muted: #6b7280;
+	--tp-radius: 14px;
+	--tp-shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px -12px rgba(16,24,40,.18);
+	--tp-accent-ink: #fff;
+	max-width: 1080px; margin: 20px 20px 0 2px;
+}
+@media (prefers-color-scheme: dark) {
+	.tp-opt {
+		--tp-bg: #14161d; --tp-surface: #1c1f2a; --tp-surface-2: #22252f;
+		--tp-border: #2e323d; --tp-text: #e7e9ef; --tp-muted: #9aa0ac;
+		--tp-shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.6);
+	}
+}
+.tp-opt * { box-sizing: border-box; }
+
+/* Remove notices/whitespace herdados do WP dentro do wrap */
+.tp-opt .notice { display: none; }
+
+/* ---- Hero ---- */
+.tp-opt__hero {
+	position: relative; overflow: hidden;
+	display: flex; align-items: center; justify-content: space-between; gap: 16px;
+	padding: 26px 28px; margin-bottom: 22px;
+	border-radius: 18px; color: #fff;
+	background:
+		radial-gradient(1200px 200px at 0% 0%, rgba(255,255,255,.18), transparent 60%),
+		linear-gradient(120deg, var(--tp-accent), color-mix(in srgb, var(--tp-accent) 55%, #7b2ff7));
+	box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--tp-accent) 70%, #000);
+}
+.tp-opt__hero-brand { display: flex; align-items: center; gap: 16px; }
+.tp-opt__logo {
+	display: grid; place-items: center; width: 52px; height: 52px; flex: 0 0 auto;
+	border-radius: 14px; background: rgba(255,255,255,.18);
+	backdrop-filter: blur(6px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+}
+.tp-opt__logo svg { width: 26px; height: 26px; }
+.tp-opt__title { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.02em; color: #fff; }
+.tp-opt__subtitle { margin: 3px 0 0; font-size: 13px; opacity: .9; }
+.tp-opt__hero-status {
+	display: inline-flex; align-items: center; gap: 6px;
+	padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 13px;
+	background: rgba(255,255,255,.2); backdrop-filter: blur(6px);
+	animation: tpFade .3s ease;
+}
+.tp-opt__hero-status .dashicons { font-size: 18px; width: 18px; height: 18px; }
+@keyframes tpFade { from { opacity: 0; transform: translateY(-4px); } }
+
+/* ---- Layout ---- */
+.tp-opt__layout { display: grid; grid-template-columns: 232px 1fr; gap: 22px; align-items: start; }
+
+/* ---- Navegação lateral ---- */
+.tp-opt__nav {
+	position: sticky; top: 42px;
+	display: flex; flex-direction: column; gap: 4px;
+	padding: 8px; border-radius: var(--tp-radius);
+	background: var(--tp-surface); border: 1px solid var(--tp-border); box-shadow: var(--tp-shadow);
+}
+.tp-opt__nav-item {
+	display: flex; align-items: center; gap: 11px; width: 100%;
+	padding: 11px 13px; border: 0; cursor: pointer; text-align: left;
+	border-radius: 10px; background: transparent; color: var(--tp-text);
+	font-size: 13.5px; font-weight: 600; line-height: 1.2;
+	transition: background .15s ease, color .15s ease, transform .1s ease;
+}
+.tp-opt__nav-item:hover { background: var(--tp-surface-2); }
+.tp-opt__nav-item:active { transform: scale(.99); }
+.tp-opt__nav-item .dashicons { font-size: 19px; width: 19px; height: 19px; color: var(--tp-muted); transition: color .15s; }
+.tp-opt__nav-item.is-active {
+	background: color-mix(in srgb, var(--tp-accent) 12%, transparent);
+	color: color-mix(in srgb, var(--tp-accent) 72%, var(--tp-text));
+}
+.tp-opt__nav-item.is-active .dashicons { color: var(--tp-accent); }
+
+/* ---- Painéis ---- */
+.tp-opt__panel { animation: tpSlide .25s ease; }
+@keyframes tpSlide { from { opacity: 0; transform: translateY(6px); } }
+.tp-opt__panel-head { margin: 2px 0 16px; }
+.tp-opt__panel-head h2 { margin: 0; font-size: 18px; font-weight: 800; color: var(--tp-text); letter-spacing: -.01em; }
+.tp-opt__panel-head p { margin: 4px 0 0; font-size: 13px; color: var(--tp-muted); }
+
+.tp-opt__cards { display: flex; flex-direction: column; gap: 12px; }
+.tp-opt__field {
+	display: grid; grid-template-columns: 240px 1fr; gap: 18px; align-items: start;
+	padding: 18px 20px; border-radius: var(--tp-radius);
+	background: var(--tp-surface); border: 1px solid var(--tp-border); box-shadow: var(--tp-shadow);
+	transition: border-color .15s ease;
+}
+.tp-opt__field:focus-within { border-color: color-mix(in srgb, var(--tp-accent) 45%, var(--tp-border)); }
+.tp-opt__field-label { font-size: 13.5px; font-weight: 700; color: var(--tp-text); padding-top: 8px; }
+.tp-opt__field-control { min-width: 0; }
+.tp-opt__field-control .description { margin: 8px 0 0; color: var(--tp-muted); font-size: 12.5px; font-style: normal; }
+
+/* ---- Inputs (sobrescreve o visual padrão do WP) ---- */
+.tp-opt input[type=text], .tp-opt input[type=url], .tp-opt input[type=password],
+.tp-opt input[type=number], .tp-opt input[type=search] {
+	width: 100%; max-width: 460px; margin: 0;
+	padding: 10px 13px; border-radius: 10px;
+	border: 1.5px solid var(--tp-border); background: var(--tp-surface-2); color: var(--tp-text);
+	font-size: 14px; line-height: 1.3; box-shadow: none;
+	transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.tp-opt input[type=number] { width: 96px; max-width: 96px; }
+.tp-opt input:focus {
+	outline: 0; background: var(--tp-surface);
+	border-color: var(--tp-accent);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--tp-accent) 18%, transparent);
+}
+.tp-opt input::placeholder { color: var(--tp-muted); opacity: .7; }
+
+/* Grid de quantidades: pílulas com stepper */
+.tikporn-qtd-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+.tikporn-qtd-grid label {
+	display: flex; flex-direction: column; gap: 7px;
+	font-size: 12.5px; font-weight: 700; color: var(--tp-text);
+}
+
+/* Toggle switch para checkbox */
+.tp-opt__field-control label { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; color: var(--tp-text); cursor: pointer; }
+.tp-opt__field-control input[type=checkbox] {
+	appearance: none; -webkit-appearance: none; position: relative; flex: 0 0 auto;
+	width: 46px; height: 26px; margin: 0; border-radius: 999px; cursor: pointer;
+	background: var(--tp-border); border: 0; transition: background .2s ease;
+}
+.tp-opt__field-control input[type=checkbox]::after {
+	content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+	border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3);
+	transition: transform .2s cubic-bezier(.2,.8,.2,1);
+}
+.tp-opt__field-control input[type=checkbox]:checked { background: var(--tp-accent); }
+.tp-opt__field-control input[type=checkbox]:checked::after { transform: translateX(20px); }
+.tp-opt__field-control input[type=checkbox]:focus-visible { box-shadow: 0 0 0 4px color-mix(in srgb, var(--tp-accent) 22%, transparent); }
+
+/* Color picker do WP integrado ao tema */
+.tp-opt .wp-picker-container { display: inline-block; }
+.tp-opt .wp-color-result.button { border-radius: 10px; height: 42px; border: 1.5px solid var(--tp-border); }
+
+/* ---- Rodapé de ações (sticky) ---- */
+.tp-opt__actions {
+	position: sticky; bottom: 0; z-index: 5;
+	display: flex; justify-content: flex-end; gap: 12px;
+	margin-top: 22px; padding: 16px 4px;
+	background: linear-gradient(to top, var(--tp-bg) 55%, transparent);
+}
+.tp-opt .tp-opt__save.button-primary {
+	height: auto; padding: 11px 26px; border-radius: 11px;
+	font-size: 14px; font-weight: 700; border: 0;
+	background: var(--tp-accent); box-shadow: 0 8px 20px -8px var(--tp-accent);
+	transition: transform .1s ease, filter .15s ease;
+}
+.tp-opt .tp-opt__save.button-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.tp-opt .tp-opt__save.button-primary:active { transform: translateY(0); }
+
+/* ---- Responsivo ---- */
+@media (max-width: 782px) {
+	.tp-opt { margin-right: 12px; }
+	.tp-opt__layout { grid-template-columns: 1fr; }
+	.tp-opt__nav {
+		position: static; flex-direction: row; overflow-x: auto; gap: 6px;
+		scrollbar-width: none;
+	}
+	.tp-opt__nav::-webkit-scrollbar { display: none; }
+	.tp-opt__nav-item { flex: 0 0 auto; }
+	.tp-opt__nav-label { white-space: nowrap; }
+	.tp-opt__field { grid-template-columns: 1fr; gap: 10px; }
+	.tp-opt__field-label { padding-top: 0; }
+	.tp-opt__hero { flex-direction: column; align-items: flex-start; }
+}
+CSS;
+}
+
+/**
+ * JS do painel: navegação por abas + preview da cor em tempo real.
+ */
+function tikporn_opcoes_js() {
+	return <<<'JS'
+jQuery(function ($) {
+	var $wrap = $('.tp-opt');
+	if (!$wrap.length) { return; }
+
+	/* Color picker com preview ao vivo no hero */
+	$('.tikporn-cor').wpColorPicker({
+		change: function (event, ui) {
+			var c = ui.color.toString();
+			$wrap.css('--tp-accent', c);
+		},
+		clear: function () {
+			$wrap.css('--tp-accent', '#FC30B7');
+		}
+	});
+
+	/* Navegação por abas (persiste a aba ativa em sessionStorage) */
+	function ativar(id) {
+		$('.tp-opt__nav-item').each(function () {
+			var on = $(this).data('tp-tab') === id;
+			$(this).toggleClass('is-active', on).attr('aria-selected', on ? 'true' : 'false');
+		});
+		$('.tp-opt__panel').each(function () {
+			var on = $(this).data('tp-panel') === id;
+			$(this).toggleClass('is-active', on).prop('hidden', !on);
+		});
+		try { sessionStorage.setItem('tpOptTab', id); } catch (e) {}
+	}
+
+	$('.tp-opt__nav-item').on('click', function () { ativar($(this).data('tp-tab')); });
+
+	/* Restaura a última aba (útil após salvar, que recarrega a página) */
+	var saved;
+	try { saved = sessionStorage.getItem('tpOptTab'); } catch (e) {}
+	if (saved && $('.tp-opt__nav-item[data-tp-tab="' + saved + '"]').length) { ativar(saved); }
+
+	/* Aviso "Salvo" após redirect com settings-updated */
+	if (/settings-updated=true/.test(window.location.search)) {
+		$('[data-tp-saved]').prop('hidden', false);
+		setTimeout(function () { $('[data-tp-saved]').fadeOut(300); }, 2600);
+	}
+});
+JS;
+}
 
 /**
  * Clareia uma cor hex misturando-a com branco.
@@ -502,21 +703,135 @@ function tikporn_css_cor_destaque() {
 }
 
 /**
- * Renderiza a página de opções.
+ * Estrutura das abas do painel: id, rótulo, ícone (dashicon) e campos.
+ * Cada campo aponta para o callback de render já existente.
+ */
+function tikporn_opcoes_abas() {
+	return array(
+		'aparencia' => array(
+			'label' => __( 'Aparência', 'tikporn' ),
+			'icon'  => 'admin-customizer',
+			'desc'  => __( 'Cor e identidade visual do tema.', 'tikporn' ),
+			'campos' => array(
+				array( 'label' => __( 'Cor de destaque', 'tikporn' ), 'cb' => 'tikporn_campo_cor_destaque' ),
+			),
+		),
+		'home' => array(
+			'label' => __( 'Página inicial', 'tikporn' ),
+			'icon'  => 'admin-home',
+			'desc'  => __( 'Títulos, quantidades e seções exibidas na home.', 'tikporn' ),
+			'campos' => array(
+				array( 'label' => __( 'Título da seção de playlists', 'tikporn' ), 'cb' => 'tikporn_campo_home_playlists_titulo' ),
+				array( 'label' => __( 'Texto do link "ver todas"', 'tikporn' ), 'cb' => 'tikporn_campo_home_playlists_link' ),
+				array( 'label' => __( 'Título da grade de vídeos', 'tikporn' ), 'cb' => 'tikporn_campo_home_tendencias_titulo' ),
+				array( 'label' => __( 'Quantidades', 'tikporn' ), 'cb' => 'tikporn_campo_home_quantidades' ),
+				array( 'label' => __( 'Sidebar de criadores', 'tikporn' ), 'cb' => 'tikporn_campo_criadores' ),
+			),
+		),
+		'textos' => array(
+			'label' => __( 'Textos', 'tikporn' ),
+			'icon'  => 'editor-textcolor',
+			'desc'  => __( 'Textos avulsos exibidos na interface.', 'tikporn' ),
+			'campos' => array(
+				array( 'label' => __( 'Texto do campo de busca', 'tikporn' ), 'cb' => 'tikporn_campo_busca_placeholder' ),
+			),
+		),
+		'aurora5' => array(
+			'label' => __( 'Vídeo (Aurora5)', 'tikporn' ),
+			'icon'  => 'shield',
+			'desc'  => __( 'Assinatura de vídeos importados via REST por UUID.', 'tikporn' ),
+			'campos' => array(
+				array( 'label' => __( 'Secret', 'tikporn' ), 'cb' => 'tikporn_campo_aurora5_secret' ),
+				array( 'label' => __( 'URL base', 'tikporn' ), 'cb' => 'tikporn_campo_aurora5_base' ),
+				array( 'label' => __( 'Validade do link (segundos)', 'tikporn' ), 'cb' => 'tikporn_campo_aurora5_ttl' ),
+			),
+		),
+		'geral' => array(
+			'label' => __( 'Geral', 'tikporn' ),
+			'icon'  => 'admin-settings',
+			'desc'  => __( 'Comportamento geral do site.', 'tikporn' ),
+			'campos' => array(
+				array( 'label' => __( 'Contar visualizações', 'tikporn' ), 'cb' => 'tikporn_campo_registrar_views' ),
+			),
+		),
+	);
+}
+
+/**
+ * Renderiza a página de opções — painel moderno com navegação por abas.
  */
 function tikporn_opcoes_pagina() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
+	$abas    = tikporn_opcoes_abas();
+	$cor     = sanitize_hex_color( tikporn_opcao( 'cor_destaque' ) ) ?: '#FC30B7';
+	$primeira = key( $abas );
 	?>
-	<div class="wrap tikporn-opcoes-wrap">
-		<h1><span class="dashicons dashicons-admin-appearance"></span> <?php echo esc_html__( 'Opções do tema', 'tikporn' ); ?></h1>
-		<form action="options.php" method="post">
-			<?php
-			settings_fields( 'tikporn_opcoes_grupo' );
-			do_settings_sections( 'tikporn-opcoes' );
-			submit_button();
-			?>
+	<div class="wrap tp-opt" style="--tp-accent: <?php echo esc_attr( $cor ); ?>;">
+
+		<!-- Cabeçalho -->
+		<header class="tp-opt__hero">
+			<div class="tp-opt__hero-brand">
+				<span class="tp-opt__logo" aria-hidden="true">
+					<svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+				</span>
+				<div>
+					<h1 class="tp-opt__title"><?php esc_html_e( 'Opções do tema', 'tikporn' ); ?></h1>
+					<p class="tp-opt__subtitle"><?php echo esc_html( sprintf( __( 'tikporn • versão %s', 'tikporn' ), defined( 'TIKPORN_VERSION' ) ? TIKPORN_VERSION : '' ) ); ?></p>
+				</div>
+			</div>
+			<div class="tp-opt__hero-status" data-tp-saved hidden>
+				<span class="dashicons dashicons-yes-alt"></span> <?php esc_html_e( 'Salvo', 'tikporn' ); ?>
+			</div>
+		</header>
+
+		<form action="options.php" method="post" class="tp-opt__form">
+			<?php settings_fields( 'tikporn_opcoes_grupo' ); ?>
+
+			<div class="tp-opt__layout">
+
+				<!-- Navegação lateral -->
+				<nav class="tp-opt__nav" role="tablist" aria-label="<?php esc_attr_e( 'Seções', 'tikporn' ); ?>">
+					<?php foreach ( $abas as $id => $aba ) : ?>
+						<button type="button" class="tp-opt__nav-item<?php echo $id === $primeira ? ' is-active' : ''; ?>"
+							role="tab" data-tp-tab="<?php echo esc_attr( $id ); ?>"
+							aria-selected="<?php echo $id === $primeira ? 'true' : 'false'; ?>">
+							<span class="dashicons dashicons-<?php echo esc_attr( $aba['icon'] ); ?>"></span>
+							<span class="tp-opt__nav-label"><?php echo esc_html( $aba['label'] ); ?></span>
+						</button>
+					<?php endforeach; ?>
+				</nav>
+
+				<!-- Painéis -->
+				<div class="tp-opt__panels">
+					<?php foreach ( $abas as $id => $aba ) : ?>
+						<section class="tp-opt__panel<?php echo $id === $primeira ? ' is-active' : ''; ?>"
+							role="tabpanel" data-tp-panel="<?php echo esc_attr( $id ); ?>"
+							<?php echo $id === $primeira ? '' : 'hidden'; ?>>
+							<div class="tp-opt__panel-head">
+								<h2><?php echo esc_html( $aba['label'] ); ?></h2>
+								<p><?php echo esc_html( $aba['desc'] ); ?></p>
+							</div>
+							<div class="tp-opt__cards">
+								<?php foreach ( $aba['campos'] as $campo ) : ?>
+									<div class="tp-opt__field">
+										<label class="tp-opt__field-label"><?php echo esc_html( $campo['label'] ); ?></label>
+										<div class="tp-opt__field-control">
+											<?php call_user_func( $campo['cb'] ); ?>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</section>
+					<?php endforeach; ?>
+				</div>
+			</div>
+
+			<!-- Rodapé fixo -->
+			<div class="tp-opt__actions">
+				<?php submit_button( __( 'Salvar alterações', 'tikporn' ), 'primary tp-opt__save', 'submit', false ); ?>
+			</div>
 		</form>
 	</div>
 	<?php
