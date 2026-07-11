@@ -153,11 +153,44 @@
 		} );
 	}
 
+	/* --------- Centraliza a aba "Categorias" na altura da thumb (mobile) --------- */
+	function centralizarCatsTab() {
+		var tab   = document.querySelector( '.xf-cats-tab' );
+		var thumb = document.querySelector( '.xf-playlist__thumb' )
+			|| document.querySelector( '.xf-playlists' )
+			|| document.querySelector( '.xf-grade' );
+		if ( ! tab || ! thumb ) {
+			return;
+		}
+
+		function ajustar() {
+			// Só no mobile (aba visível). Usa o centro da thumb relativo ao offsetParent da aba.
+			if ( getComputedStyle( tab ).display === 'none' ) {
+				return;
+			}
+			var pai = tab.offsetParent || document.body;
+			var paiTop = pai.getBoundingClientRect().top;
+			var r = thumb.getBoundingClientRect();
+			var centro = ( r.top - paiTop ) + r.height / 2;
+			tab.style.setProperty( '--xf-cats-top', Math.round( centro ) + 'px' );
+		}
+
+		ajustar();
+		// Reajusta ao carregar imagens/rotacionar/redimensionar.
+		window.addEventListener( 'load', ajustar );
+		var t;
+		window.addEventListener( 'resize', function () {
+			clearTimeout( t );
+			t = setTimeout( ajustar, 120 );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
 		iniciarCurtir();
 		iniciarSeguir();
 		iniciarVerMais();
+		centralizarCatsTab();
 	} );
 } )();

@@ -750,16 +750,18 @@ body.xf-nav-open { overflow: hidden; }
 .xf-drawer__link:hover, .xf-drawer__link:active { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
 .xf-drawer__link--sair { color: #d11; margin-top: auto; }
 
-/* Aba "Categorias" vertical, parada na altura da fileira de playlists (rola junto; só mobile/home) */
+/* Aba "Categorias" vertical, centralizada na fileira de playlists (rola junto; só mobile/home).
+   O --xf-cats-top é calculado por JS (centro da thumb); 170px é só um fallback inicial. */
 .xf-cats-tab {
 	display: none;
-	position: absolute; left: 0; top: 170px; z-index: 30;
+	position: absolute; left: 0; top: var(--xf-cats-top, 170px); z-index: 30;
+	transform: translateY(-50%) rotate(180deg); /* centraliza a própria altura no ponto */
 	border: 0; cursor: pointer;
 	align-items: center; justify-content: center;
 	background: var(--xf-roxo); color: #fff;
 	font-size: 12px; font-weight: 800; letter-spacing: .02em;
 	padding: 7px 7px; border-radius: 10px 0 0 10px; /* redondo p/ fora (borda), reto p/ dentro */
-	writing-mode: vertical-rl; transform: rotate(180deg);
+	writing-mode: vertical-rl;
 	box-shadow: 2px 2px 10px rgba(0,0,0,.2);
 }
 
