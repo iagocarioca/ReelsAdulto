@@ -27,6 +27,9 @@ function tikporn_opcoes_padrao() {
 		'home_qtd_playlists'   => 4,
 		'home_qtd_videos'      => 18,
 		'home_qtd_categorias'  => 24,
+		// Sidebar de criadores.
+		'criadores_titulo'     => 'Criadores que você pode gostar',
+		'criadores_qtd'        => 6,
 		// Textos gerais.
 		'busca_placeholder'    => 'Pesquisar vídeos...',
 		// Aurora5 (vídeo por UUID).
@@ -141,6 +144,13 @@ function tikporn_opcoes_registrar() {
 		'tikporn-opcoes',
 		'tikporn_secao_home'
 	);
+	add_settings_field(
+		'criadores',
+		__( 'Sidebar de criadores', 'tikporn' ),
+		'tikporn_campo_criadores',
+		'tikporn-opcoes',
+		'tikporn_secao_home'
+	);
 
 	// Seção: Textos gerais.
 	add_settings_section(
@@ -221,10 +231,15 @@ function tikporn_opcoes_sanitizar( $entrada ) {
 	}
 
 	// Página inicial — textos (vazio = usa o padrão via tikporn_opcao).
-	foreach ( array( 'home_playlists_titulo', 'home_playlists_link', 'home_tendencias_titulo', 'busca_placeholder' ) as $chave_txt ) {
+	foreach ( array( 'home_playlists_titulo', 'home_playlists_link', 'home_tendencias_titulo', 'busca_placeholder', 'criadores_titulo' ) as $chave_txt ) {
 		if ( isset( $entrada[ $chave_txt ] ) ) {
 			$saida[ $chave_txt ] = sanitize_text_field( wp_unslash( $entrada[ $chave_txt ] ) );
 		}
+	}
+
+	// Sidebar de criadores — quantidade (0 = esconde a seção).
+	if ( isset( $entrada['criadores_qtd'] ) ) {
+		$saida['criadores_qtd'] = min( 12, max( 0, absint( $entrada['criadores_qtd'] ) ) );
 	}
 
 	// Página inicial — quantidades (limites sensatos).
@@ -317,6 +332,22 @@ function tikporn_campo_home_quantidades() {
 	);
 	echo '</div>';
 	echo '<p class="description">' . esc_html__( 'Quantos itens exibir em cada seção da home.', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_criadores() {
+	printf(
+		'<input type="text" name="tikporn_opcoes[criadores_titulo]" value="%s" class="large-text" placeholder="%s" />',
+		esc_attr( tikporn_opcao( 'criadores_titulo' ) ),
+		esc_attr__( 'Criadores que você pode gostar', 'tikporn' )
+	);
+	echo '<div class="tikporn-qtd-grid" style="margin-top:12px;">';
+	printf(
+		'<label>%s<input type="number" min="0" max="12" name="tikporn_opcoes[criadores_qtd]" value="%d" class="small-text" /></label>',
+		esc_html__( 'Quantos criadores', 'tikporn' ),
+		(int) tikporn_opcao( 'criadores_qtd' )
+	);
+	echo '</div>';
+	echo '<p class="description">' . esc_html__( 'Cards de criadores (modelos com vídeos) na barra lateral. Use 0 para esconder.', 'tikporn' ) . '</p>';
 }
 
 function tikporn_campo_busca_placeholder() {

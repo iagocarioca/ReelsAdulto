@@ -319,6 +319,51 @@ body.xf-body {
 .xf-destaque__views svg { width: 13px; height: 13px; }
 .xf-destaque__titulo { font-size: 13.5px; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
+/* ── Sidebar de Criadores (modelos) ────────────────────────── */
+.xf-criadores { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--xf-borda); }
+.xf-criadores__cab { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.xf-criadores__icone { display: inline-flex; color: var(--xf-roxo); }
+.xf-criadores__icone svg { width: 20px; height: 20px; }
+.xf-criadores__titulo { font-size: 16px; font-weight: 800; margin: 0; line-height: 1.25; }
+.xf-criadores__lista { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.xf-criador {
+	position: relative; display: block; overflow: hidden;
+	border-radius: 14px; background: #14141a; color: #fff;
+	aspect-ratio: 3 / 4; text-decoration: none;
+	box-shadow: 0 4px 16px rgba(0,0,0,.14);
+	transition: transform .16s ease, box-shadow .16s ease;
+}
+.xf-criador:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0,0,0,.22); }
+.xf-criador__thumb {
+	position: absolute; inset: 0; z-index: 0;
+	background: #222 center/cover no-repeat;
+	transition: transform .3s ease;
+}
+.xf-criador:hover .xf-criador__thumb { transform: scale(1.05); }
+.xf-criador::after {
+	content: ""; position: absolute; inset: 0; z-index: 1;
+	background: linear-gradient(to top, rgba(0,0,0,.92) 8%, rgba(0,0,0,.55) 34%, transparent 62%);
+}
+.xf-criador__info { position: absolute; left: 10px; right: 10px; bottom: 46px; z-index: 2; }
+.xf-criador__nome {
+	display: block; font-size: 14px; font-weight: 800; line-height: 1.2;
+	text-shadow: 0 1px 3px rgba(0,0,0,.6);
+	white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.xf-criador__stats { display: flex; gap: 12px; margin-top: 5px; }
+.xf-criador__stat { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.92); }
+.xf-criador__stat svg { width: 13px; height: 13px; }
+.xf-criador__btn {
+	position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 2;
+	display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+	padding: 8px 10px; border-radius: 9px;
+	background: #fff; color: #14141a; font-size: 12.5px; font-weight: 800;
+	transition: background .15s ease, color .15s ease;
+}
+.xf-criador__btn svg { width: 15px; height: 15px; }
+.xf-criador:hover .xf-criador__btn { background: var(--xf-roxo); color: #fff; }
+
 /* Vazio */
 .xf-vazio { padding: 48px 16px; text-align: center; color: var(--xf-muted); }
 .xf-btn {

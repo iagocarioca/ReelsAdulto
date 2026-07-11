@@ -89,4 +89,6 @@ if ( ! $tp_dest->have_posts() ) {
 		<?php wp_reset_postdata(); ?>
 	<?php endif; ?>
 
+	<?php get_template_part( 'template-parts/sidebar-criadores' ); ?>
+
 </aside>

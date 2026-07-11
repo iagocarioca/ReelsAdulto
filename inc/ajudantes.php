@@ -101,6 +101,53 @@ function tikporn_total_videos( $modelo_id ) {
 }
 
 /**
+ * Lista criadores (modelos) que têm ao menos um vídeo publicado.
+ *
+ * @param int    $limite Máximo de criadores.
+ * @param string $ordem  'videos' (mais vídeos), 'seguidores' ou 'recentes'.
+ * @return array Lista de WP_User.
+ */
+function tikporn_criadores( $limite = 6, $ordem = 'videos' ) {
+	$args = array(
+		'role'    => 'modelo',
+		'number'  => max( 1, (int) $limite ) * 3, // margem p/ filtrar quem não tem vídeo
+		'fields'  => array( 'ID', 'display_name' ),
+	);
+
+	if ( 'seguidores' === $ordem ) {
+		$args['meta_key'] = 'tikporn_seguidores';
+		$args['orderby']  = 'meta_value_num';
+		$args['order']    = 'DESC';
+	} elseif ( 'recentes' === $ordem ) {
+		$args['orderby'] = 'registered';
+		$args['order']   = 'DESC';
+	}
+
+	$users = get_users( $args );
+
+	// Mantém só quem tem vídeo; ordena por nº de vídeos quando pedido.
+	$com_video = array();
+	foreach ( $users as $u ) {
+		$total = tikporn_total_videos( $u->ID );
+		if ( $total > 0 ) {
+			$u->tikporn_total_videos = $total;
+			$com_video[]             = $u;
+		}
+	}
+
+	if ( 'videos' === $ordem ) {
+		usort(
+			$com_video,
+			function ( $a, $b ) {
+				return $b->tikporn_total_videos - $a->tikporn_total_videos;
+			}
+		);
+	}
+
+	return array_slice( $com_video, 0, (int) $limite );
+}
+
+/**
  * Formata número grande de forma curta (1200 -> "1,2 mil").
  */
 function tikporn_numero_curto( $n ) {
