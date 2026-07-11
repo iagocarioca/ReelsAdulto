@@ -360,7 +360,7 @@ body.xf-body {
 	.xf-so-desktop { display: none !important; } /* sino + Enviar somem no mobile (Enviar vai pro menu de conta) */
 	.xf-conta__btn { width: 40px; height: 40px; }
 	.xf-busca { right: 64px; } /* lupa à esquerda do avatar, com folga */
-	.xf-conteudo { padding: 16px 12px 32px; } /* espaçamento simétrico */
+	.xf-conteudo { padding: 12px 6px 32px; } /* menos folga lateral: cards mais largos e quase colados na borda */
 	/* Playlists numa ÚNICA row com scroll horizontal (carrossel) */
 	.xf-playlists {
 		display: flex; grid-template-columns: none;
@@ -370,14 +370,19 @@ body.xf-body {
 	}
 	.xf-playlists::-webkit-scrollbar { display: none; }
 	.xf-playlist { flex: 0 0 46%; }
-	.xf-grade { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+	/* Grade: 2 colunas, cards quadrados e maiores, quase colados */
+	.xf-grade { grid-template-columns: repeat(2, 1fr); gap: 3px; }
+	.xf-card__thumb { aspect-ratio: 1; border-radius: 6px; }
 	/* Sem hover no toque: mostra sempre o título e esconde as views (evita sobrepor) */
-	.xf-card__titulo { opacity: 1; transform: none; }
+	.xf-card__titulo { opacity: 1; transform: none; border-radius: 0 0 6px 6px; font-size: 13px; }
 	.xf-card:hover .xf-card__stat { opacity: 1; } /* neutraliza o hover herdado */
 	.xf-card__stat { display: none; }
-	/* Título de seção em UMA linha (reticências) + recuo p/ liberar a aba Categorias */
+	/* Título de seção pode quebrar em 2 linhas (sem cortar) + recuo p/ liberar a aba Categorias */
 	.xf-secao__cab { min-width: 0; padding-left: 42px; }
-	.xf-secao__titulo { font-size: 18px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+	.xf-secao__titulo {
+		font-size: 19px; flex: 1; min-width: 0; line-height: 1.2;
+		display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+	}
 	.xf-sidebar__titulo { font-size: 18px; }
 	.xf-sidebar { margin-top: 20px; }
 }
