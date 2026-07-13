@@ -231,8 +231,9 @@ body.xf-body {
 .xf-playlist:hover .xf-playlist__play { opacity: 1; transform: translateY(-50%) scale(1); background: var(--xf-roxo); }
 .xf-playlist__play svg { width: 20px; height: 20px; margin-left: 2px; }
 .xf-playlist__titulo {
-	position: absolute; left: 10px; right: 10px; bottom: 8px; z-index: 3;
-	color: #fff; font-weight: 700; font-size: 13px; line-height: 1.2;
+	position: absolute; left: 11px; right: 11px; bottom: 9px; z-index: 3;
+	color: #fff; font-weight: 800; font-size: 16px; line-height: 1.2;
+	text-shadow: 0 1px 4px rgba(0,0,0,.6);
 	display: block;
 }
 /* posiciona o título dentro do thumb */
