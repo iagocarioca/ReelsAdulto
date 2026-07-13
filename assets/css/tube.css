@@ -129,6 +129,7 @@ body.xf-body {
 }
 .xf-icone-btn:hover { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
 .xf-icone-btn svg { width: 22px; height: 22px; }
+.xf-app a.xf-enviar,
 .xf-enviar {
 	display: inline-flex; align-items: center; gap: 8px;
 	height: 46px; padding: 0 24px; border-radius: 999px;
@@ -136,6 +137,7 @@ body.xf-body {
 	color: #fff; font-weight: 700; font-size: 15px;
 	box-shadow: 0 4px 16px rgba(252, 48, 183, .32);
 }
+.xf-enviar, .xf-enviar span, .xf-enviar svg { color: #fff; }
 .xf-enviar:hover { filter: brightness(1.06); }
 .xf-enviar svg { width: 20px; height: 20px; }
 
