@@ -185,6 +185,56 @@
 		} );
 	}
 
+	/* --------- Login com Google (GIS) --------- */
+	function iniciarGoogle() {
+		var cfg = window.tikpornGoogle;
+		var botao = document.querySelector( '[data-google-btn]' );
+		if ( ! cfg || ! cfg.clientId || ! botao ) {
+			return;
+		}
+
+		// Callback global chamado pelo Google com o ID token (credential).
+		window.tikpornGoogleCallback = function ( resposta ) {
+			if ( ! resposta || ! resposta.credential ) {
+				return;
+			}
+			botao.classList.add( 'is-carregando' );
+			var params = new URLSearchParams();
+			params.append( 'action', 'tikporn_google_login' );
+			params.append( 'credential', resposta.credential );
+			fetch( cfg.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: params.toString(),
+			} ).then( function ( r ) { return r.json(); } ).then( function ( res ) {
+				if ( res && res.success ) {
+					window.location.href = res.data.redirect || '/';
+				} else {
+					botao.classList.remove( 'is-carregando' );
+					alert( ( res && res.data && res.data.msg ) || 'Não foi possível entrar com o Google.' );
+				}
+			} ).catch( function () {
+				botao.classList.remove( 'is-carregando' );
+			} );
+		};
+
+		function iniciarGis() {
+			if ( ! window.google || ! window.google.accounts || ! window.google.accounts.id ) {
+				return setTimeout( iniciarGis, 200 );
+			}
+			window.google.accounts.id.initialize( {
+				client_id: cfg.clientId,
+				callback: window.tikpornGoogleCallback,
+			} );
+			botao.addEventListener( 'click', function () {
+				// Abre o fluxo do Google (One Tap / seletor de conta).
+				window.google.accounts.id.prompt();
+			} );
+		}
+		iniciarGis();
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
@@ -192,5 +242,6 @@
 		iniciarSeguir();
 		iniciarVerMais();
 		centralizarCatsTab();
+		iniciarGoogle();
 	} );
 } )();

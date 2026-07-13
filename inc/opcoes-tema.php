@@ -32,6 +32,8 @@ function tikporn_opcoes_padrao() {
 		'criadores_qtd'        => 6,
 		// Textos gerais.
 		'busca_placeholder'    => 'Pesquisar vídeos...',
+		// Login com Google.
+		'google_client_id'     => '',
 		// Aurora5 (vídeo por UUID).
 		'aurora5_secret'       => '',
 		'aurora5_base'         => 'https://api.aurora5.com/secure-video/',
@@ -242,6 +244,11 @@ function tikporn_opcoes_sanitizar( $entrada ) {
 		$saida['criadores_qtd'] = min( 12, max( 0, absint( $entrada['criadores_qtd'] ) ) );
 	}
 
+	// Login com Google — Client ID (só caracteres válidos de um client id).
+	if ( isset( $entrada['google_client_id'] ) ) {
+		$saida['google_client_id'] = preg_replace( '/[^a-zA-Z0-9.\-_]/', '', (string) $entrada['google_client_id'] );
+	}
+
 	// Página inicial — quantidades (limites sensatos).
 	if ( isset( $entrada['home_qtd_playlists'] ) ) {
 		$saida['home_qtd_playlists'] = min( 12, max( 0, absint( $entrada['home_qtd_playlists'] ) ) );
@@ -365,6 +372,18 @@ function tikporn_campo_busca_placeholder() {
 		esc_attr__( 'Pesquisar vídeos...', 'tikporn' )
 	);
 	echo '<p class="description">' . esc_html__( 'Texto de exemplo dentro do campo de busca do cabeçalho.', 'tikporn' ) . '</p>';
+}
+
+function tikporn_campo_google_client_id() {
+	$valor = tikporn_opcao( 'google_client_id' );
+	printf(
+		'<input type="text" name="tikporn_opcoes[google_client_id]" value="%s" class="large-text" placeholder="000000000000-xxxxxxxx.apps.googleusercontent.com" spellcheck="false" autocomplete="off" />',
+		esc_attr( $valor )
+	);
+	echo '<p class="description">' . esc_html__( 'Cole o Client ID do OAuth criado no Google Cloud. Vazio = botão do Google oculto. Não precisa do Client Secret (o login é validado localmente).', 'tikporn' ) . '</p>';
+	if ( defined( 'TIKPORN_GOOGLE_CLIENT_ID' ) && TIKPORN_GOOGLE_CLIENT_ID ) {
+		echo '<p class="description" style="color:#b26a00;">' . esc_html__( 'Obs.: a constante TIKPORN_GOOGLE_CLIENT_ID está definida no wp-config e tem prioridade.', 'tikporn' ) . '</p>';
+	}
 }
 
 function tikporn_campo_aurora5_secret() {
@@ -918,6 +937,14 @@ function tikporn_opcoes_abas() {
 			'desc'  => __( 'Textos avulsos exibidos na interface.', 'tikporn' ),
 			'campos' => array(
 				array( 'label' => __( 'Texto do campo de busca', 'tikporn' ), 'icon' => 'search', 'cb' => 'tikporn_campo_busca_placeholder' ),
+			),
+		),
+		'contas' => array(
+			'label' => __( 'Contas', 'tikporn' ),
+			'icon'  => 'admin-users',
+			'desc'  => __( 'Login social e opções de conta dos usuários.', 'tikporn' ),
+			'campos' => array(
+				array( 'label' => __( 'Login com Google — Client ID', 'tikporn' ), 'icon' => 'google', 'cb' => 'tikporn_campo_google_client_id' ),
 			),
 		),
 		'aurora5' => array(

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.0.0' );
+define( 'TIKPORN_VERSION', '2.1.0' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -105,6 +105,7 @@ require_once TIKPORN_DIR . '/inc/opcoes-tema.php';      // Página de opções (
 require_once TIKPORN_DIR . '/inc/tipos-de-conteudo.php'; // Tipo de conteúdo "vídeo".
 require_once TIKPORN_DIR . '/inc/papeis.php';            // Papel "modelo".
 require_once TIKPORN_DIR . '/inc/autenticacao.php';      // Cadastro, login, logout.
+require_once TIKPORN_DIR . '/inc/google-auth.php';       // Login com Google (GIS).
 require_once TIKPORN_DIR . '/inc/area-modelo.php';       // Envio e exclusão de vídeos.
 require_once TIKPORN_DIR . '/inc/interacoes.php';        // Curtir e seguir.
 require_once TIKPORN_DIR . '/inc/playlists.php';         // Playlists (públicas/privadas).

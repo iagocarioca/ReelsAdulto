@@ -1,12 +1,11 @@
 <?php
 /**
  * Template Name: Entrar
- * Página de login.
+ * Página de login — layout split (branding + formulário).
  *
  * @package tikporn
  */
 
-// Já logado? Vai para o feed.
 if ( is_user_logged_in() ) {
 	wp_safe_redirect( home_url( '/' ) );
 	exit;
@@ -16,40 +15,59 @@ get_header();
 $tp_erro = tikporn_pegar_mensagem();
 ?>
 
-<div class="tp-auth">
-	<h1 class="tp-auth-titulo"><?php esc_html_e( 'Entrar', 'tikporn' ); ?></h1>
+<div class="xf-auth">
+	<div class="xf-auth__aside" aria-hidden="true">
+		<div class="xf-auth__aside-inner">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="xf-auth__logo">
+				<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+			</a>
+			<h2 class="xf-auth__slogan"><?php esc_html_e( 'Os melhores vídeos, num só lugar.', 'tikporn' ); ?></h2>
+			<p class="xf-auth__sub"><?php esc_html_e( 'Entre para curtir, salvar em playlists e seguir seus criadores favoritos.', 'tikporn' ); ?></p>
+		</div>
+	</div>
 
-	<?php if ( $tp_erro ) : ?>
-		<div class="tp-aviso tp-aviso-erro"><?php echo esc_html( $tp_erro ); ?></div>
-	<?php endif; ?>
+	<div class="xf-auth__form-wrap">
+		<div class="xf-auth__card">
+			<h1 class="xf-auth__titulo"><?php esc_html_e( 'Bem-vindo de volta', 'tikporn' ); ?></h1>
+			<p class="xf-auth__desc"><?php esc_html_e( 'Entre na sua conta para continuar.', 'tikporn' ); ?></p>
 
-	<form class="tp-form" method="post" action="<?php echo esc_url( site_url( '/entrar/' ) ); ?>">
-		<?php wp_nonce_field( 'tikporn_login', 'tikporn_login_nonce' ); ?>
+			<?php if ( $tp_erro ) : ?>
+				<div class="xf-auth__aviso"><?php echo esc_html( $tp_erro ); ?></div>
+			<?php endif; ?>
 
-		<label class="tp-campo">
-			<span><?php esc_html_e( 'E-mail ou usuário', 'tikporn' ); ?></span>
-			<input type="text" name="usuario" autocomplete="username" required>
-		</label>
+			<?php if ( function_exists( 'tikporn_google_botao' ) ) { tikporn_google_botao(); } ?>
 
-		<label class="tp-campo">
-			<span><?php esc_html_e( 'Senha', 'tikporn' ); ?></span>
-			<input type="password" name="senha" autocomplete="current-password" required>
-		</label>
+			<form class="xf-auth__form" method="post" action="<?php echo esc_url( site_url( '/entrar/' ) ); ?>">
+				<?php wp_nonce_field( 'tikporn_login', 'tikporn_login_nonce' ); ?>
 
-		<label class="tp-check">
-			<input type="checkbox" name="lembrar" value="1" checked>
-			<span><?php esc_html_e( 'Continuar conectado', 'tikporn' ); ?></span>
-		</label>
+				<label class="xf-campo">
+					<span class="xf-campo__label"><?php esc_html_e( 'E-mail ou usuário', 'tikporn' ); ?></span>
+					<input type="text" name="usuario" autocomplete="username" required>
+				</label>
 
-		<button class="tp-botao tp-botao-cheio" type="submit" name="tikporn_login" value="1">
-			<?php esc_html_e( 'Entrar', 'tikporn' ); ?>
-		</button>
-	</form>
+				<label class="xf-campo">
+					<span class="xf-campo__label"><?php esc_html_e( 'Senha', 'tikporn' ); ?></span>
+					<input type="password" name="senha" autocomplete="current-password" required>
+				</label>
 
-	<div class="tp-auth-rodape">
-		<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Esqueci minha senha', 'tikporn' ); ?></a>
-		<span>&middot;</span>
-		<a href="<?php echo esc_url( site_url( '/cadastro/' ) ); ?>"><?php esc_html_e( 'Criar conta', 'tikporn' ); ?></a>
+				<div class="xf-auth__linha">
+					<label class="xf-check">
+						<input type="checkbox" name="lembrar" value="1" checked>
+						<span><?php esc_html_e( 'Continuar conectado', 'tikporn' ); ?></span>
+					</label>
+					<a class="xf-auth__link" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Esqueci a senha', 'tikporn' ); ?></a>
+				</div>
+
+				<button class="xf-btn-cheio" type="submit" name="tikporn_login" value="1">
+					<?php esc_html_e( 'Entrar', 'tikporn' ); ?>
+				</button>
+			</form>
+
+			<p class="xf-auth__rodape">
+				<?php esc_html_e( 'Não tem conta?', 'tikporn' ); ?>
+				<a class="xf-auth__link" href="<?php echo esc_url( site_url( '/cadastro/' ) ); ?>"><?php esc_html_e( 'Criar conta', 'tikporn' ); ?></a>
+			</p>
+		</div>
 	</div>
 </div>
 
