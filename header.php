@@ -39,7 +39,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 			<form role="search" method="get" class="xf-busca" data-busca action="<?php echo esc_url( home_url( '/' ) ); ?>">
 				<input type="hidden" name="post_type" value="video">
 				<button type="button" class="xf-busca__btn" data-busca-toggle aria-label="<?php esc_attr_e( 'Buscar', 'tikporn' ); ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.4a1 1 0 0 0 1.42-1.42l-5.4-5.39A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></svg>
 				</button>
 				<input type="search" class="xf-busca__campo" name="s" data-busca-input
 					value="<?php echo esc_attr( get_search_query() ); ?>"
@@ -53,7 +53,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 
 			<div class="xf-topo__acoes">
 				<a class="xf-icone-btn xf-so-desktop" href="<?php echo esc_url( $tp_url_user ); ?>" aria-label="<?php esc_attr_e( 'Notificações', 'tikporn' ); ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a6 6 0 0 0-6 6c0 3.5-.9 5.7-1.7 7-.4.7.1 1.5.9 1.5h13.6c.8 0 1.3-.8.9-1.5-.8-1.3-1.7-3.5-1.7-7a6 6 0 0 0-6-6zm0 20a2.8 2.8 0 0 0 2.7-2h-5.4A2.8 2.8 0 0 0 12 22z"/></svg>
 				</a>
 
 				<div class="xf-conta" data-conta-menu>
@@ -61,7 +61,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 						<?php if ( $tp_logado && function_exists( 'tikporn_avatar_url' ) ) : ?>
 							<img src="<?php echo esc_url( tikporn_avatar_url( $tp_uid ) ); ?>" alt="">
 						<?php else : ?>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.7-8 6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1c0-3.3-3.6-6-8-6z"/></svg>
 						<?php endif; ?>
 					</button>
 					<div class="xf-conta__menu" data-conta-dropdown hidden>
@@ -79,7 +79,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 				</div>
 
 				<a class="xf-enviar xf-so-desktop" href="<?php echo esc_url( $tp_url_env ); ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 9h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4z"/></svg>
 					<span><?php esc_html_e( 'Enviar', 'tikporn' ); ?></span>
 				</a>
 			</div>
