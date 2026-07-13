@@ -890,7 +890,9 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-sobre__stats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .xf-sobre__stats li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--xf-muted); }
 .xf-sobre__stats strong { color: var(--xf-texto); font-weight: 800; }
-.xf-sobre__ic { font-size: 18px; line-height: 1; width: 22px; text-align: center; }
+.xf-sobre__ic { display: inline-flex; flex: 0 0 auto; color: var(--xf-roxo); }
+.xf-sobre__ic svg { width: 20px; height: 20px; display: block; }
+.xf-sobre__ic--like { color: var(--xf-like); }
 
 @media (max-width: 900px) {
 	.xf-perfil__cab { gap: 20px; }

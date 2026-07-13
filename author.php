@@ -103,10 +103,22 @@ $tp_n_likes  = tikporn_soma_meta_autor( $tp_id, '_tikporn_curtidas' );
 					<p class="xf-sobre__bio"><?php echo esc_html( $tp_bio ); ?></p>
 				<?php endif; ?>
 				<ul class="xf-sobre__stats">
-					<li><span class="xf-sobre__ic">👁</span> <strong><?php echo esc_html( tikporn_numero_k( $tp_n_views ) ); ?></strong> <?php esc_html_e( 'visualizações', 'tikporn' ); ?></li>
-					<li><span class="xf-sobre__ic">❤</span> <strong><?php echo esc_html( tikporn_numero_k( $tp_n_likes ) ); ?></strong> <?php esc_html_e( 'curtidas', 'tikporn' ); ?></li>
-					<li><span class="xf-sobre__ic">👥</span> <strong><?php echo esc_html( tikporn_numero_k( $tp_n_seg ) ); ?></strong> <?php esc_html_e( 'seguidores', 'tikporn' ); ?></li>
-					<li><span class="xf-sobre__ic">🎬</span> <strong><?php echo esc_html( $tp_n_videos ); ?></strong> <?php esc_html_e( 'vídeos', 'tikporn' ); ?></li>
+					<li>
+						<span class="xf-sobre__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+						<strong><?php echo esc_html( tikporn_numero_k( $tp_n_views ) ); ?></strong> <?php esc_html_e( 'visualizações', 'tikporn' ); ?>
+					</li>
+					<li>
+						<span class="xf-sobre__ic xf-sobre__ic--like"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.6-4.9-10-9.2C.5 8.3 2.1 5 5.3 5 7.2 5 8.6 6.1 12 9.2 15.4 6.1 16.8 5 18.7 5 21.9 5 23.5 8.3 22 11.8 19.6 16.1 12 21 12 21z"/></svg></span>
+						<strong><?php echo esc_html( tikporn_numero_k( $tp_n_likes ) ); ?></strong> <?php esc_html_e( 'curtidas', 'tikporn' ); ?>
+					</li>
+					<li>
+						<span class="xf-sobre__ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm-8 1a3.5 3.5 0 1 0-3.5-3.5A3.5 3.5 0 0 0 8 12zm0 2c-2.7 0-6 1.34-6 4v2h7.5v-2c0-1.06.53-2 1.4-2.76A9.4 9.4 0 0 0 8 14zm8 0c-.29 0-.62.02-.97.05C16.2 14.9 17 15.99 17 17.5V20h7v-2c0-2.66-3.3-4-6-4z"/></svg></span>
+						<strong><?php echo esc_html( tikporn_numero_k( $tp_n_seg ) ); ?></strong> <?php esc_html_e( 'seguidores', 'tikporn' ); ?>
+					</li>
+					<li>
+						<span class="xf-sobre__ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4z"/></svg></span>
+						<strong><?php echo esc_html( $tp_n_videos ); ?></strong> <?php esc_html_e( 'vídeos', 'tikporn' ); ?>
+					</li>
 				</ul>
 			</div>
 		</aside>
