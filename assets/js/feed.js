@@ -131,7 +131,7 @@
 						'<span class="xf-rel__titulo">' + esc( r.title ) + '</span>' +
 					'</a>';
 				} ).join( '' );
-				atual.innerHTML = '<h2 class="xf-watch__rel-titulo">Vídeos relacionados</h2><div class="xf-rel-lista">' + itens + '</div>';
+				atual.innerHTML = '<h2 class="xf-watch__rel-titulo">Recomendados</h2><div class="xf-rel-lista">' + itens + '</div>';
 				atual.hidden = false;
 			} ).catch( function () {} );
 		} catch ( e ) {}

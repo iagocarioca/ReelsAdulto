@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.3.2' );
+define( 'TIKPORN_VERSION', '2.3.3' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
