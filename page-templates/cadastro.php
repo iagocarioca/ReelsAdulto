@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Cadastro
- * Página de cadastro — estilo Instagram (ilustração + card de formulário).
+ * Página de cadastro — tela dividida (ilustração | formulário).
  *
  * @package tikporn
  */
@@ -17,25 +17,24 @@ $tp_erro = tikporn_pegar_mensagem();
 
 <div class="xf-auth">
 	<div class="xf-auth__hero">
-		<h2 class="xf-auth__hero-titulo">
-			<?php
-			printf(
-				/* translators: %s: destaque colorido */
-				esc_html__( 'Faça parte da %s.', 'tikporn' ),
-				'<span>' . esc_html__( 'comunidade', 'tikporn' ) . '</span>'
-			);
-			?>
-		</h2>
-		<img class="xf-auth__hero-img" src="<?php echo esc_url( TIKPORN_URI . '/assets/img/login.png' ); ?>" alt="" loading="eager" decoding="async">
+		<div class="xf-auth__hero-inner">
+			<h2 class="xf-auth__hero-titulo">
+				<?php
+				printf(
+					/* translators: %s: destaque colorido */
+					esc_html__( 'Faça parte da %s.', 'tikporn' ),
+					'<span>' . esc_html__( 'comunidade', 'tikporn' ) . '</span>'
+				);
+				?>
+			</h2>
+			<img class="xf-auth__hero-img" src="<?php echo esc_url( TIKPORN_URI . '/assets/img/login.png' ); ?>" alt="" loading="eager" decoding="async">
+		</div>
 	</div>
 
 	<div class="xf-auth__col">
-		<div class="xf-auth__card">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="xf-auth__logo">
-				<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-			</a>
-
-			<p class="xf-auth__slogan"><?php esc_html_e( 'Cadastre-se para ver os melhores vídeos e criar suas playlists.', 'tikporn' ); ?></p>
+		<div class="xf-auth__box">
+			<h1 class="xf-auth__titulo"><?php esc_html_e( 'Criar conta', 'tikporn' ); ?></h1>
+			<p class="xf-auth__desc"><?php esc_html_e( 'É rápido e grátis.', 'tikporn' ); ?></p>
 
 			<?php if ( $tp_erro ) : ?>
 				<div class="xf-auth__aviso"><?php echo esc_html( $tp_erro ); ?></div>
@@ -60,11 +59,11 @@ $tp_erro = tikporn_pegar_mensagem();
 
 				<button class="xf-btn-cheio" type="submit" name="tikporn_cadastro" value="1"><?php esc_html_e( 'Cadastrar', 'tikporn' ); ?></button>
 			</form>
-		</div>
 
-		<div class="xf-auth__card xf-auth__card--alt">
-			<?php esc_html_e( 'Já tem uma conta?', 'tikporn' ); ?>
-			<a class="xf-auth__link" href="<?php echo esc_url( site_url( '/entrar/' ) ); ?>"><?php esc_html_e( 'Entrar', 'tikporn' ); ?></a>
+			<p class="xf-auth__rodape">
+				<?php esc_html_e( 'Já tem uma conta?', 'tikporn' ); ?>
+				<a class="xf-auth__link" href="<?php echo esc_url( site_url( '/entrar/' ) ); ?>"><?php esc_html_e( 'Entrar', 'tikporn' ); ?></a>
+			</p>
 		</div>
 	</div>
 </div>
