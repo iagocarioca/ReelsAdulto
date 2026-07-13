@@ -27,7 +27,7 @@ $tp_erro = tikporn_pegar_mensagem();
 				);
 				?>
 			</h2>
-			<img class="xf-auth__hero-img" src="<?php echo esc_url( TIKPORN_URI . '/assets/img/login.png' ); ?>" alt="" loading="eager" decoding="async">
+			<img class="xf-auth__hero-img" src="<?php echo esc_url( TIKPORN_URI . '/assets/img/login.png?v=' . TIKPORN_VERSION ); ?>" alt="" loading="eager" decoding="async">
 		</div>
 	</div>
 
