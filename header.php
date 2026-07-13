@@ -33,7 +33,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 			</button>
 
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="xf-logo">
-				<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+				<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png?v=' . TIKPORN_VERSION ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 			</a>
 
 			<form role="search" method="get" class="xf-busca" data-busca action="<?php echo esc_url( home_url( '/' ) ); ?>">
@@ -91,7 +91,7 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 		<div class="xf-drawer__backdrop" data-drawer-close></div>
 		<nav class="xf-drawer__panel" aria-label="<?php esc_attr_e( 'Menu', 'tikporn' ); ?>">
 			<div class="xf-drawer__top">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="xf-logo"><img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png' ); ?>" alt=""></a>
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="xf-logo"><img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png?v=' . TIKPORN_VERSION ); ?>" alt=""></a>
 				<button class="xf-drawer__x" type="button" data-drawer-close aria-label="<?php esc_attr_e( 'Fechar', 'tikporn' ); ?>">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
 				</button>

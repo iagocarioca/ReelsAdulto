@@ -11,7 +11,7 @@
 	<footer class="xf-rodape">
 		<div class="xf-rodape__inner">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="xf-logo xf-logo--rodape">
-				<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+				<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png?v=' . TIKPORN_VERSION ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 			</a>
 			<p class="xf-rodape__nota">
 				<?php
