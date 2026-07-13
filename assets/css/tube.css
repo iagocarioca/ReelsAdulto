@@ -187,7 +187,7 @@ body.xf-body {
 	display: flex; align-items: center; justify-content: space-between;
 	gap: 12px; margin-bottom: 14px;
 }
-.xf-secao__titulo { font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -.02em; }
+.xf-secao__titulo { font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -.02em; }
 .xf-secao__titulo--icone { display: inline-flex; align-items: center; gap: 10px; }
 .xf-secao__ico { display: inline-flex; flex: 0 0 auto; }
 .xf-secao__ico svg { width: 28px; height: 28px; display: block; }
@@ -281,7 +281,7 @@ body.xf-body {
 	padding: 4px 0 4px 24px; background: var(--xf-bg);
 }
 .xf-sidebar__cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.xf-sidebar__titulo { font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -.01em; }
+.xf-sidebar__titulo { font-size: 20px; font-weight: 500; margin: 0; letter-spacing: -.01em; }
 .xf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .xf-chip {
 	display: inline-block;
