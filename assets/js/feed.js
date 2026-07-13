@@ -106,7 +106,35 @@
 				'<button class="xf-act tp-curtir' + ( d.curtiu ? ' ativo' : '' ) + '" type="button" data-fb-like data-video-id="' + d.id + '"><span class="xf-act__ic">' + SVG.heart + '</span><span data-like-num>' + esc( d.likes ) + '</span></button>' +
 				'<a class="xf-act" href="' + esc( d.permalink ) + '"><span class="xf-act__ic">' + SVG.share + '</span><span>Compartilhar</span></a>' +
 				'<div class="xf-act-save"><button class="xf-act" type="button" data-fb-save data-video-id="' + d.id + '"><span class="xf-act__ic">' + SVG.save + '</span><span>Salvar</span></button></div>' +
-			'</div>';
+			'</div>' +
+			'<div class="xf-watch__rel" data-rel hidden></div>';
+	}
+
+	// Carrega os vídeos relacionados via AJAX (isolado: nunca afeta o painel/vídeo).
+	function carregarRelacionados( d ) {
+		try {
+			if ( ! d || ! d.id ) { return; }
+			var alvo = panel.querySelector( '[data-rel]' );
+			if ( ! alvo ) { return; }
+			ajax( 'tikporn_relacionados', { video_id: d.id } ).then( function ( res ) {
+				if ( ! res || ! res.success || ! res.data || ! res.data.itens || ! res.data.itens.length ) { return; }
+				// Painel pode ter trocado de vídeo: só preenche se ainda for o mesmo.
+				if ( ! active || ! active._data || active._data.id !== d.id ) { return; }
+				var atual = panel.querySelector( '[data-rel]' );
+				if ( ! atual ) { return; }
+				var itens = res.data.itens.map( function ( r ) {
+					return '<a class="xf-rel" href="' + esc( r.permalink ) + '">' +
+						'<span class="xf-rel__thumb"' + ( r.poster ? ' style="background-image:url(\'' + esc( r.poster ) + '\')"' : '' ) + '>' +
+							'<span class="xf-rel__play" aria-hidden="true">' + SVG.play + '</span>' +
+							( r.views ? '<span class="xf-rel__views">' + SVG.eye + ' ' + esc( r.views ) + '</span>' : '' ) +
+						'</span>' +
+						'<span class="xf-rel__titulo">' + esc( r.title ) + '</span>' +
+					'</a>';
+				} ).join( '' );
+				atual.innerHTML = '<h2 class="xf-watch__rel-titulo">Vídeos relacionados</h2><div class="xf-rel-lista">' + itens + '</div>';
+				atual.hidden = false;
+			} ).catch( function () {} );
+		} catch ( e ) {}
 	}
 
 	/* ── Reprodução / ativo ── */
@@ -127,7 +155,7 @@
 		if ( item.dataset.permalink && window.history.replaceState ) {
 			window.history.pushState( { id: item.dataset.id }, '', item.dataset.permalink );
 		}
-		if ( item._data ) { buildPanel( item._data ); document.title = item._data.title; }
+		if ( item._data ) { buildPanel( item._data ); carregarRelacionados( item._data ); document.title = item._data.title; }
 
 		registrarView( item );
 		precarregarVizinhos( item );

@@ -125,3 +125,89 @@ function tikporn_ajax_view() {
 }
 add_action( 'wp_ajax_tikporn_view', 'tikporn_ajax_view' );
 add_action( 'wp_ajax_nopriv_tikporn_view', 'tikporn_ajax_view' );
+
+/**
+ * Lista curta de vídeos relacionados (mesma categoria; completa com recentes).
+ *
+ * @param int $post_id ID do vídeo atual.
+ * @param int $limite  Máximo de itens.
+ * @return array Itens { id, permalink, title, poster, views }.
+ */
+function tikporn_videos_relacionados( $post_id, $limite = 8 ) {
+	$terms    = get_the_terms( $post_id, TIKPORN_TAX_CAT );
+	$term_ids = array();
+	if ( $terms && ! is_wp_error( $terms ) ) {
+		foreach ( $terms as $t ) {
+			$term_ids[] = (int) $t->term_id;
+		}
+	}
+
+	$base = array(
+		'post_type'      => 'video',
+		'post_status'    => 'publish',
+		'posts_per_page' => $limite,
+		'post__not_in'   => array( (int) $post_id ),
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	);
+
+	$ids = array();
+	if ( ! empty( $term_ids ) ) {
+		$ids = get_posts(
+			array_merge(
+				$base,
+				array(
+					'tax_query' => array(
+						array(
+							'taxonomy' => TIKPORN_TAX_CAT,
+							'field'    => 'term_id',
+							'terms'    => $term_ids,
+						),
+					),
+				)
+			)
+		);
+	}
+
+	// Completa com recentes se veio pouco da categoria.
+	if ( count( $ids ) < $limite ) {
+		$extra = get_posts(
+			array_merge(
+				$base,
+				array(
+					'posts_per_page' => $limite - count( $ids ),
+					'post__not_in'   => array_merge( array( (int) $post_id ), $ids ),
+				)
+			)
+		);
+		$ids = array_merge( $ids, $extra );
+	}
+
+	$out = array();
+	foreach ( $ids as $vid ) {
+		$out[] = array(
+			'id'        => (int) $vid,
+			'permalink' => get_permalink( $vid ),
+			'title'     => get_the_title( $vid ),
+			'poster'    => tikporn_capa_url( $vid ),
+			'views'     => tikporn_numero_k( tikporn_views( $vid ) ),
+		);
+	}
+	return $out;
+}
+
+/**
+ * Endpoint AJAX: vídeos relacionados de um vídeo (para o painel da single).
+ * Isolado do feed principal — se falhar, não afeta a reprodução.
+ */
+function tikporn_ajax_relacionados() {
+	$id = absint( $_GET['video_id'] ?? 0 );
+	if ( ! $id || 'video' !== get_post_type( $id ) ) {
+		wp_send_json_error();
+	}
+	wp_send_json_success( array( 'itens' => tikporn_videos_relacionados( $id ) ) );
+}
+add_action( 'wp_ajax_tikporn_relacionados', 'tikporn_ajax_relacionados' );
+add_action( 'wp_ajax_nopriv_tikporn_relacionados', 'tikporn_ajax_relacionados' );
