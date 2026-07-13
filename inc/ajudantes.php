@@ -101,6 +101,31 @@ function tikporn_total_videos( $modelo_id ) {
 }
 
 /**
+ * Soma de views (ou curtidas) de todos os vídeos de um autor.
+ *
+ * @param int    $modelo_id ID do autor.
+ * @param string $meta      '_tikporn_views' ou '_tikporn_curtidas'.
+ * @return int
+ */
+function tikporn_soma_meta_autor( $modelo_id, $meta = '_tikporn_views' ) {
+	$ids = get_posts(
+		array(
+			'post_type'      => 'video',
+			'author'         => (int) $modelo_id,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+	$total = 0;
+	foreach ( $ids as $vid ) {
+		$total += (int) get_post_meta( $vid, $meta, true );
+	}
+	return $total;
+}
+
+/**
  * Lista criadores (modelos) que têm ao menos um vídeo publicado.
  *
  * @param int    $limite Máximo de criadores.

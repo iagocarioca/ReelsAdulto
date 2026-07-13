@@ -865,22 +865,43 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-aviso { padding: 12px 16px; border-radius: var(--xf-raio); font-weight: 700; margin-bottom: 16px; }
 .xf-aviso--ok { background: color-mix(in srgb, var(--xf-roxo) 12%, transparent); color: var(--xf-roxo); }
 
-/* ── Perfil público ────────────────────────────────────────── */
-.xf-perfil__cab { display: flex; align-items: flex-start; gap: 20px; padding-bottom: 24px; border-bottom: 1px solid var(--xf-borda); margin-bottom: 26px; flex-wrap: wrap; }
-.xf-perfil__foto img, .xf-perfil__foto .tp-avatar { width: 96px; height: 96px; border-radius: 999px; object-fit: cover; display: block; }
+/* ── Perfil público (estilo xfree) ─────────────────────────── */
+.xf-perfil__cab { display: flex; align-items: flex-start; gap: 28px; padding-bottom: 26px; border-bottom: 1px solid var(--xf-borda); margin-bottom: 26px; flex-wrap: wrap; }
+.xf-perfil__foto img, .xf-perfil__foto .tp-avatar { width: 148px; height: 148px; border-radius: 999px; object-fit: cover; display: block; flex: 0 0 auto; }
 .xf-perfil__id { flex: 1; min-width: 0; }
-.xf-perfil__nome { font-size: 26px; font-weight: 800; margin: 0; line-height: 1.1; }
-.xf-perfil__handle { font-size: 14px; color: var(--xf-muted); }
-.xf-perfil__stats { display: flex; gap: 20px; font-size: 14px; color: var(--xf-muted); margin: 10px 0; }
+.xf-perfil__nome-linha { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.xf-perfil__nome { font-size: 30px; font-weight: 800; margin: 0; line-height: 1.1; letter-spacing: -.02em; }
+.xf-perfil__badge {
+	display: inline-flex; align-items: center; padding: 4px 11px; border-radius: 999px;
+	background: var(--xf-roxo); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .05em;
+}
+.xf-perfil__handle { display: block; font-size: 15px; color: var(--xf-muted); margin-top: 4px; }
+.xf-perfil__stats { display: flex; gap: 26px; flex-wrap: wrap; font-size: 14px; color: var(--xf-muted); margin: 16px 0; }
 .xf-perfil__stats strong { color: var(--xf-texto); font-weight: 800; }
-.xf-perfil__bio { font-size: 14px; line-height: 1.5; color: #444; margin: 6px 0 0; max-width: 640px; }
+.xf-perfil__bio { font-size: 14px; line-height: 1.55; color: #444; margin: 6px 0 0; max-width: 680px; }
 .xf-perfil__acao { flex: 0 0 auto; }
+.xf-perfil__acao .xf-btn-cheio { width: auto; min-width: 150px; padding: 0 28px; }
 
+/* Sidebar "Sobre" do perfil */
+.xf-sidebar--perfil { position: static; top: auto; }
+.xf-sobre { }
+.xf-sobre__titulo { font-size: 20px; font-weight: 700; margin: 0 0 14px; letter-spacing: -.01em; }
+.xf-sobre__bio { font-size: 14px; line-height: 1.6; color: #444; margin: 0 0 18px; }
+.xf-sobre__stats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.xf-sobre__stats li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--xf-muted); }
+.xf-sobre__stats strong { color: var(--xf-texto); font-weight: 800; }
+.xf-sobre__ic { font-size: 18px; line-height: 1; width: 22px; text-align: center; }
+
+@media (max-width: 900px) {
+	.xf-perfil__cab { gap: 20px; }
+	.xf-perfil__foto img, .xf-perfil__foto .tp-avatar { width: 110px; height: 110px; }
+	.xf-perfil__nome { font-size: 24px; }
+}
 @media (max-width: 600px) {
 	.xf-conta__cab { flex-direction: column; text-align: center; }
 	.xf-conta__stats { justify-content: center; }
 	.xf-perfil__acao { width: 100%; }
-	.xf-perfil__acao .xf-follow { width: 100%; justify-content: center; display: flex; }
+	.xf-perfil__acao .xf-btn-cheio { width: 100%; }
 }
 
 /* ── Navegação mobile: hambúrguer + drawer + aba/painel de categorias ── */
