@@ -106,7 +106,26 @@
 				'<button class="xf-act tp-curtir' + ( d.curtiu ? ' ativo' : '' ) + '" type="button" data-fb-like data-video-id="' + d.id + '"><span class="xf-act__ic">' + SVG.heart + '</span><span data-like-num>' + esc( d.likes ) + '</span></button>' +
 				'<a class="xf-act" href="' + esc( d.permalink ) + '"><span class="xf-act__ic">' + SVG.share + '</span><span>Compartilhar</span></a>' +
 				'<div class="xf-act-save"><button class="xf-act" type="button" data-fb-save data-video-id="' + d.id + '"><span class="xf-act__ic">' + SVG.save + '</span><span>Salvar</span></button></div>' +
-			'</div>';
+			'</div>' +
+			relacionadosHTML( d.relacionados );
+	}
+
+	// Lista de vídeos relacionados (desktop) na lateral do painel.
+	function relacionadosHTML( lista ) {
+		if ( ! lista || ! lista.length ) { return ''; }
+		var itens = lista.map( function ( r ) {
+			return '<a class="xf-rel" href="' + esc( r.permalink ) + '">' +
+				'<span class="xf-rel__thumb"' + ( r.poster ? ' style="background-image:url(\'' + esc( r.poster ) + '\')"' : '' ) + '>' +
+					'<span class="xf-rel__play" aria-hidden="true">' + SVG.play + '</span>' +
+					( r.views ? '<span class="xf-rel__views">' + SVG.eye + ' ' + esc( r.views ) + '</span>' : '' ) +
+				'</span>' +
+				'<span class="xf-rel__titulo">' + esc( r.title ) + '</span>' +
+			'</a>';
+		} ).join( '' );
+		return '<div class="xf-watch__rel">' +
+			'<h2 class="xf-watch__rel-titulo">Vídeos relacionados</h2>' +
+			'<div class="xf-rel-lista">' + itens + '</div>' +
+		'</div>';
 	}
 
 	/* ── Reprodução / ativo ── */

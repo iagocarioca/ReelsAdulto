@@ -65,7 +65,75 @@ function tikporn_video_para_feed( $post_id ) {
 			'segue'   => function_exists( 'tikporn_usuario_segue' ) ? tikporn_usuario_segue( $autor ) : false,
 		),
 		'cats'      => $cats,
+		'relacionados' => tikporn_videos_relacionados( $post_id, $terms ),
 	);
+}
+
+/**
+ * Lista curta de vídeos relacionados (mesma categoria; completa com recentes).
+ *
+ * @param int   $post_id ID do vídeo atual.
+ * @param array $terms   Termos de categoria já resolvidos.
+ * @return array Itens { id, permalink, title, poster, views }.
+ */
+function tikporn_videos_relacionados( $post_id, $terms = array(), $limite = 8 ) {
+	$args = array(
+		'post_type'      => 'video',
+		'post_status'    => 'publish',
+		'posts_per_page' => $limite,
+		'post__not_in'   => array( $post_id ),
+		'no_found_rows'  => true,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	);
+
+	// Prioriza a mesma categoria, se houver.
+	$term_ids = array();
+	foreach ( (array) $terms as $t ) {
+		if ( is_object( $t ) && isset( $t->term_id ) ) {
+			$term_ids[] = (int) $t->term_id;
+		}
+	}
+	if ( ! empty( $term_ids ) ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => TIKPORN_TAX_CAT,
+				'field'    => 'term_id',
+				'terms'    => $term_ids,
+			),
+		);
+	}
+
+	$ids = get_posts( array_merge( $args, array( 'fields' => 'ids' ) ) );
+
+	// Completa com recentes se veio pouco da categoria.
+	if ( count( $ids ) < $limite ) {
+		$extra = get_posts(
+			array(
+				'post_type'      => 'video',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limite - count( $ids ),
+				'post__not_in'   => array_merge( array( $post_id ), $ids ),
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+			)
+		);
+		$ids = array_merge( $ids, $extra );
+	}
+
+	$out = array();
+	foreach ( $ids as $vid ) {
+		$out[] = array(
+			'id'        => (int) $vid,
+			'permalink' => get_permalink( $vid ),
+			'title'     => get_the_title( $vid ),
+			'poster'    => tikporn_capa_url( $vid ),
+			'views'     => tikporn_numero_k( tikporn_views( $vid ) ),
+		);
+	}
+	return $out;
 }
 
 /**
