@@ -727,7 +727,7 @@ body.page-template-login .xf-app > footer,
 body.page-template-cadastro .xf-app > footer { display: none; }
 
 .xf-auth {
-	display: grid; grid-template-columns: 1fr 1fr; width: 100%;
+	display: grid; grid-template-columns: 1fr 420px; width: 100%;
 	min-height: calc(100vh - var(--xf-topo-altura));
 }
 
@@ -736,16 +736,16 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 	display: flex; align-items: center; justify-content: center;
 	padding: 40px; border-right: 1px solid var(--xf-borda);
 }
-.xf-auth__hero-inner { max-width: 540px; text-align: center; }
+.xf-auth__hero-inner { max-width: 620px; text-align: center; }
 .xf-auth__hero-titulo {
-	font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -.02em;
-	color: var(--xf-texto); margin: 0 0 24px;
+	font-size: 44px; font-weight: 700; line-height: 1.12; letter-spacing: -.02em;
+	color: var(--xf-texto); margin: 0 0 28px;
 }
 .xf-auth__hero-titulo span {
 	background: linear-gradient(90deg, #ff8a3d, var(--xf-roxo));
 	-webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.xf-auth__hero-img { width: 100%; max-width: 440px; height: auto; margin: 0 auto; display: block; }
+.xf-auth__hero-img { width: 100%; max-width: 500px; height: auto; margin: 0 auto; display: block; }
 
 /* Metade direita: formulário (sem borda, sem logo repetida) */
 .xf-auth__col { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
