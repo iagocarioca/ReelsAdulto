@@ -713,9 +713,12 @@ body.single-video .xf-app { min-height: 100vh; }
 		color: #fff; font-size: 13px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,.65);
 		overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60vw;
 	}
-	/* Vídeo vertical preenche a tela toda (estilo TikTok) — sem faixas em cima/embaixo */
-	.xf-feed__item.is-vertical .xf-feed__video { width: 100%; height: 100%; object-fit: cover; }
-	.xf-feed__item.is-vertical .xf-feed__blur { display: none; }
+	/* Vídeo preenche a tela toda por padrão (estilo TikTok) — sem faixas em cima/embaixo.
+	   Vídeos horizontais (marcados via JS) voltam ao modo inteiro com fundo desfocado. */
+	.xf-feed__video { width: 100%; height: 100%; object-fit: cover; }
+	.xf-feed__blur { display: none; }
+	.xf-feed__item.is-horizontal .xf-feed__video { width: auto; object-fit: contain; }
+	.xf-feed__item.is-horizontal .xf-feed__blur { display: block; }
 }
 /* ── Playlists ─────────────────────────────────────────────── */
 /* Menu "Salvar" no vídeo */

@@ -242,12 +242,13 @@
 	track.addEventListener( 'play', function ( e ) { var it = itemDe( e.target ); if ( it ) { it.classList.remove( 'is-paused' ); } }, true );
 	track.addEventListener( 'pause', function ( e ) { var it = itemDe( e.target ); if ( it ) { it.classList.add( 'is-paused' ); } }, true );
 
-	// Marca vídeos verticais: no mobile eles preenchem a tela (object-fit cover).
+	// No mobile o vídeo preenche a tela por padrão (quase tudo é vertical);
+	// vídeos horizontais são marcados ao carregar e voltam ao modo "contain" com blur.
 	track.addEventListener( 'loadedmetadata', function ( e ) {
 		var v = e.target;
 		if ( ! v.matches || ! v.matches( '[data-video]' ) ) { return; }
 		var it = itemDe( v );
-		if ( it ) { it.classList.toggle( 'is-vertical', v.videoHeight > v.videoWidth ); }
+		if ( it ) { it.classList.toggle( 'is-horizontal', v.videoWidth > v.videoHeight ); }
 	}, true );
 
 	track.addEventListener( 'timeupdate', function ( e ) {
