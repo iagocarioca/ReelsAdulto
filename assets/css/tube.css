@@ -592,13 +592,14 @@ body.single-video .xf-app { min-height: 100vh; }
 /* Rail + caption (mobile) */
 .xf-feed__rail { position: absolute; right: 10px; bottom: 96px; z-index: 6; display: none; flex-direction: column; align-items: center; gap: 20px; }
 .xf-feed__av { position: relative; display: block; }
+.xf-feed__av a { display: block; }
 .xf-feed__av img { width: 46px; height: 46px; border-radius: 999px; object-fit: cover; border: 2px solid #fff; display: block; }
 .xf-feed__av-plus {
-	position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%);
-	width: 20px; height: 20px; border: 0; border-radius: 999px;
-	background: var(--xf-roxo); color: #fff; cursor: pointer; display: grid; place-items: center;
+	position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%);
+	width: 22px; height: 22px; margin: 0; padding: 0; border: 2px solid #fff; border-radius: 999px;
+	background: var(--xf-roxo); color: #fff; cursor: pointer; display: grid; place-items: center; line-height: 0;
 }
-.xf-feed__av-plus svg { width: 11px; height: 11px; }
+.xf-feed__av-plus svg { width: 11px; height: 11px; display: block; }
 .xf-feed__av-plus.ativo { display: none; }
 .xf-rail-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 0; background: transparent; color: #fff; cursor: pointer; font-size: 12px; font-weight: 700; }
 .xf-rail-btn svg { width: 34px; height: 34px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
@@ -712,6 +713,9 @@ body.single-video .xf-app { min-height: 100vh; }
 		color: #fff; font-size: 13px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,.65);
 		overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60vw;
 	}
+	/* Vídeo vertical preenche a tela toda (estilo TikTok) — sem faixas em cima/embaixo */
+	.xf-feed__item.is-vertical .xf-feed__video { width: 100%; height: 100%; object-fit: cover; }
+	.xf-feed__item.is-vertical .xf-feed__blur { display: none; }
 }
 /* ── Playlists ─────────────────────────────────────────────── */
 /* Menu "Salvar" no vídeo */

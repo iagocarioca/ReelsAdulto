@@ -242,6 +242,14 @@
 	track.addEventListener( 'play', function ( e ) { var it = itemDe( e.target ); if ( it ) { it.classList.remove( 'is-paused' ); } }, true );
 	track.addEventListener( 'pause', function ( e ) { var it = itemDe( e.target ); if ( it ) { it.classList.add( 'is-paused' ); } }, true );
 
+	// Marca vídeos verticais: no mobile eles preenchem a tela (object-fit cover).
+	track.addEventListener( 'loadedmetadata', function ( e ) {
+		var v = e.target;
+		if ( ! v.matches || ! v.matches( '[data-video]' ) ) { return; }
+		var it = itemDe( v );
+		if ( it ) { it.classList.toggle( 'is-vertical', v.videoHeight > v.videoWidth ); }
+	}, true );
+
 	track.addEventListener( 'timeupdate', function ( e ) {
 		var it = itemDe( e.target ); if ( ! it ) { return; }
 		var v = e.target, seek = it.querySelector( '[data-seek]' ), t = it.querySelector( '[data-time]' );
