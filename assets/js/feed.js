@@ -88,7 +88,7 @@
 			stage +
 			'<button class="xf-feed__pp" type="button" data-pp aria-label="Play/Pause">' + SVG.play + '</button>' +
 			rail( d ) +
-			'<div class="xf-feed__caption"><a href="' + esc( d.autor.url ) + '">' + esc( d.autor.nome ) + '</a><p>' + esc( d.title ) + '</p><button class="xf-feed__mais" type="button" data-cap-mais>Mais</button></div>' +
+			'<div class="xf-feed__caption"><a href="' + esc( d.autor.url ) + '">' + esc( d.autor.nome ) + '</a></div>' +
 			ui();
 		return art;
 	}
@@ -231,7 +231,7 @@
 	function itemDe( el ) { return el.closest( '.xf-feed__item' ); }
 
 	track.addEventListener( 'click', function ( e ) {
-		if ( e.target.closest( '[data-fb-like],[data-fb-save],[data-fb-follow],[data-fb-share],[data-cap-mais],.xf-feed__ui,.xf-feed__rail,.xf-feed__caption a' ) ) { return; }
+		if ( e.target.closest( '[data-fb-like],[data-fb-save],[data-fb-follow],[data-fb-share],.xf-feed__ui,.xf-feed__rail,.xf-feed__caption a' ) ) { return; }
 		var st = e.target.closest( '[data-stage]' ) || e.target.closest( '[data-pp]' );
 		if ( ! st ) { return; }
 		var v = videoDe( itemDe( e.target ) );
@@ -313,17 +313,6 @@
 			var url = share.getAttribute( 'data-url' ) || window.location.href;
 			if ( navigator.share ) { navigator.share( { url: url } ).catch( function () {} ); }
 			else if ( navigator.clipboard && navigator.clipboard.writeText ) { navigator.clipboard.writeText( url ); }
-			return;
-		}
-
-		// "Mais/Menos" da legenda (mobile).
-		var mais = e.target.closest( '[data-cap-mais]' );
-		if ( mais ) {
-			e.preventDefault();
-			e.stopPropagation();
-			var cap = mais.closest( '.xf-feed__caption' );
-			var aberta = cap.classList.toggle( 'is-aberta' );
-			mais.textContent = aberta ? 'Menos' : 'Mais';
 			return;
 		}
 	} );
