@@ -259,6 +259,67 @@
 		} );
 	}
 
+	/* --------- Scroll infinito das grades (home, autor, categoria, busca, playlist) --------- */
+	function iniciarScrollInfinito() {
+		var D = window.tikpornDados || {};
+		document.querySelectorAll( '[data-grade-inf]' ).forEach( function ( grade ) {
+			if ( grade.getAttribute( 'data-tem-mais' ) !== '1' ) {
+				return;
+			}
+			var pagina     = parseInt( grade.getAttribute( 'data-pagina' ) || '1', 10 );
+			var carregando = false;
+
+			var sentinela = document.createElement( 'div' );
+			sentinela.className = 'xf-sentinela';
+			sentinela.innerHTML = '<span></span>';
+			grade.parentNode.insertBefore( sentinela, grade.nextSibling );
+
+			var io = new IntersectionObserver( function ( entradas ) {
+				if ( ! entradas[ 0 ].isIntersecting || carregando ) {
+					return;
+				}
+				carregando = true;
+				sentinela.classList.add( 'is-carregando' );
+
+				var params = new URLSearchParams();
+				params.append( 'action', 'tikporn_grade' );
+				params.append( 'pagina', pagina + 1 );
+				[ 'tipo', 'autor', 'tax', 'term', 'busca', 'playlist', 'ordem', 'qtd' ].forEach( function ( k ) {
+					var v = grade.getAttribute( 'data-' + k );
+					if ( v ) { params.append( k, v ); }
+				} );
+
+				fetch( D.ajaxUrl, {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: params.toString(),
+				} ).then( function ( r ) { return r.json(); } ).then( function ( res ) {
+					carregando = false;
+					sentinela.classList.remove( 'is-carregando' );
+					if ( ! res || ! res.success || ! res.data ) {
+						io.disconnect();
+						sentinela.remove();
+						return;
+					}
+					if ( res.data.html ) {
+						grade.insertAdjacentHTML( 'beforeend', res.data.html );
+					}
+					pagina++;
+					if ( ! res.data.tem_mais ) {
+						io.disconnect();
+						sentinela.remove();
+					}
+				} ).catch( function () {
+					carregando = false;
+					sentinela.classList.remove( 'is-carregando' );
+				} );
+			}, { rootMargin: '600px 0px' } );
+
+			io.observe( sentinela );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
@@ -268,5 +329,6 @@
 		centralizarCatsTab();
 		iniciarGoogle();
 		iniciarCompartilhar();
+		iniciarScrollInfinito();
 	} );
 } )();

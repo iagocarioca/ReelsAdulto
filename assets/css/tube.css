@@ -325,6 +325,14 @@ body.xf-faixa-esq .xf-topo::before {
 .xf-sidebar.is-expanded .xf-mais-cats__menos { display: inline; }
 .xf-sidebar.is-expanded .xf-mais-cats svg { transform: rotate(180deg); }
 
+/* Sentinela do scroll infinito (spinner aparece enquanto carrega) */
+.xf-sentinela { display: flex; justify-content: center; padding: 28px 0; }
+.xf-sentinela span {
+	width: 28px; height: 28px; border: 3px solid var(--xf-borda); border-top-color: var(--xf-roxo);
+	border-radius: 999px; animation: xf-spin .8s linear infinite; opacity: 0; transition: opacity .15s;
+}
+.xf-sentinela.is-carregando span { opacity: 1; }
+
 /* Vídeo em destaque na sidebar */
 .xf-destaque { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--xf-borda); }
 .xf-destaque__label { display: block; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--xf-muted); margin-bottom: 10px; }

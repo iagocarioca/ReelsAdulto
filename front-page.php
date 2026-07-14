@@ -28,7 +28,7 @@ $tp_playlists = $tp_qtd_playlists > 0 ? get_terms(
 ) : array();
 $tp_playlists = is_wp_error( $tp_playlists ) ? array() : $tp_playlists;
 
-// ── Grade de tendências (vídeos mais recentes) ───────────────────────
+// ── Grade de tendências (vídeos mais recentes, com scroll infinito) ──
 $tp_grade = new WP_Query(
 	array(
 		'post_type'      => 'video',
@@ -36,7 +36,6 @@ $tp_grade = new WP_Query(
 		'posts_per_page' => max( 1, $tp_qtd_videos ),
 		'orderby'        => 'date',
 		'order'          => 'DESC',
-		'no_found_rows'  => true,
 	)
 );
 
@@ -101,7 +100,7 @@ $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 			</div>
 
 			<?php if ( $tp_grade->have_posts() ) : ?>
-				<div class="xf-grade">
+				<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'home', 'qtd' => max( 1, $tp_qtd_videos ), 'tem_mais' => $tp_grade->max_num_pages > 1 ? 1 : 0 ) ); ?>>
 					<?php
 					while ( $tp_grade->have_posts() ) :
 						$tp_grade->the_post();

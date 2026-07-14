@@ -57,14 +57,14 @@ while ( have_posts() ) :
 				</div>
 
 				<?php if ( ! empty( $tp_videos ) ) : ?>
-					<div class="xf-grade">
+					<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'playlist', 'playlist' => $tp_id, 'qtd' => 24, 'tem_mais' => count( $tp_videos ) > 24 ? 1 : 0 ) ); ?>>
 						<?php
 						$tp_q = new WP_Query(
 							array(
 								'post_type'      => 'video',
 								'post__in'       => $tp_videos,
 								'orderby'        => 'post__in',
-								'posts_per_page' => 60,
+								'posts_per_page' => 24,
 								'no_found_rows'  => true,
 							)
 						);

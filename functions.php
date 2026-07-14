@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.10.2' );
+define( 'TIKPORN_VERSION', '2.11.0' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -112,5 +112,6 @@ require_once TIKPORN_DIR . '/inc/playlists.php';         // Playlists (públicas
 require_once TIKPORN_DIR . '/inc/conta.php';             // Minha conta (perfil do usuário).
 require_once TIKPORN_DIR . '/inc/feed.php';              // Feed vertical (pushState) na página do vídeo.
 require_once TIKPORN_DIR . '/inc/busca.php';             // Sugestões de busca (autocomplete).
+require_once TIKPORN_DIR . '/inc/scroll-infinito.php';   // Scroll infinito das grades.
 require_once TIKPORN_DIR . '/inc/paginas-padrao.php';    // Cria páginas ao ativar o tema.
 require_once TIKPORN_DIR . '/inc/ajudantes.php';         // Funções de apoio para os templates.

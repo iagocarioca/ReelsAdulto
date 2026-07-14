@@ -71,7 +71,27 @@ if ( is_search() ) {
 			<?php endif; ?>
 
 			<?php if ( have_posts() ) : ?>
-				<div class="xf-grade">
+				<?php
+				// Scroll infinito: identifica o contexto da listagem.
+				$tp_pag = max( 1, get_query_var( 'paged' ) );
+				$tp_inf = array(
+					'qtd'      => (int) $wp_query->get( 'posts_per_page' ),
+					'pagina'   => $tp_pag,
+					'tem_mais' => $wp_query->max_num_pages > $tp_pag ? 1 : 0,
+				);
+				if ( is_search() ) {
+					$tp_inf['tipo']  = 'busca';
+					$tp_inf['busca'] = get_search_query();
+				} elseif ( $tp_eh_termo ) {
+					$tp_obj          = get_queried_object();
+					$tp_inf['tipo']  = 'termo';
+					$tp_inf['tax']   = $tp_obj->taxonomy;
+					$tp_inf['term']  = $tp_obj->term_id;
+				} else {
+					$tp_inf['tipo'] = 'arquivo';
+				}
+				?>
+				<div class="xf-grade"<?php tikporn_grade_attrs( $tp_inf ); ?>>
 					<?php
 					while ( have_posts() ) :
 						the_post();
@@ -87,10 +107,6 @@ if ( is_search() ) {
 						}
 					endwhile;
 					?>
-				</div>
-
-				<div class="xf-paginacao">
-					<?php the_posts_pagination( array( 'mid_size' => 1, 'prev_text' => '‹', 'next_text' => '›' ) ); ?>
 				</div>
 			<?php else : ?>
 				<div class="xf-vazio"><p><?php esc_html_e( 'Nada encontrado.', 'tikporn' ); ?></p></div>

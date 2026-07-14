@@ -52,7 +52,8 @@ $tp_capa   = ( $tp_termo && ! is_wp_error( $tp_termo ) && function_exists( 'tikp
 			</div>
 
 			<?php if ( have_posts() ) : ?>
-				<div class="xf-grade">
+				<?php global $wp_query; $tp_pag = max( 1, get_query_var( 'paged' ) ); ?>
+				<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'termo', 'tax' => $tp_termo && ! is_wp_error( $tp_termo ) ? $tp_termo->taxonomy : 'category', 'term' => $tp_termo && ! is_wp_error( $tp_termo ) ? $tp_termo->term_id : 0, 'qtd' => (int) $wp_query->get( 'posts_per_page' ), 'pagina' => $tp_pag, 'tem_mais' => $wp_query->max_num_pages > $tp_pag ? 1 : 0 ) ); ?>>
 					<?php
 					while ( have_posts() ) :
 						the_post();
@@ -60,17 +61,6 @@ $tp_capa   = ( $tp_termo && ! is_wp_error( $tp_termo ) && function_exists( 'tikp
 					endwhile;
 					?>
 				</div>
-
-				<?php
-				the_posts_pagination(
-					array(
-						'mid_size'  => 1,
-						'prev_text' => esc_html__( 'Anterior', 'tikporn' ),
-						'next_text' => esc_html__( 'Próxima', 'tikporn' ),
-						'class'     => 'xf-paginacao',
-					)
-				);
-				?>
 			<?php else : ?>
 				<div class="xf-vazio"><p><?php esc_html_e( 'Nenhum vídeo nesta categoria ainda.', 'tikporn' ); ?></p></div>
 			<?php endif; ?>

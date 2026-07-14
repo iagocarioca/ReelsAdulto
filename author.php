@@ -143,9 +143,10 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 					$tp_args['order']    = 'DESC';
 				}
 				$tp_videos = new WP_Query( $tp_args );
+				$tp_pag    = max( 1, get_query_var( 'paged' ) );
 				if ( $tp_videos->have_posts() ) :
 					?>
-					<div class="xf-grade">
+					<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'autor', 'autor' => $tp_id, 'ordem' => $tp_ordem, 'qtd' => 24, 'pagina' => $tp_pag, 'tem_mais' => $tp_videos->max_num_pages > $tp_pag ? 1 : 0 ) ); ?>>
 						<?php
 						while ( $tp_videos->have_posts() ) :
 							$tp_videos->the_post();
@@ -153,7 +154,6 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 						endwhile;
 						?>
 					</div>
-					<div class="xf-paginacao"><?php echo wp_kses_post( paginate_links( array( 'total' => $tp_videos->max_num_pages, 'prev_text' => '‹', 'next_text' => '›', 'add_args' => $tp_ordem ? array( 'ordem' => $tp_ordem ) : false ) ) ); ?></div>
 					<?php wp_reset_postdata(); ?>
 				<?php else : ?>
 					<div class="xf-vazio"><p><?php esc_html_e( 'Ainda não há vídeos por aqui.', 'tikporn' ); ?></p></div>
