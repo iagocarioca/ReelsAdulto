@@ -259,6 +259,93 @@
 		} );
 	}
 
+	/* --------- Preview no hover das thumbs (1s do início, meio e fim) --------- */
+	function iniciarPreviews() {
+		// Só em dispositivos com mouse (hover real).
+		if ( ! window.matchMedia || ! window.matchMedia( '(hover: hover)' ).matches ) {
+			return;
+		}
+
+		var atual = null; // { card, video, timers }
+
+		function parar() {
+			if ( ! atual ) {
+				return;
+			}
+			atual.timers.forEach( clearTimeout );
+			clearInterval( atual.intervalo );
+			if ( atual.video ) {
+				atual.video.pause();
+				atual.video.removeAttribute( 'src' );
+				try { atual.video.load(); } catch ( e ) {}
+				atual.video.remove();
+			}
+			atual.card.classList.remove( 'is-previewing' );
+			atual = null;
+		}
+
+		function comecar( card ) {
+			var src = card.getAttribute( 'data-preview' );
+			var thumb = card.querySelector( '.xf-card__thumb' );
+			if ( ! src || ! thumb ) {
+				return;
+			}
+			var v = document.createElement( 'video' );
+			v.className = 'xf-card__prev';
+			v.muted = true;
+			v.playsInline = true;
+			v.preload = 'metadata';
+			v.src = src;
+			thumb.appendChild( v );
+
+			var estado = { card: card, video: v, timers: [], intervalo: 0 };
+			atual = estado;
+
+			v.addEventListener( 'loadedmetadata', function () {
+				if ( atual !== estado ) {
+					return;
+				}
+				var dur = v.duration;
+				// Trechos de ~1s: início, meio e fim.
+				var pontos = ( dur && isFinite( dur ) && dur > 4 )
+					? [ 0, dur / 2, Math.max( 0, dur - 1.3 ) ]
+					: [ 0 ];
+				var i = 0;
+				v.currentTime = pontos[ 0 ];
+				v.play().then( function () {
+					card.classList.add( 'is-previewing' );
+				} ).catch( function () {} );
+				if ( pontos.length > 1 ) {
+					estado.intervalo = setInterval( function () {
+						i = ( i + 1 ) % pontos.length;
+						try { v.currentTime = pontos[ i ]; } catch ( e ) {}
+					}, 1000 );
+				}
+			} );
+			v.addEventListener( 'error', function () {
+				if ( atual === estado ) { parar(); }
+			} );
+		}
+
+		document.addEventListener( 'mouseover', function ( e ) {
+			var card = e.target.closest( '[data-preview]' );
+			if ( ! card ) {
+				return;
+			}
+			if ( atual && atual.card === card ) {
+				return;
+			}
+			parar();
+			// Pequeno atraso: não baixa vídeo em passadas rápidas do mouse.
+			var t = setTimeout( function () { comecar( card ); }, 180 );
+			card.addEventListener( 'mouseleave', function ao_sair() {
+				clearTimeout( t );
+				card.removeEventListener( 'mouseleave', ao_sair );
+				if ( atual && atual.card === card ) { parar(); }
+			} );
+		} );
+	}
+
 	/* --------- Scroll infinito das grades (home, autor, categoria, busca, playlist) --------- */
 	function iniciarScrollInfinito() {
 		var D = window.tikpornDados || {};
@@ -330,5 +417,6 @@
 		iniciarGoogle();
 		iniciarCompartilhar();
 		iniciarScrollInfinito();
+		iniciarPreviews();
 	} );
 } )();

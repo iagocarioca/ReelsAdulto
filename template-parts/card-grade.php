@@ -9,8 +9,14 @@ $tp_id   = get_the_ID();
 $tp_capa = tikporn_capa_url( $tp_id );
 // Métrica exibida no badge: visualizações do vídeo.
 $tp_num  = tikporn_numero_k( tikporn_views( $tp_id ) );
+
+// Preview no hover: só para vídeos de arquivo (mp4 direto).
+$tp_prev = '';
+if ( function_exists( 'tikporn_get_video_tipo' ) && 'arquivo' === tikporn_get_video_tipo( $tp_id ) ) {
+	$tp_prev = tikporn_get_video_url( $tp_id );
+}
 ?>
-<a class="xf-card" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
+<a class="xf-card" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>"<?php echo $tp_prev ? ' data-preview="' . esc_url( $tp_prev ) . '"' : ''; ?>>
 	<div class="xf-card__thumb">
 		<?php if ( $tp_capa ) : ?>
 			<img src="<?php echo esc_url( $tp_capa ); ?>" alt="" loading="lazy" decoding="async">
