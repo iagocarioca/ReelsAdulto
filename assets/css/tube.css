@@ -49,7 +49,7 @@ body.xf-body {
 	height: var(--xf-topo-altura);
 	background: var(--xf-bg);
 	border-bottom: 1px solid var(--xf-borda);
-	overflow: hidden;
+	/* Sem overflow:hidden — cortaria o menu da conta e as sugestões de busca. */
 }
 /* Faixa colorida do topo, com corte diagonal. Padrão: lado direito (logo fica no branco).
    Com body.xf-faixa-esq (Opções do tema) ela vai para o lado esquerdo, atrás da logo. */
