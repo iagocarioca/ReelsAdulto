@@ -357,9 +357,11 @@ body.xf-faixa-esq .xf-topo::before {
 .xf-destaque__card { display: block; }
 .xf-destaque__thumb {
 	position: relative; display: block; aspect-ratio: 16 / 10; border-radius: var(--xf-raio);
-	background: var(--xf-suave) center/cover no-repeat; overflow: hidden; margin-bottom: 8px;
+	background: var(--xf-suave) center/cover no-repeat; overflow: hidden;
+	transition: transform .15s ease, box-shadow .15s ease;
 }
-.xf-destaque__thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.5), transparent 55%); }
+.xf-destaque__card:hover .xf-destaque__thumb { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, .18); }
+.xf-destaque__thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.78) 4%, rgba(0,0,0,.35) 34%, transparent 60%); }
 .xf-destaque__play {
 	position: absolute; inset: 0; margin: auto; width: 46px; height: 46px; z-index: 2;
 	display: grid; place-items: center; background: rgba(0,0,0,.4); border-radius: 999px; backdrop-filter: blur(2px);
@@ -367,9 +369,20 @@ body.xf-faixa-esq .xf-topo::before {
 }
 .xf-destaque__card:hover .xf-destaque__play { transform: scale(1.08); background: var(--xf-roxo); }
 .xf-destaque__play svg { width: 20px; height: 20px; margin-left: 2px; }
-.xf-destaque__views { position: absolute; left: 8px; bottom: 8px; z-index: 2; display: inline-flex; align-items: center; gap: 4px; color: #fff; font-size: 12px; font-weight: 700; }
-.xf-destaque__views svg { width: 13px; height: 13px; }
-.xf-destaque__titulo { font-size: 13.5px; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.xf-destaque__views {
+	position: absolute; top: 8px; left: 8px; z-index: 2;
+	display: inline-flex; align-items: center; gap: 4px;
+	color: #fff; font-size: 11.5px; font-weight: 700;
+	background: rgba(0, 0, 0, .45); backdrop-filter: blur(4px); padding: 4px 9px; border-radius: 999px;
+}
+.xf-destaque__views svg { width: 12px; height: 12px; }
+/* Título sobre a thumb, no rodapé do gradiente */
+.xf-destaque__titulo {
+	position: absolute; left: 10px; right: 10px; bottom: 9px; z-index: 2;
+	color: #fff; font-size: 13px; font-weight: 600; line-height: 1.35;
+	text-shadow: 0 1px 3px rgba(0,0,0,.55);
+	display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 
 /* ── Sidebar de Criadores (modelos) ────────────────────────── */
 .xf-criadores { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--xf-borda); }

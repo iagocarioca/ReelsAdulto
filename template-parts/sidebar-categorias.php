@@ -82,8 +82,8 @@ if ( ! $tp_dest->have_posts() ) {
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
 						<?php echo esc_html( tikporn_numero_k( tikporn_views( $tp_d_id ) ) ); ?>
 					</span>
+					<span class="xf-destaque__titulo"><?php echo esc_html( wp_trim_words( get_the_title(), 10 ) ); ?></span>
 				</span>
-				<span class="xf-destaque__titulo"><?php echo esc_html( wp_trim_words( get_the_title(), 10 ) ); ?></span>
 			</a>
 		</div>
 		<?php wp_reset_postdata(); ?>
