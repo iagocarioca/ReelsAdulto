@@ -55,13 +55,13 @@ body.xf-body {
    Com body.xf-faixa-esq (Opções do tema) ela vai para o lado esquerdo, atrás da logo. */
 .xf-topo::before {
 	content: ""; position: absolute; top: 0; right: 0; bottom: 0;
-	left: max(380px, calc((100% - var(--xf-max)) / 2 + 360px));
+	left: max(450px, calc((100% - var(--xf-max)) / 2 + 430px));
 	background: var(--xf-topo-faixa);
 	clip-path: polygon(52px 0, 100% 0, 100% 100%, 0 100%);
 }
 body.xf-faixa-esq .xf-topo::before {
 	left: 0; right: auto;
-	width: max(380px, calc((100% - var(--xf-max)) / 2 + 360px));
+	width: max(450px, calc((100% - var(--xf-max)) / 2 + 430px));
 	clip-path: polygon(0 0, 100% 0, calc(100% - 52px) 100%, 0 100%);
 }
 .xf-topo__inner {
@@ -413,8 +413,8 @@ body.xf-faixa-esq .xf-topo::before {
 @media (max-width: 760px) {
 	:root { --xf-topo-altura: 58px; }
 	.xf-topo__inner { grid-template-columns: auto auto 1fr auto; gap: 8px; padding: 0 12px; }
-	.xf-topo::before { left: 225px; clip-path: polygon(36px 0, 100% 0, 100% 100%, 0 100%); }
-	body.xf-faixa-esq .xf-topo::before { left: 0; width: 225px; clip-path: polygon(0 0, 100% 0, calc(100% - 36px) 100%, 0 100%); }
+	.xf-topo::before { left: 248px; clip-path: polygon(36px 0, 100% 0, 100% 100%, 0 100%); }
+	body.xf-faixa-esq .xf-topo::before { left: 0; width: 248px; clip-path: polygon(0 0, 100% 0, calc(100% - 36px) 100%, 0 100%); }
 	/* Faixa escura à esquerda: hambúrguer (que fica sobre ela) vira branco */
 	body.xf-faixa-esq.xf-faixa-escura .xf-topo .xf-menu-btn { color: #fff; }
 	.xf-menu-btn { display: grid; }
