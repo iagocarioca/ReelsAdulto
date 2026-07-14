@@ -6,7 +6,7 @@
  * @package tikporn
  */
 
-$tp_limite = 15; // chips visíveis antes de "Mais categorias".
+$tp_limite = 8; // chips visíveis antes de "Ver mais categorias".
 
 $tp_cats = get_terms(
 	array(
@@ -60,8 +60,8 @@ if ( ! $tp_dest->have_posts() ) {
 
 		<?php if ( $tp_tem_mais ) : ?>
 			<button type="button" class="xf-mais-cats" data-cats-toggle aria-expanded="false">
-				<span class="xf-mais-cats__mais"><?php esc_html_e( 'Mais categorias', 'tikporn' ); ?></span>
-				<span class="xf-mais-cats__menos"><?php esc_html_e( 'Menos categorias', 'tikporn' ); ?></span>
+				<span class="xf-mais-cats__mais"><?php esc_html_e( 'Ver mais categorias', 'tikporn' ); ?></span>
+				<span class="xf-mais-cats__menos"><?php esc_html_e( 'Ver menos categorias', 'tikporn' ); ?></span>
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
 			</button>
 		<?php endif; ?>

@@ -307,16 +307,17 @@ body.xf-faixa-esq .xf-topo::before {
 	transition: border-color .12s, color .12s;
 }
 .xf-chip:hover { border-color: var(--xf-roxo); color: var(--xf-roxo); }
-/* Recolhe os chips extras até clicar em "Mais categorias" (limite = 15). */
-.xf-sidebar:not(.is-expanded) .xf-chips .xf-chip:nth-child(n+16) { display: none; }
+/* Recolhe os chips extras até clicar em "Ver mais categorias" (limite = 8). */
+.xf-sidebar:not(.is-expanded) .xf-chips .xf-chip:nth-child(n+9) { display: none; }
 
 .xf-mais-cats {
-	display: inline-flex; align-items: center; gap: 6px;
-	margin-top: 14px; padding: 6px 2px; border: 0; cursor: pointer;
-	background: transparent; color: var(--xf-roxo);
-	font-size: 14px; font-weight: 700; font-family: inherit;
+	display: flex; align-items: center; justify-content: center; gap: 8px;
+	width: 100%; margin-top: 16px; padding: 13px 16px; border: 0; cursor: pointer;
+	background: var(--xf-roxo-suave); color: var(--xf-roxo); border-radius: var(--xf-raio);
+	font-size: 14px; font-weight: 600; font-family: inherit;
+	transition: filter .15s ease;
 }
-.xf-mais-cats:hover { opacity: .8; }
+.xf-mais-cats:hover { filter: brightness(.97); }
 .xf-mais-cats svg { width: 16px; height: 16px; transition: transform .2s ease; }
 .xf-mais-cats__menos { display: none; }
 .xf-sidebar.is-expanded .xf-mais-cats__mais { display: none; }
