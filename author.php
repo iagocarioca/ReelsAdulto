@@ -57,6 +57,9 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 
 <div class="xf-perfil">
 
+	<div class="xf-home">
+		<div class="xf-home__main">
+
 	<header class="xf-perfil__cab">
 		<span class="xf-perfil__foto"><?php echo tikporn_foto_perfil( $tp_id, 160 ); // phpcs:ignore ?></span>
 
@@ -118,8 +121,6 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 		<?php endif; ?>
 	</header>
 
-	<div class="xf-home">
-		<div class="xf-home__main">
 			<section class="xf-secao">
 				<div class="xf-secao__cab">
 					<h2 class="xf-secao__titulo"><?php echo esc_html( sprintf( __( '%s vídeos', 'tikporn' ), $tp_nome ) ); ?></h2>
