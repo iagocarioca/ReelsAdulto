@@ -33,7 +33,8 @@
 		share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>',
 		eye:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
 		muted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>',
-		sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>'
+		sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>',
+		check: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>'
 	};
 
 	function esc( s ) {
@@ -95,7 +96,7 @@
 			'<div class="xf-watch__artist">' +
 				'<a class="xf-watch__avatar" href="' + esc( d.autor.url ) + '"><img src="' + esc( d.autor.avatar ) + '" alt=""></a>' +
 				'<div class="xf-watch__artist-info"><a class="xf-watch__artist-name" href="' + esc( d.autor.url ) + '">' + esc( d.autor.nome ) + '</a>' +
-					'<span class="xf-watch__handle">@' + esc( d.autor.handle ) + ( d.autor.artista ? ' <span class="xf-badge">ARTISTA</span>' : '' ) + '</span></div>' +
+					'<span class="xf-watch__handle">@' + esc( d.autor.handle ) + ( d.autor.artista ? ' <span class="xf-watch__check">' + SVG.check + '</span><span class="xf-badge xf-badge--verif">VERIFICADO</span>' : '' ) + '</span></div>' +
 				'<button class="xf-follow' + ( d.autor.segue ? ' ativo' : '' ) + '" type="button" data-fb-follow data-modelo-id="' + d.autor.id + '"><span class="tp-acao-legenda">' + ( d.autor.segue ? 'Seguindo' : 'Seguir' ) + '</span></button>' +
 			'</div>' +
 			'<div class="xf-watch__views">' + SVG.eye + '<strong>' + esc( d.views ) + '</strong> visualizações</div>' +
