@@ -47,17 +47,20 @@ while ( have_posts() ) :
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
 		</a>
 
-		<!-- Topo do short (só mobile): logo + @autor à esquerda, busca à direita -->
+		<!-- Topo do short (só mobile): logo + @autor -->
+		<?php
+		$tp_logo_short = tikporn_opcao( 'logo_short' );
+		if ( ! $tp_logo_short ) {
+			$tp_logo_short = TIKPORN_URI . '/assets/img/logo.png?v=' . TIKPORN_VERSION;
+		}
+		?>
 		<div class="xf-watch__mtop">
 			<div class="xf-watch__mtop-esq">
 				<a class="xf-watch__mlogo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-					<img src="<?php echo esc_url( TIKPORN_URI . '/assets/img/logo.png?v=' . TIKPORN_VERSION ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+					<img src="<?php echo esc_url( $tp_logo_short ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				</a>
 				<a class="xf-watch__mhandle" data-mtop-handle href="<?php echo esc_url( $tp_first['autor']['url'] ?? home_url( '/' ) ); ?>">@<?php echo esc_html( $tp_first['autor']['handle'] ?? '' ); ?></a>
 			</div>
-			<a class="xf-watch__mbusca" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php esc_attr_e( 'Buscar', 'tikporn' ); ?>">
-				<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z"/></svg>
-			</a>
 		</div>
 	</div>
 

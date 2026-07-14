@@ -603,15 +603,19 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-rail-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 0; background: transparent; color: #fff; cursor: pointer; font-size: 12px; font-weight: 700; }
 .xf-rail-btn svg { width: 34px; height: 34px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
 .xf-rail-btn.ativo svg { fill: var(--xf-like); color: var(--xf-like); }
-.xf-feed__caption { position: absolute; left: 14px; right: 74px; bottom: 84px; z-index: 6; display: none; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.6); }
-.xf-feed__caption a { font-weight: 800; font-size: 15px; }
-.xf-feed__caption p { margin: 4px 0 0; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.xf-feed__caption { position: absolute; left: 16px; right: 82px; bottom: 88px; z-index: 6; display: none; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.55); }
+.xf-feed__caption a { font-weight: 700; font-size: 15.5px; letter-spacing: .01em; }
+.xf-feed__caption p {
+	margin: 5px 0 0; font-size: 13.5px; line-height: 1.5; color: rgba(255, 255, 255, .92);
+	display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 .xf-feed__caption.is-aberta p { -webkit-line-clamp: unset; max-height: 40vh; overflow-y: auto; }
 .xf-feed__mais {
-	margin-top: 6px; padding: 4px 13px; border: 0; border-radius: 999px; cursor: pointer;
-	background: rgba(255, 255, 255, .2); color: #fff; font-size: 12px; font-weight: 700; font-family: inherit;
-	backdrop-filter: blur(4px);
+	margin-top: 4px; padding: 0; border: 0; background: transparent; cursor: pointer;
+	color: rgba(255, 255, 255, .7); font-size: 12.5px; font-weight: 700; font-family: inherit; letter-spacing: .02em;
+	text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
+.xf-feed__mais:hover { color: #fff; }
 
 /* Topo do short (mobile): logo + @autor + busca */
 .xf-watch__mtop { display: none; }
@@ -622,10 +626,10 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-watch__arrow:hover { background: var(--xf-roxo); transform: scale(1.06); }
 .xf-watch__arrow svg { width: 24px; height: 24px; }
 
-/* Fechar */
-.xf-watch__close { position: absolute; top: 16px; left: 16px; z-index: 7; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: var(--xf-roxo); box-shadow: 0 4px 14px rgba(0,0,0,.3); }
-.xf-watch__close:hover { filter: brightness(1.08); }
-.xf-watch__close svg { width: 22px; height: 22px; }
+/* Fechar (X branco, sem fundo) */
+.xf-watch__close { position: absolute; top: 14px; left: 14px; z-index: 7; width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; color: #fff; background: transparent; transition: background .15s ease; }
+.xf-watch__close:hover { background: rgba(255, 255, 255, .14); }
+.xf-watch__close svg { width: 25px; height: 25px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.55)); }
 
 /* Painel (desktop) */
 .xf-watch__panel { min-width: 0; height: 100vh; overflow-y: auto; padding: 28px; background: var(--xf-bg); border-left: 1px solid var(--xf-borda); }
@@ -708,8 +712,8 @@ body.single-video .xf-app { min-height: 100vh; }
 	.xf-feed__rail { display: flex; }
 	.xf-feed__caption { display: block; }
 	.xf-watch__mtop {
-		display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-		position: absolute; top: 16px; left: 70px; right: 14px; z-index: 7; pointer-events: none;
+		display: flex; align-items: flex-start; gap: 12px;
+		position: absolute; top: 16px; left: 62px; right: 14px; z-index: 7; pointer-events: none;
 	}
 	.xf-watch__mtop a { pointer-events: auto; }
 	.xf-watch__mtop-esq { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
@@ -718,8 +722,6 @@ body.single-video .xf-app { min-height: 100vh; }
 		color: #fff; font-size: 13px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.6);
 		overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60vw;
 	}
-	.xf-watch__mbusca { flex: 0 0 auto; width: 40px; height: 40px; display: grid; place-items: center; color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
-	.xf-watch__mbusca svg { width: 23px; height: 23px; }
 }
 /* ── Playlists ─────────────────────────────────────────────── */
 /* Menu "Salvar" no vídeo */

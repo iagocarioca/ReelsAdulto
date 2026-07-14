@@ -21,6 +21,7 @@ function tikporn_opcoes_padrao() {
 		'cor_destaque'         => '#FC30B7',
 		'topo_faixa_cor'       => '#fef6ff',
 		'topo_faixa_lado'      => 'direita',
+		'logo_short'           => '', // vazio = usa a logo padrão do tema no short mobile.
 		// Página inicial (Home) — textos.
 		'home_playlists_titulo' => 'Playlist & Chill',
 		'home_playlists_link'   => 'Todas as Playlists',
@@ -121,6 +122,13 @@ function tikporn_opcoes_registrar() {
 		'topo_faixa_lado',
 		__( 'Lado da faixa do topo', 'tikporn' ),
 		'tikporn_campo_topo_faixa_lado',
+		'tikporn-opcoes',
+		'tikporn_secao_aparencia'
+	);
+	add_settings_field(
+		'logo_short',
+		__( 'Logo do short (mobile)', 'tikporn' ),
+		'tikporn_campo_logo_short',
 		'tikporn-opcoes',
 		'tikporn_secao_aparencia'
 	);
@@ -259,6 +267,11 @@ function tikporn_opcoes_sanitizar( $entrada ) {
 		$saida['topo_faixa_lado'] = $entrada['topo_faixa_lado'];
 	}
 
+	// Logo do short mobile (URL de imagem; vazio = logo padrão).
+	if ( isset( $entrada['logo_short'] ) ) {
+		$saida['logo_short'] = esc_url_raw( trim( (string) $entrada['logo_short'] ) );
+	}
+
 	// Página inicial — textos (vazio = usa o padrão via tikporn_opcao).
 	foreach ( array( 'home_playlists_titulo', 'home_playlists_link', 'home_tendencias_titulo', 'busca_placeholder', 'criadores_titulo' ) as $chave_txt ) {
 		if ( isset( $entrada[ $chave_txt ] ) ) {
@@ -339,6 +352,20 @@ function tikporn_campo_cor_destaque() {
 
 function tikporn_campo_topo_faixa_cor() {
 	tikporn_campo_cor_render( 'topo_faixa_cor', '#fef6ff', __( 'Cor da faixa com corte diagonal no cabeçalho do site.', 'tikporn' ) );
+}
+
+function tikporn_campo_logo_short() {
+	$valor = tikporn_opcao( 'logo_short' );
+	?>
+	<div class="tp-midia" data-tp-midia>
+		<img class="tp-midia__prev" data-tp-midia-prev src="<?php echo esc_url( $valor ); ?>" alt="" <?php echo $valor ? '' : 'hidden'; ?> />
+		<input type="url" name="tikporn_opcoes[logo_short]" value="<?php echo esc_attr( $valor ); ?>"
+			class="regular-text" data-tp-midia-url placeholder="<?php esc_attr_e( 'URL da imagem (vazio = logo padrão)', 'tikporn' ); ?>" />
+		<button type="button" class="button" data-tp-midia-abrir><?php esc_html_e( 'Escolher imagem', 'tikporn' ); ?></button>
+		<button type="button" class="button" data-tp-midia-limpar><?php esc_html_e( 'Remover', 'tikporn' ); ?></button>
+	</div>
+	<p class="description"><?php esc_html_e( 'Logo mostrada no topo do player de shorts no celular. Deixe vazio para usar a logo padrão do tema.', 'tikporn' ); ?></p>
+	<?php
 }
 
 function tikporn_campo_topo_faixa_lado() {
@@ -496,6 +523,9 @@ function tikporn_opcoes_assets( $hook ) {
 	wp_register_style( 'tikporn-opcoes', false, array(), TIKPORN_VERSION );
 	wp_enqueue_style( 'tikporn-opcoes' );
 	wp_add_inline_style( 'tikporn-opcoes', tikporn_opcoes_css() );
+
+	// Biblioteca de mídia (seletor de imagem da logo do short).
+	wp_enqueue_media();
 
 	// JS depende só do jQuery (sempre presente no admin).
 	wp_add_inline_script( 'jquery-core', tikporn_opcoes_js() );
@@ -773,6 +803,14 @@ function tikporn_opcoes_css() {
 .tp-cor__reset:hover { color: var(--tp-text); background: var(--tp-surface-raised); }
 .tp-cor__reset:focus-visible { outline: 2px solid var(--tp-accent); outline-offset: 2px; }
 
+/* Campo de mídia (logo do short) */
+.tp-midia { display: flex; align-items: center; gap: var(--tp-space-3); flex-wrap: wrap; }
+.tp-midia__prev {
+	height: 44px; width: auto; max-width: 180px; object-fit: contain;
+	border: 1px solid var(--tp-border); border-radius: 8px; padding: 4px 10px; background: var(--tp-surface);
+}
+.tp-midia input[type=url] { min-width: 260px; }
+
 /* Controle segmentado (ex.: lado da faixa do topo) */
 .tp-seg {
 	display: inline-flex; gap: 4px; padding: 4px;
@@ -859,6 +897,26 @@ jQuery(function ($) {
 		hex.addEventListener('input', function () { aplicar(hex.value, 'hex'); });
 		hex.addEventListener('blur', function () { if (!normalizar(hex.value)) { aplicar(picker.value, 'hex'); } });
 		reset.addEventListener('click', function () { aplicar(PADRAO); });
+	});
+
+	/* Seletor de mídia (logo do short) */
+	$wrap.on('click', '[data-tp-midia-abrir]', function (e) {
+		e.preventDefault();
+		if (!window.wp || !wp.media) { return; }
+		var box = $(this).closest('[data-tp-midia]');
+		var frame = wp.media({ title: 'Escolher logo', multiple: false, library: { type: 'image' } });
+		frame.on('select', function () {
+			var url = frame.state().get('selection').first().toJSON().url;
+			box.find('[data-tp-midia-url]').val(url);
+			box.find('[data-tp-midia-prev]').attr('src', url).prop('hidden', false);
+		});
+		frame.open();
+	});
+	$wrap.on('click', '[data-tp-midia-limpar]', function (e) {
+		e.preventDefault();
+		var box = $(this).closest('[data-tp-midia]');
+		box.find('[data-tp-midia-url]').val('');
+		box.find('[data-tp-midia-prev]').attr('src', '').prop('hidden', true);
 	});
 
 	/* Navegação por abas (persiste a aba ativa em sessionStorage) */
@@ -1026,6 +1084,7 @@ function tikporn_opcoes_abas() {
 				array( 'label' => __( 'Cor de destaque', 'tikporn' ), 'icon' => 'art', 'cb' => 'tikporn_campo_cor_destaque' ),
 				array( 'label' => __( 'Cor da faixa do topo', 'tikporn' ), 'icon' => 'admin-appearance', 'cb' => 'tikporn_campo_topo_faixa_cor' ),
 				array( 'label' => __( 'Lado da faixa do topo', 'tikporn' ), 'icon' => 'leftright', 'cb' => 'tikporn_campo_topo_faixa_lado' ),
+				array( 'label' => __( 'Logo do short (mobile)', 'tikporn' ), 'icon' => 'format-image', 'cb' => 'tikporn_campo_logo_short' ),
 			),
 		),
 		'home' => array(
