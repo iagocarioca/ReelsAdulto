@@ -641,7 +641,14 @@ body.single-video .xf-app { min-height: 100vh; }
 /* Menu Salvar dinâmico */
 .xf-act-save { position: relative; }
 /* Menu "Salvar" posicionado via JS (position: fixed) — escapa do overflow do painel. */
-.xf-plmenu { position: fixed; z-index: 200; width: 264px; max-height: 320px; overflow-y: auto; background: #fff; border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); box-shadow: 0 16px 44px -10px rgba(0,0,0,.32); padding: 8px; }
+.xf-plmenu {
+	position: fixed; z-index: 200; width: 300px; max-height: 380px; overflow-y: auto;
+	background: #fff; border: 1px solid var(--xf-borda); border-radius: 14px;
+	box-shadow: 0 24px 60px -16px rgba(0,0,0,.28), 0 4px 14px rgba(0,0,0,.08);
+	padding: 12px;
+	animation: xf-menu-in .16s ease;
+}
+@keyframes xf-menu-in { from { opacity: 0; transform: translateY(6px) scale(.98); } }
 
 /* Recomendados na lateral (desktop) — grade de shorts (2 colunas, thumb vertical) */
 .xf-watch__rel { margin-top: 6px; }
@@ -686,23 +693,45 @@ body.single-video .xf-app { min-height: 100vh; }
 	background: #fff; border: 1px solid var(--xf-borda); border-radius: var(--xf-raio);
 	box-shadow: 0 16px 40px -12px rgba(0,0,0,.28); padding: 8px;
 }
-.xf-pl-menu__cab { font-size: 12px; font-weight: 800; color: var(--xf-muted); text-transform: uppercase; letter-spacing: .05em; padding: 6px 8px; }
-.xf-pl-menu__vazio { font-size: 13px; color: var(--xf-muted); padding: 6px 8px; margin: 0; }
+.xf-pl-menu__cab {
+	display: flex; align-items: center; gap: 8px;
+	font-size: 13px; font-weight: 700; color: var(--xf-texto);
+	padding: 2px 4px 10px; border-bottom: 1px solid var(--xf-borda); margin-bottom: 8px;
+}
+.xf-pl-menu__cab svg { width: 17px; height: 17px; color: var(--xf-roxo); flex: 0 0 auto; }
+.xf-pl-menu__vazio { font-size: 13px; color: var(--xf-muted); padding: 8px 4px; margin: 0; }
 .xf-pl-menu__item {
-	display: flex; align-items: center; gap: 10px; width: 100%;
-	padding: 9px 8px; border: 0; background: transparent; cursor: pointer;
+	display: flex; align-items: center; gap: 12px; width: 100%;
+	padding: 10px 8px; border: 0; background: transparent; cursor: pointer;
 	border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--xf-texto); text-align: left;
+	transition: background .12s ease;
 }
 .xf-pl-menu__item:hover { background: var(--xf-suave); }
-.xf-pl-menu__check { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--xf-borda); position: relative; }
+.xf-pl-menu__check { flex: 0 0 auto; width: 21px; height: 21px; border-radius: 7px; border: 2px solid #d6d6de; position: relative; transition: background .12s ease, border-color .12s ease; }
+.xf-pl-menu__item:hover .xf-pl-menu__check { border-color: var(--xf-roxo-2); }
 .xf-pl-menu__item.is-in .xf-pl-menu__check { background: var(--xf-roxo); border-color: var(--xf-roxo); }
 .xf-pl-menu__item.is-in .xf-pl-menu__check::after { content: ""; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .xf-pl-menu__nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.xf-pl-menu__lock { font-size: 10px; font-weight: 700; color: var(--xf-muted); background: var(--xf-suave); padding: 2px 6px; border-radius: 6px; }
-.xf-pl-menu__nova { display: flex; gap: 6px; padding: 8px 6px 4px; border-top: 1px solid var(--xf-borda); margin-top: 4px; }
-.xf-pl-menu__nova input { flex: 1; min-width: 0; border: 1px solid var(--xf-borda); border-radius: 9px; padding: 8px 10px; font-size: 13px; outline: none; }
-.xf-pl-menu__nova input:focus { border-color: var(--xf-roxo-2); }
-.xf-pl-menu__nova button { flex: 0 0 auto; width: 36px; border: 0; border-radius: 9px; background: var(--xf-roxo); color: #fff; font-size: 20px; font-weight: 700; cursor: pointer; }
+.xf-pl-menu__lock {
+	display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto;
+	font-size: 10px; font-weight: 700; letter-spacing: .02em; color: var(--xf-muted);
+	background: var(--xf-suave); padding: 3px 8px; border-radius: 999px;
+}
+.xf-pl-menu__lock svg { width: 11px; height: 11px; }
+.xf-pl-menu__nova { display: flex; gap: 8px; padding: 10px 4px 2px; border-top: 1px solid var(--xf-borda); margin-top: 8px; }
+.xf-pl-menu__nova input {
+	flex: 1; min-width: 0; height: 40px; border: 1px solid transparent; border-radius: 9px;
+	padding: 0 12px; font-size: 13px; font-family: inherit; outline: none; background: var(--xf-suave);
+	transition: background .12s ease, border-color .12s ease;
+}
+.xf-pl-menu__nova input:focus { background: #fff; border-color: var(--xf-roxo-2); }
+.xf-pl-menu__nova button {
+	flex: 0 0 auto; width: 40px; height: 40px; border: 0; border-radius: 9px;
+	background: var(--xf-roxo); color: #fff; cursor: pointer; display: grid; place-items: center;
+	transition: filter .12s ease;
+}
+.xf-pl-menu__nova button svg { width: 18px; height: 18px; }
+.xf-pl-menu__nova button:hover { filter: brightness(1.08); }
 
 /* Grade de playlists (Minhas playlists) */
 .xf-grade--pl { grid-template-columns: repeat(4, 1fr); }

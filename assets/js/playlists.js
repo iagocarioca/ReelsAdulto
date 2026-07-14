@@ -53,7 +53,7 @@
 					'" data-pl-item data-id="' + p.id + '">' +
 					'<span class="xf-pl-menu__check" aria-hidden="true"></span>' +
 					'<span class="xf-pl-menu__nome">' + esc( p.titulo ) + '</span>' +
-					( p.publica ? '' : '<span class="xf-pl-menu__lock">privada</span>' ) +
+					( p.publica ? '' : '<span class="xf-pl-menu__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>privada</span>' ) +
 					'</button>';
 			} ).join( '' );
 		}

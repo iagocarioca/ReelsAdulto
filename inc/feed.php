@@ -48,7 +48,7 @@ function tikporn_video_para_feed( $post_id ) {
 		'id'        => $post_id,
 		'permalink' => get_permalink( $post_id ),
 		'title'     => get_the_title( $post_id ),
-		'desc'      => wp_trim_words( wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ), 40 ),
+		'desc'      => wp_trim_words( wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ), 40, '…' ),
 		'src'       => $src,
 		'tipo'      => tikporn_get_video_tipo( $post_id ),
 		'poster'    => tikporn_capa_url( $post_id ),

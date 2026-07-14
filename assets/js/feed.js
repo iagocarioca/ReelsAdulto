@@ -325,8 +325,9 @@
 		var vid = btn.getAttribute( 'data-video-id' );
 		var menu = document.createElement( 'div' );
 		menu.className = 'xf-plmenu';
-		menu.innerHTML = '<div class="xf-pl-menu__cab">Salvar em…</div><div class="xf-pl-menu__lista">…</div>' +
-			'<form class="xf-pl-menu__nova"><input type="text" name="titulo" placeholder="Criar playlist…" maxlength="80" autocomplete="off"><button type="submit">+</button></form>';
+		menu.innerHTML = '<div class="xf-pl-menu__cab">' + SVG.save + '<span>Salvar em playlist</span></div><div class="xf-pl-menu__lista">…</div>' +
+			'<form class="xf-pl-menu__nova"><input type="text" name="titulo" placeholder="Nova playlist…" maxlength="80" autocomplete="off">' +
+			'<button type="submit" aria-label="Criar playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></form>';
 		document.body.appendChild( menu );
 		posicionarMenu( menu, btn );
 		track.addEventListener( 'scroll', fecharMenus, { once: true, passive: true } );
@@ -334,7 +335,7 @@
 		var lista = menu.querySelector( '.xf-pl-menu__lista' );
 		function render( pls ) {
 			lista.innerHTML = pls.length ? pls.map( function ( p ) {
-				return '<button type="button" class="xf-pl-menu__item' + ( p.contem ? ' is-in' : '' ) + '" data-pl-item data-id="' + p.id + '"><span class="xf-pl-menu__check"></span><span class="xf-pl-menu__nome">' + esc( p.titulo ) + '</span>' + ( p.publica ? '' : '<span class="xf-pl-menu__lock">privada</span>' ) + '</button>';
+				return '<button type="button" class="xf-pl-menu__item' + ( p.contem ? ' is-in' : '' ) + '" data-pl-item data-id="' + p.id + '"><span class="xf-pl-menu__check"></span><span class="xf-pl-menu__nome">' + esc( p.titulo ) + '</span>' + ( p.publica ? '' : '<span class="xf-pl-menu__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>privada</span>' ) + '</button>';
 			} ).join( '' ) : '<p class="xf-pl-menu__vazio">Crie sua primeira playlist abaixo.</p>';
 		}
 		function recarregar() { ajax( 'tikporn_playlist_listar', { video_id: vid }, 'POST' ).then( function ( r ) { if ( r && r.success ) { render( r.data.playlists ); } } ); }
