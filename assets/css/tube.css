@@ -990,8 +990,10 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 	background: var(--xf-roxo); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .05em;
 }
 .xf-perfil__stats { display: flex; flex-wrap: wrap; font-size: 14px; color: var(--xf-muted); margin: 16px 0; }
-.xf-perfil__stats span { padding-right: 18px; }
+.xf-perfil__stats span { display: inline-flex; flex-direction: row-reverse; gap: 5px; padding-right: 18px; }
 .xf-perfil__stats span + span { border-left: 1px solid var(--xf-borda); padding-left: 18px; }
+.xf-perfil__stats em { font-style: normal; }
+.xf-perfil__stats em::after { content: ':'; }
 .xf-perfil__stats strong { color: var(--xf-texto); font-weight: 600; }
 .xf-perfil__bio { font-size: 14px; line-height: 1.55; color: #444; margin: 6px 0 0; max-width: 680px; }
 .xf-perfil__site {
@@ -1076,8 +1078,30 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 @media (max-width: 600px) {
 	.xf-conta__cab { flex-direction: column; text-align: center; }
 	.xf-conta__stats { justify-content: center; }
-	.xf-perfil__acao { width: 100%; }
+
+	/* Perfil mobile (estilo xfree): avatar + stats lado a lado, @handle abaixo,
+	   Seguir de ponta a ponta e grade de 3 colunas. */
+	.xf-perfil__cab { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px 16px; align-items: center; }
+	.xf-perfil__id { display: contents; }
+	.xf-perfil__foto { grid-row: 1; grid-column: 1; }
+	.xf-perfil__foto img, .xf-perfil__foto .tp-avatar { width: 96px; height: 96px; }
+	/* Nome sai da tela (o título da grade já traz o nome) mas fica para leitores de tela. */
+	.xf-perfil__nome { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+	.xf-perfil__stats { grid-row: 1; grid-column: 2; margin: 0; flex-wrap: nowrap; }
+	.xf-perfil__stats span { flex: 1; min-width: 0; flex-direction: column; align-items: center; gap: 2px; padding: 0; text-align: center; }
+	.xf-perfil__stats span + span { padding-left: 6px; margin-left: 6px; }
+	.xf-perfil__stats strong { font-size: 16px; font-weight: 700; }
+	.xf-perfil__stats em { font-size: 11.5px; }
+	.xf-perfil__stats em::after { content: none; }
+	.xf-perfil__handle-linha { grid-column: 1 / -1; margin-top: 0; }
+	.xf-perfil__handle { font-size: 14px; font-weight: 600; color: var(--xf-texto); }
+	.xf-perfil__bio, .xf-perfil__site { grid-column: 1 / -1; margin: 0; }
+	.xf-perfil__acao { grid-column: 1 / -1; width: 100%; }
 	.xf-perfil__acao .xf-btn-cheio { width: 100%; }
+	.xf-perfil__social { grid-column: 1 / -1; }
+	.xf-perfil__filtro { padding: 7px 10px; }
+	body.author .xf-secao__titulo { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	body.author .xf-grade { grid-template-columns: repeat(3, 1fr); gap: 3px; }
 }
 
 /* ── Navegação mobile: hambúrguer + drawer + aba/painel de categorias ── */

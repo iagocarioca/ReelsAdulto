@@ -75,9 +75,9 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 			</div>
 
 			<div class="xf-perfil__stats">
-				<span><?php esc_html_e( 'Seguidores:', 'tikporn' ); ?> <strong><?php echo esc_html( tikporn_numero_k( $tp_n_seg ) ); ?></strong></span>
-				<span><?php esc_html_e( 'Visualizações:', 'tikporn' ); ?> <strong><?php echo esc_html( tikporn_numero_k( $tp_n_views ) ); ?></strong></span>
-				<span><?php esc_html_e( 'Curtidas:', 'tikporn' ); ?> <strong><?php echo esc_html( tikporn_numero_k( $tp_n_likes ) ); ?></strong></span>
+				<span><strong><?php echo esc_html( tikporn_numero_k( $tp_n_seg ) ); ?></strong><em><?php esc_html_e( 'Seguidores', 'tikporn' ); ?></em></span>
+				<span><strong><?php echo esc_html( tikporn_numero_k( $tp_n_views ) ); ?></strong><em><?php esc_html_e( 'Visualizações', 'tikporn' ); ?></em></span>
+				<span><strong><?php echo esc_html( tikporn_numero_k( $tp_n_likes ) ); ?></strong><em><?php esc_html_e( 'Curtidas', 'tikporn' ); ?></em></span>
 			</div>
 
 			<?php if ( $tp_bio ) : ?>
