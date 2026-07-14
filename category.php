@@ -35,7 +35,7 @@ $tp_capa   = ( $tp_termo && ! is_wp_error( $tp_termo ) && function_exists( 'tikp
 				</div>
 				<div class="xf-plhead__info">
 					<span class="xf-plhead__label"><?php esc_html_e( 'Categoria', 'tikporn' ); ?></span>
-					<h1 class="xf-plhead__title"><?php tikporn_icone_playlist_titulo(); ?><?php echo esc_html( $tp_nome ); ?></h1>
+					<h1 class="xf-plhead__title"><?php if ( function_exists( 'tikporn_icone_playlist_titulo' ) ) { tikporn_icone_playlist_titulo(); } ?><?php echo esc_html( $tp_nome ); ?></h1>
 					<div class="xf-plhead__meta">
 						<?php echo esc_html( sprintf( _n( '%d vídeo', '%d vídeos', $tp_total, 'tikporn' ), $tp_total ) ); ?>
 					</div>
@@ -53,7 +53,7 @@ $tp_capa   = ( $tp_termo && ! is_wp_error( $tp_termo ) && function_exists( 'tikp
 
 			<?php if ( have_posts() ) : ?>
 				<?php global $wp_query; $tp_pag = max( 1, get_query_var( 'paged' ) ); ?>
-				<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'termo', 'tax' => $tp_termo && ! is_wp_error( $tp_termo ) ? $tp_termo->taxonomy : 'category', 'term' => $tp_termo && ! is_wp_error( $tp_termo ) ? $tp_termo->term_id : 0, 'qtd' => (int) $wp_query->get( 'posts_per_page' ), 'pagina' => $tp_pag, 'tem_mais' => $wp_query->max_num_pages > $tp_pag ? 1 : 0 ) ); ?>>
+				<div class="xf-grade"<?php if ( function_exists( 'tikporn_grade_attrs' ) ) { tikporn_grade_attrs( array( 'tipo' => 'termo', 'tax' => $tp_termo && ! is_wp_error( $tp_termo ) ? $tp_termo->taxonomy : 'category', 'term' => $tp_termo && ! is_wp_error( $tp_termo ) ? $tp_termo->term_id : 0, 'qtd' => (int) $wp_query->get( 'posts_per_page' ), 'pagina' => $tp_pag, 'tem_mais' => $wp_query->max_num_pages > $tp_pag ? 1 : 0 ) ); } ?>>
 					<?php
 					while ( have_posts() ) :
 						the_post();

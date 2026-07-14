@@ -146,7 +146,7 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 				$tp_pag    = max( 1, get_query_var( 'paged' ) );
 				if ( $tp_videos->have_posts() ) :
 					?>
-					<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'autor', 'autor' => $tp_id, 'ordem' => $tp_ordem, 'qtd' => 24, 'pagina' => $tp_pag, 'tem_mais' => $tp_videos->max_num_pages > $tp_pag ? 1 : 0 ) ); ?>>
+					<div class="xf-grade"<?php if ( function_exists( 'tikporn_grade_attrs' ) ) { tikporn_grade_attrs( array( 'tipo' => 'autor', 'autor' => $tp_id, 'ordem' => $tp_ordem, 'qtd' => 24, 'pagina' => $tp_pag, 'tem_mais' => $tp_videos->max_num_pages > $tp_pag ? 1 : 0 ) ); } ?>>
 						<?php
 						while ( $tp_videos->have_posts() ) :
 							$tp_videos->the_post();

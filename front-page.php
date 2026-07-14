@@ -100,7 +100,7 @@ $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 			</div>
 
 			<?php if ( $tp_grade->have_posts() ) : ?>
-				<div class="xf-grade"<?php tikporn_grade_attrs( array( 'tipo' => 'home', 'qtd' => max( 1, $tp_qtd_videos ), 'tem_mais' => $tp_grade->max_num_pages > 1 ? 1 : 0 ) ); ?>>
+				<div class="xf-grade"<?php if ( function_exists( 'tikporn_grade_attrs' ) ) { tikporn_grade_attrs( array( 'tipo' => 'home', 'qtd' => max( 1, $tp_qtd_videos ), 'tem_mais' => $tp_grade->max_num_pages > 1 ? 1 : 0 ) ); } ?>>
 					<?php
 					while ( $tp_grade->have_posts() ) :
 						$tp_grade->the_post();

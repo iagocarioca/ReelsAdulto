@@ -57,7 +57,7 @@ if ( is_search() ) {
 					</div>
 					<div class="xf-plhead__info">
 						<span class="xf-plhead__label"><?php esc_html_e( 'Playlist', 'tikporn' ); ?></span>
-						<h1 class="xf-plhead__title"><?php tikporn_icone_playlist_titulo(); ?><?php echo esc_html( $tp_termo->name ); ?></h1>
+						<h1 class="xf-plhead__title"><?php if ( function_exists( 'tikporn_icone_playlist_titulo' ) ) { tikporn_icone_playlist_titulo(); } ?><?php echo esc_html( $tp_termo->name ); ?></h1>
 						<div class="xf-plhead__meta"><?php echo esc_html( sprintf( _n( '%d vídeo', '%d vídeos', $tp_qtd, 'tikporn' ), $tp_qtd ) ); ?></div>
 						<?php if ( ! empty( $tp_termo->description ) ) : ?>
 							<p class="xf-plhead__desc"><?php echo esc_html( $tp_termo->description ); ?></p>
@@ -91,7 +91,7 @@ if ( is_search() ) {
 					$tp_inf['tipo'] = 'arquivo';
 				}
 				?>
-				<div class="xf-grade"<?php tikporn_grade_attrs( $tp_inf ); ?>>
+				<div class="xf-grade"<?php if ( function_exists( 'tikporn_grade_attrs' ) ) { tikporn_grade_attrs( $tp_inf ); } ?>>
 					<?php
 					while ( have_posts() ) :
 						the_post();

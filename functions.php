@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.11.1' );
+define( 'TIKPORN_VERSION', '2.11.2' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -100,18 +100,27 @@ function tikporn_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'tikporn_assets' );
 
-// Módulos do tema.
-require_once TIKPORN_DIR . '/inc/opcoes-tema.php';      // Página de opções (Aparência → Opções do tema).
-require_once TIKPORN_DIR . '/inc/tipos-de-conteudo.php'; // Tipo de conteúdo "vídeo".
-require_once TIKPORN_DIR . '/inc/papeis.php';            // Papel "modelo".
-require_once TIKPORN_DIR . '/inc/autenticacao.php';      // Cadastro, login, logout.
-require_once TIKPORN_DIR . '/inc/google-auth.php';       // Login com Google (GIS).
-require_once TIKPORN_DIR . '/inc/area-modelo.php';       // Envio e exclusão de vídeos.
-require_once TIKPORN_DIR . '/inc/interacoes.php';        // Curtir e seguir.
-require_once TIKPORN_DIR . '/inc/playlists.php';         // Playlists (públicas/privadas).
-require_once TIKPORN_DIR . '/inc/conta.php';             // Minha conta (perfil do usuário).
-require_once TIKPORN_DIR . '/inc/feed.php';              // Feed vertical (pushState) na página do vídeo.
-require_once TIKPORN_DIR . '/inc/busca.php';             // Sugestões de busca (autocomplete).
-require_once TIKPORN_DIR . '/inc/scroll-infinito.php';   // Scroll infinito das grades.
-require_once TIKPORN_DIR . '/inc/paginas-padrao.php';    // Cria páginas ao ativar o tema.
-require_once TIKPORN_DIR . '/inc/ajudantes.php';         // Funções de apoio para os templates.
+// Módulos do tema. O file_exists tolera a janela do deploy via FTP em que o
+// functions.php novo chega antes de um módulo recém-criado (evita erro fatal).
+$tikporn_modulos = array(
+	'opcoes-tema',       // Página de opções (Aparência → Opções do tema).
+	'tipos-de-conteudo', // Tipo de conteúdo "vídeo".
+	'papeis',            // Papel "modelo".
+	'autenticacao',      // Cadastro, login, logout.
+	'google-auth',       // Login com Google (GIS).
+	'area-modelo',       // Envio e exclusão de vídeos.
+	'interacoes',        // Curtir e seguir.
+	'playlists',         // Playlists (públicas/privadas).
+	'conta',             // Minha conta (perfil do usuário).
+	'feed',              // Feed vertical (pushState) na página do vídeo.
+	'busca',             // Sugestões de busca (autocomplete).
+	'scroll-infinito',   // Scroll infinito das grades.
+	'paginas-padrao',    // Cria páginas ao ativar o tema.
+	'ajudantes',         // Funções de apoio para os templates.
+);
+foreach ( $tikporn_modulos as $tikporn_modulo ) {
+	$tikporn_arquivo = TIKPORN_DIR . '/inc/' . $tikporn_modulo . '.php';
+	if ( file_exists( $tikporn_arquivo ) ) {
+		require_once $tikporn_arquivo;
+	}
+}
