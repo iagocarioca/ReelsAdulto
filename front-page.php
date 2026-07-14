@@ -60,7 +60,10 @@ $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 		<?php if ( ! empty( $tp_playlists ) ) : ?>
 			<section class="xf-secao">
 				<div class="xf-secao__cab">
-					<h2 class="xf-secao__titulo"><?php echo esc_html( $tp_titulo_playlists ); ?></h2>
+					<h2 class="xf-secao__titulo xf-secao__titulo--icone">
+						<?php if ( function_exists( 'tikporn_icone_playlist_titulo' ) ) { tikporn_icone_playlist_titulo( 'xf-secao__ico xf-secao__ico--pl' ); } ?>
+						<span><?php echo esc_html( $tp_titulo_playlists ); ?></span>
+					</h2>
 					<?php if ( '' !== $tp_link_playlists ) : ?>
 						<a class="xf-secao__link" href="<?php echo esc_url( get_post_type_archive_link( 'video' ) ); ?>">
 							<?php echo esc_html( $tp_link_playlists ); ?> &rsaquo;

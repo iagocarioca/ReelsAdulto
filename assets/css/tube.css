@@ -208,6 +208,7 @@ body.xf-faixa-esq .xf-topo::before {
 .xf-secao__titulo--icone { display: inline-flex; align-items: center; gap: 10px; }
 .xf-secao__ico { display: inline-flex; flex: 0 0 auto; }
 .xf-secao__ico svg { width: 28px; height: 28px; display: block; }
+.xf-secao__ico--pl { color: var(--xf-roxo); }
 .xf-secao__link {
 	font-size: 13px; font-weight: 600; color: var(--xf-texto);
 	background: var(--xf-suave); padding: 7px 12px; border-radius: var(--xf-pilula);
