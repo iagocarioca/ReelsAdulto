@@ -68,7 +68,7 @@ $tp_seg   = tikporn_seguindo_do_usuario( $tp_uid );
 							<span class="xf-plcard__badge"><?php echo $tp_pub ? esc_html__( 'Pública', 'tikporn' ) : esc_html__( 'Privada', 'tikporn' ); ?></span>
 							<span class="xf-plcard__count"><?php echo esc_html( count( tikporn_playlist_videos( $tp_pl->ID ) ) ); ?></span>
 						</span>
-						<span class="xf-plcard__title"><?php echo esc_html( get_the_title( $tp_pl ) ); ?></span>
+						<span class="xf-plcard__title"><?php echo esc_html( get_post_field( 'post_title', $tp_pl ) ); ?></span>
 					</a>
 				<?php endforeach; ?>
 			</div>

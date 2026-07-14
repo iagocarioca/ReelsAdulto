@@ -15,7 +15,10 @@ get_header();
 			<div class="xf-secao__cab">
 				<h1 class="xf-secao__titulo"><?php esc_html_e( 'Minhas playlists', 'tikporn' ); ?></h1>
 				<?php if ( is_user_logged_in() ) : ?>
-					<button type="button" class="xf-secao__link" data-pl-nova-abrir><?php esc_html_e( '+ Nova playlist', 'tikporn' ); ?></button>
+					<button type="button" class="xf-btn xf-btn--sm" data-pl-nova-abrir>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+						<?php esc_html_e( 'Nova playlist', 'tikporn' ); ?>
+					</button>
 				<?php endif; ?>
 			</div>
 
@@ -46,11 +49,23 @@ get_header();
 							$tp_qtd  = count( tikporn_playlist_videos( $tp_pl->ID ) );
 							?>
 							<a class="xf-plcard" href="<?php echo esc_url( get_permalink( $tp_pl->ID ) ); ?>">
-								<span class="xf-plcard__thumb"<?php echo $tp_capa ? ' style="background-image:url(\'' . esc_url( $tp_capa ) . '\')"' : ''; ?>>
-									<span class="xf-plcard__badge"><?php echo $tp_pub ? esc_html__( 'Pública', 'tikporn' ) : esc_html__( 'Privada', 'tikporn' ); ?></span>
-									<span class="xf-plcard__count"><?php echo esc_html( $tp_qtd ); ?> <?php esc_html_e( 'vídeos', 'tikporn' ); ?></span>
+								<span class="xf-plcard__thumb<?php echo $tp_capa ? '' : ' xf-plcard__thumb--vazia'; ?>"<?php echo $tp_capa ? ' style="background-image:url(\'' . esc_url( $tp_capa ) . '\')"' : ''; ?>>
+									<?php if ( ! $tp_capa ) : ?>
+										<span class="xf-plcard__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h13v2H3V6zm0 4h13v2H3v-2zm0 4h9v2H3v-2zm12 0 6 3-6 3v-6z"/></svg></span>
+									<?php endif; ?>
+									<span class="xf-plcard__badge">
+										<?php if ( $tp_pub ) : ?>
+											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/></svg><?php esc_html_e( 'Pública', 'tikporn' ); ?>
+										<?php else : ?>
+											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><?php esc_html_e( 'Privada', 'tikporn' ); ?>
+										<?php endif; ?>
+									</span>
+									<span class="xf-plcard__count">
+										<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+										<?php echo esc_html( sprintf( _n( '%d vídeo', '%d vídeos', $tp_qtd, 'tikporn' ), $tp_qtd ) ); ?>
+									</span>
 								</span>
-								<span class="xf-plcard__title"><?php echo esc_html( get_the_title( $tp_pl ) ); ?></span>
+								<span class="xf-plcard__title"><?php echo esc_html( get_post_field( 'post_title', $tp_pl ) ); ?></span>
 							</a>
 						<?php endforeach; ?>
 					</div>

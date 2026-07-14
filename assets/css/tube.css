@@ -817,24 +817,48 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-pl-menu__nova button:hover { filter: brightness(1.08); }
 
 /* Grade de playlists (Minhas playlists) */
-.xf-grade--pl { grid-template-columns: repeat(4, 1fr); }
+.xf-grade--pl { grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .xf-plcard { display: block; }
 .xf-plcard__thumb {
 	display: block; position: relative; aspect-ratio: 16 / 10; border-radius: var(--xf-raio);
-	background: var(--xf-suave) center/cover no-repeat; overflow: hidden; margin-bottom: 8px;
+	background: var(--xf-suave) center/cover no-repeat; overflow: hidden; margin-bottom: 10px;
+	transition: transform .15s ease, box-shadow .15s ease;
 }
-.xf-plcard__title { display: block; }
+.xf-plcard:hover .xf-plcard__thumb { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, .16); }
 .xf-plcard__thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55), transparent 60%); }
-.xf-plcard__badge { position: absolute; top: 8px; left: 8px; z-index: 2; font-size: 11px; font-weight: 800; color: #fff; background: rgba(0,0,0,.5); padding: 3px 8px; border-radius: 7px; }
-.xf-plcard__count { position: absolute; bottom: 8px; right: 8px; z-index: 2; font-size: 12px; font-weight: 700; color: #fff; }
-.xf-plcard__title { font-size: 14px; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* Sem capa: fundo suave no accent com ícone de playlist (sem gradiente escuro) */
+.xf-plcard__thumb--vazia { background: linear-gradient(135deg, var(--xf-roxo-suave), var(--xf-suave)); }
+.xf-plcard__thumb--vazia::after { background: none; }
+.xf-plcard__ico { position: absolute; inset: 0; display: grid; place-items: center; color: var(--xf-roxo); opacity: .5; }
+.xf-plcard__ico svg { width: 42px; height: 42px; }
+.xf-plcard__badge {
+	position: absolute; top: 8px; left: 8px; z-index: 2;
+	display: inline-flex; align-items: center; gap: 5px;
+	font-size: 11px; font-weight: 700; color: #fff;
+	background: rgba(0, 0, 0, .45); backdrop-filter: blur(4px); padding: 4px 9px; border-radius: 999px;
+}
+.xf-plcard__badge svg { width: 11px; height: 11px; }
+.xf-plcard__thumb--vazia .xf-plcard__badge { background: rgba(0, 0, 0, .35); }
+.xf-plcard__count {
+	position: absolute; bottom: 8px; right: 8px; z-index: 2;
+	display: inline-flex; align-items: center; gap: 5px;
+	font-size: 12px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.6);
+}
+.xf-plcard__count svg { width: 13px; height: 13px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+.xf-plcard__thumb--vazia .xf-plcard__count { color: var(--xf-texto); text-shadow: none; }
+.xf-plcard__thumb--vazia .xf-plcard__count svg { filter: none; }
+.xf-plcard__title { display: block; font-size: 14px; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: color .12s ease; }
+.xf-plcard:hover .xf-plcard__title { color: var(--xf-roxo); }
 
 /* Form nova playlist (página Minhas playlists) */
 .xf-pl-nova { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px; background: var(--xf-suave); border-radius: var(--xf-raio); margin-bottom: 20px; }
-.xf-pl-nova__campo { flex: 1; min-width: 200px; border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); padding: 11px 14px; font-size: 14px; outline: none; background: #fff; }
+.xf-pl-nova[hidden] { display: none; }
+.xf-pl-nova__campo { flex: 1; min-width: 200px; border: 1px solid transparent; border-radius: var(--xf-raio); padding: 11px 14px; font-size: 14px; font-family: inherit; outline: none; background: #fff; transition: border-color .12s ease; }
 .xf-pl-nova__campo:focus { border-color: var(--xf-roxo-2); }
 .xf-pl-nova__check { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; }
-.xf-btn--sm { padding: 10px 20px; font-size: 14px; }
+.xf-pl-nova__check input { accent-color: var(--xf-roxo); width: 16px; height: 16px; }
+.xf-btn--sm { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; font-size: 14px; }
+.xf-btn--sm svg { width: 15px; height: 15px; }
 
 /* Cabeçalho da página da playlist */
 .xf-plhead { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 22px; }
