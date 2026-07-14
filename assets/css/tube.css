@@ -295,9 +295,17 @@ body.xf-faixa-esq .xf-topo::before {
 /* ── Sidebar Categorias ────────────────────────────────────── */
 .xf-sidebar {
 	position: sticky; top: calc(var(--xf-topo-altura) + 20px);
+	/* Scroll interno próprio (invisível): o conteúdo além da tela rola
+	   dentro da sidebar, sem depender do fim da página. */
+	max-height: calc(100vh - var(--xf-topo-altura) - 40px);
+	overflow-y: auto;
+	scrollbar-width: none;
 	border-left: 1px solid var(--xf-borda);
 	padding: 4px 0 4px 24px; background: var(--xf-bg);
 }
+.xf-sidebar::-webkit-scrollbar { display: none; }
+/* Perfil: sidebar estática (sem scroll interno) */
+.xf-sidebar--perfil { max-height: none; overflow: visible; }
 .xf-sidebar__cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .xf-sidebar__titulo { font-size: 20px; font-weight: 500; margin: 0; letter-spacing: -.01em; }
 .xf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -415,7 +423,7 @@ body.xf-faixa-esq .xf-topo::before {
 /* ── Responsivo ────────────────────────────────────────────── */
 @media (max-width: 1024px) {
 	.xf-home { grid-template-columns: 1fr; }
-	.xf-sidebar { position: static; border-left: 0; padding-left: 0; border-top: 1px solid var(--xf-borda); padding-top: 20px; margin-top: 8px; }
+	.xf-sidebar { position: static; max-height: none; overflow: visible; border-left: 0; padding-left: 0; border-top: 1px solid var(--xf-borda); padding-top: 20px; margin-top: 8px; }
 }
 @media (max-width: 760px) {
 	:root { --xf-topo-altura: 58px; }
