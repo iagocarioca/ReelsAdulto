@@ -124,14 +124,6 @@ $tp_criadores = array_slice( $tp_criadores, 0, 4 );
 			<section class="xf-secao">
 				<div class="xf-secao__cab">
 					<h2 class="xf-secao__titulo"><?php echo esc_html( sprintf( __( '%s vídeos', 'tikporn' ), $tp_nome ) ); ?></h2>
-					<div class="xf-perfil__filtro">
-						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.6-4.9-10-9.2C.5 8.3 2.1 5 5.3 5 7.2 5 8.6 6.1 12 9.2 15.4 6.1 16.8 5 18.7 5 21.9 5 23.5 8.3 22 11.8 19.6 16.1 12 21 12 21z"/></svg>
-						<select data-perfil-ordem aria-label="<?php esc_attr_e( 'Ordenar vídeos', 'tikporn' ); ?>">
-							<option value="" <?php selected( $tp_ordem, '' ); ?>><?php esc_html_e( 'Tudo', 'tikporn' ); ?></option>
-							<option value="vistos" <?php selected( $tp_ordem, 'vistos' ); ?>><?php esc_html_e( 'Mais vistos', 'tikporn' ); ?></option>
-							<option value="curtidos" <?php selected( $tp_ordem, 'curtidos' ); ?>><?php esc_html_e( 'Mais curtidos', 'tikporn' ); ?></option>
-						</select>
-					</div>
 				</div>
 				<?php
 				$tp_args = array(

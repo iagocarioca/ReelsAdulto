@@ -259,26 +259,6 @@
 		} );
 	}
 
-	/* --------- Filtro de ordenação do perfil (Tudo / Mais vistos / Mais curtidos) --------- */
-	function iniciarFiltroPerfil() {
-		var sel = document.querySelector( '[data-perfil-ordem]' );
-		if ( ! sel ) {
-			return;
-		}
-		sel.addEventListener( 'change', function () {
-			var url = new URL( window.location.href );
-			url.searchParams.delete( 'paged' );
-			if ( sel.value ) {
-				url.searchParams.set( 'ordem', sel.value );
-			} else {
-				url.searchParams.delete( 'ordem' );
-			}
-			// Volta para a primeira página ao trocar a ordenação.
-			url.pathname = url.pathname.replace( /\/page\/\d+\/?$/, '/' );
-			window.location.href = url.toString();
-		} );
-	}
-
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
@@ -288,6 +268,5 @@
 		centralizarCatsTab();
 		iniciarGoogle();
 		iniciarCompartilhar();
-		iniciarFiltroPerfil();
 	} );
 } )();

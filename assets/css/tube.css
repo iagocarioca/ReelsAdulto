@@ -924,6 +924,7 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-auth__input:focus { background: #fff; border-color: var(--xf-roxo); box-shadow: 0 0 0 3px var(--xf-roxo-suave); }
 
 .xf-btn-cheio {
+	display: inline-flex; align-items: center; justify-content: center; text-align: center;
 	width: 100%; height: 48px; margin-top: 4px; border: 0; border-radius: var(--xf-pilula); cursor: pointer;
 	background: linear-gradient(135deg, var(--xf-roxo), var(--xf-roxo-2)); color: #fff;
 	font-size: 15px; font-weight: 700; box-shadow: 0 4px 14px rgba(252,48,183,.26);
@@ -1005,7 +1006,7 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-perfil__site svg { width: 16px; height: 16px; color: var(--xf-muted); }
 .xf-perfil__site:hover { color: var(--xf-roxo); }
 .xf-perfil__acao { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
-.xf-perfil__acao .xf-btn-cheio { width: auto; min-width: 150px; padding: 0 28px; }
+.xf-perfil__acao .xf-btn-cheio { width: auto; min-width: 150px; height: 46px; margin-top: 0; padding: 0 28px; }
 .xf-perfil__share {
 	display: grid; place-items: center; width: 46px; height: 46px; flex: 0 0 auto;
 	border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); background: #fff; color: var(--xf-texto); cursor: pointer;
@@ -1024,17 +1025,6 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 }
 .xf-perfil__social-btn svg { width: 17px; height: 17px; display: block; }
 .xf-perfil__social-btn:hover { border-color: var(--xf-texto); }
-
-/* Filtro "Tudo / Mais vistos / Mais curtidos" da grade */
-.xf-perfil__filtro {
-	display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px;
-	border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); background: #fff; color: var(--xf-roxo);
-}
-.xf-perfil__filtro svg { width: 17px; height: 17px; flex: 0 0 auto; }
-.xf-perfil__filtro select {
-	border: 0; background: transparent; font-family: inherit; font-size: 14px; font-weight: 600;
-	color: var(--xf-texto); outline: none; cursor: pointer;
-}
 
 /* Sidebar "Sobre" do perfil */
 .xf-sidebar--perfil { position: static; top: auto; }
@@ -1101,7 +1091,6 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 	.xf-perfil__acao { grid-column: 1 / -1; width: 100%; }
 	.xf-perfil__acao .xf-btn-cheio { width: 100%; }
 	.xf-perfil__social { grid-column: 1 / -1; }
-	.xf-perfil__filtro { padding: 7px 10px; }
 	body.author .xf-secao__titulo { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 	body.author .xf-grade { grid-template-columns: repeat(3, 1fr); gap: 3px; }
 }
