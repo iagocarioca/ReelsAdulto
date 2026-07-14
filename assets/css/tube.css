@@ -80,7 +80,7 @@ body.xf-faixa-esq .xf-topo::before {
 	font-size: 24px; font-weight: 800; letter-spacing: -.5px;
 	color: var(--xf-texto);
 }
-.xf-logo img { height: 52px; width: auto; display: block; }
+.xf-logo img { height: 59px; width: auto; display: block; }
 .xf-logo__x { color: var(--xf-roxo); }
 .xf-logo--rodape img { height: 40px; }
 
