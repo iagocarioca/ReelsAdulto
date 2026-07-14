@@ -60,10 +60,12 @@
 	/* ── Construção dos itens ── */
 	function rail( d ) {
 		return '<div class="xf-feed__rail">' +
-			'<a class="xf-feed__av" href="' + esc( d.autor.url ) + '"><img src="' + esc( d.autor.avatar ) + '" alt="" loading="lazy"></a>' +
+			'<span class="xf-feed__av"><a href="' + esc( d.autor.url ) + '"><img src="' + esc( d.autor.avatar ) + '" alt="" loading="lazy"></a>' +
+				( d.autor.segue ? '' : '<button class="xf-feed__av-plus" type="button" data-fb-follow data-modelo-id="' + d.autor.id + '" aria-label="Seguir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>' ) +
+			'</span>' +
 			'<button class="xf-rail-btn' + ( d.curtiu ? ' ativo' : '' ) + '" type="button" data-fb-like data-video-id="' + d.id + '">' + SVG.heart + '<span data-like-num>' + esc( d.likes ) + '</span></button>' +
+			'<button class="xf-rail-btn" type="button" data-fb-share data-url="' + esc( d.permalink ) + '" aria-label="Compartilhar">' + SVG.share + '</button>' +
 			'<button class="xf-rail-btn" type="button" data-fb-save data-video-id="' + d.id + '">' + SVG.save + '</button>' +
-			'<a class="xf-rail-btn" href="' + esc( d.permalink ) + '">' + SVG.share + '</a>' +
 			'</div>';
 	}
 	function ui() {
@@ -86,7 +88,7 @@
 			stage +
 			'<button class="xf-feed__pp" type="button" data-pp aria-label="Play/Pause">' + SVG.play + '</button>' +
 			rail( d ) +
-			'<div class="xf-feed__caption"><a href="' + esc( d.autor.url ) + '">@' + esc( d.autor.handle ) + '</a><p>' + esc( d.title ) + '</p></div>' +
+			'<div class="xf-feed__caption"><a href="' + esc( d.autor.url ) + '">' + esc( d.autor.nome ) + '</a><p>' + esc( d.title ) + '</p><button class="xf-feed__mais" type="button" data-cap-mais>Mais</button></div>' +
 			ui();
 		return art;
 	}
@@ -156,7 +158,14 @@
 		if ( item.dataset.permalink && window.history.replaceState ) {
 			window.history.pushState( { id: item.dataset.id }, '', item.dataset.permalink );
 		}
-		if ( item._data ) { buildPanel( item._data ); carregarRelacionados( item._data ); document.title = item._data.title; }
+		if ( item._data ) {
+			buildPanel( item._data );
+			carregarRelacionados( item._data );
+			document.title = item._data.title;
+			// Atualiza o @handle do topo mobile.
+			var mh = watch.querySelector( '[data-mtop-handle]' );
+			if ( mh ) { mh.textContent = '@' + item._data.autor.handle; mh.href = item._data.autor.url; }
+		}
 
 		registrarView( item );
 		precarregarVizinhos( item );
@@ -222,7 +231,7 @@
 	function itemDe( el ) { return el.closest( '.xf-feed__item' ); }
 
 	track.addEventListener( 'click', function ( e ) {
-		if ( e.target.closest( '[data-fb-like],[data-fb-save],[data-fb-follow],.xf-feed__ui,.xf-feed__rail,.xf-feed__caption a' ) ) { return; }
+		if ( e.target.closest( '[data-fb-like],[data-fb-save],[data-fb-follow],[data-fb-share],[data-cap-mais],.xf-feed__ui,.xf-feed__rail,.xf-feed__caption a' ) ) { return; }
 		var st = e.target.closest( '[data-stage]' ) || e.target.closest( '[data-pp]' );
 		if ( ! st ) { return; }
 		var v = videoDe( itemDe( e.target ) );
@@ -293,6 +302,28 @@
 			e.stopPropagation();
 			if ( ! D.logado ) { window.location.href = D.loginUrl; return; }
 			abrirMenuSalvar( save );
+			return;
+		}
+
+		// Compartilhar (rail mobile): share nativo ou copiar link.
+		var share = e.target.closest( '[data-fb-share]' );
+		if ( share ) {
+			e.preventDefault();
+			e.stopPropagation();
+			var url = share.getAttribute( 'data-url' ) || window.location.href;
+			if ( navigator.share ) { navigator.share( { url: url } ).catch( function () {} ); }
+			else if ( navigator.clipboard && navigator.clipboard.writeText ) { navigator.clipboard.writeText( url ); }
+			return;
+		}
+
+		// "Mais/Menos" da legenda (mobile).
+		var mais = e.target.closest( '[data-cap-mais]' );
+		if ( mais ) {
+			e.preventDefault();
+			e.stopPropagation();
+			var cap = mais.closest( '.xf-feed__caption' );
+			var aberta = cap.classList.toggle( 'is-aberta' );
+			mais.textContent = aberta ? 'Menos' : 'Mais';
 			return;
 		}
 	} );

@@ -590,14 +590,31 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-feed__seek::-moz-range-thumb { width: 13px; height: 13px; border-radius: 999px; background: #fff; border: 0; }
 
 /* Rail + caption (mobile) */
-.xf-feed__rail { position: absolute; right: 10px; bottom: 96px; z-index: 6; display: none; flex-direction: column; align-items: center; gap: 18px; }
-.xf-feed__av img { width: 46px; height: 46px; border-radius: 999px; object-fit: cover; border: 2px solid #fff; }
+.xf-feed__rail { position: absolute; right: 10px; bottom: 96px; z-index: 6; display: none; flex-direction: column; align-items: center; gap: 20px; }
+.xf-feed__av { position: relative; display: block; }
+.xf-feed__av img { width: 46px; height: 46px; border-radius: 999px; object-fit: cover; border: 2px solid #fff; display: block; }
+.xf-feed__av-plus {
+	position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%);
+	width: 20px; height: 20px; border: 0; border-radius: 999px;
+	background: var(--xf-roxo); color: #fff; cursor: pointer; display: grid; place-items: center;
+}
+.xf-feed__av-plus svg { width: 11px; height: 11px; }
+.xf-feed__av-plus.ativo { display: none; }
 .xf-rail-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 0; background: transparent; color: #fff; cursor: pointer; font-size: 12px; font-weight: 700; }
 .xf-rail-btn svg { width: 34px; height: 34px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
 .xf-rail-btn.ativo svg { fill: var(--xf-like); color: var(--xf-like); }
 .xf-feed__caption { position: absolute; left: 14px; right: 74px; bottom: 84px; z-index: 6; display: none; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.6); }
 .xf-feed__caption a { font-weight: 800; font-size: 15px; }
 .xf-feed__caption p { margin: 4px 0 0; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.xf-feed__caption.is-aberta p { -webkit-line-clamp: unset; max-height: 40vh; overflow-y: auto; }
+.xf-feed__mais {
+	margin-top: 6px; padding: 4px 13px; border: 0; border-radius: 999px; cursor: pointer;
+	background: rgba(255, 255, 255, .2); color: #fff; font-size: 12px; font-weight: 700; font-family: inherit;
+	backdrop-filter: blur(4px);
+}
+
+/* Topo do short (mobile): logo + @autor + busca */
+.xf-watch__mtop { display: none; }
 
 /* Setas ↑/↓ (à esquerda do painel) */
 .xf-watch__nav { position: absolute; right: 536px; top: 50%; transform: translateY(-50%); z-index: 6; display: flex; flex-direction: column; gap: 12px; }
@@ -687,8 +704,22 @@ body.single-video .xf-app { min-height: 100vh; }
 @media (max-width: 900px) {
 	.xf-watch { grid-template-columns: 1fr; }
 	.xf-watch__panel { display: none; }
-	.xf-watch__nav { right: 10px; top: auto; bottom: 150px; transform: none; }
-	.xf-feed__rail, .xf-feed__caption { display: flex; }
+	.xf-watch__nav { display: none; } /* no mobile a navegação é o gesto de scroll */
+	.xf-feed__rail { display: flex; }
+	.xf-feed__caption { display: block; }
+	.xf-watch__mtop {
+		display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+		position: absolute; top: 16px; left: 70px; right: 14px; z-index: 7; pointer-events: none;
+	}
+	.xf-watch__mtop a { pointer-events: auto; }
+	.xf-watch__mtop-esq { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+	.xf-watch__mlogo img { height: 30px; width: auto; display: block; filter: drop-shadow(0 1px 4px rgba(0,0,0,.45)); }
+	.xf-watch__mhandle {
+		color: #fff; font-size: 13px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.6);
+		overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60vw;
+	}
+	.xf-watch__mbusca { flex: 0 0 auto; width: 40px; height: 40px; display: grid; place-items: center; color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+	.xf-watch__mbusca svg { width: 23px; height: 23px; }
 }
 /* ── Playlists ─────────────────────────────────────────────── */
 /* Menu "Salvar" no vídeo */
