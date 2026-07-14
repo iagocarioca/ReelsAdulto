@@ -54,7 +54,17 @@ add_action( 'init', 'tikporn_registrar_playlist' );
  */
 function tikporn_playlist_videos( $playlist_id ) {
 	$ids = get_post_meta( $playlist_id, TIKPORN_PLAYLIST_META, true );
-	return array_values( array_filter( array_map( 'intval', (array) $ids ) ) );
+	$ids = array_values( array_filter( array_map( 'intval', (array) $ids ) ) );
+
+	// Ignora vídeos removidos/despublicados (senão a contagem e a capa quebram).
+	return array_values(
+		array_filter(
+			$ids,
+			function ( $id ) {
+				return 'publish' === get_post_status( $id ) && 'video' === get_post_type( $id );
+			}
+		)
+	);
 }
 
 /**

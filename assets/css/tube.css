@@ -417,9 +417,16 @@ body.xf-faixa-esq .xf-topo::before {
 /* Vazio */
 .xf-vazio { padding: 48px 16px; text-align: center; color: var(--xf-muted); }
 .xf-btn {
-	display: inline-block; margin-top: 12px; padding: 11px 20px;
-	border-radius: var(--xf-pilula); background: var(--xf-roxo); color: #fff; font-weight: 700;
+	display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+	margin-top: 12px; padding: 11px 20px; border: 0; cursor: pointer;
+	border-radius: var(--xf-pilula);
+	background: linear-gradient(135deg, var(--xf-roxo), var(--xf-roxo-2)); color: #fff;
+	font-family: inherit; font-size: 14.5px; font-weight: 700;
+	box-shadow: 0 4px 14px rgba(252, 48, 183, .25);
+	transition: filter .15s ease, transform .1s ease;
 }
+.xf-btn:hover { filter: brightness(1.06); }
+.xf-btn:active { transform: translateY(1px); }
 
 /* ── Rodapé ────────────────────────────────────────────────── */
 .xf-rodape { border-top: 1px solid var(--xf-borda); margin-top: auto; }
@@ -857,7 +864,7 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-pl-nova__campo:focus { border-color: var(--xf-roxo-2); }
 .xf-pl-nova__check { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; }
 .xf-pl-nova__check input { accent-color: var(--xf-roxo); width: 16px; height: 16px; }
-.xf-btn--sm { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; font-size: 14px; }
+.xf-btn--sm { display: inline-flex; align-items: center; gap: 7px; margin-top: 0; padding: 10px 20px; font-size: 14px; }
 .xf-btn--sm svg { width: 15px; height: 15px; }
 
 /* Cabeçalho da página da playlist */
