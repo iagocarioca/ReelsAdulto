@@ -451,8 +451,10 @@ body.xf-faixa-esq .xf-topo::before {
 	/* Igual ao desktop: sem título, mostrando as views no card */
 	.xf-card__titulo { display: none; }
 	.xf-card__stat { display: inline-flex; }
-	/* Título de seção pode quebrar em 2 linhas (sem cortar) + recuo p/ liberar a aba Categorias */
-	.xf-secao__cab { min-width: 0; padding-left: 42px; }
+	/* Título de seção pode quebrar em 2 linhas (sem cortar); o recuo p/ liberar
+	   a aba Categorias só existe na home (a aba só aparece lá). */
+	.xf-secao__cab { min-width: 0; }
+	body.home .xf-secao__cab { padding-left: 42px; }
 	.xf-secao__titulo {
 		font-size: 19px; flex: 1; min-width: 0; line-height: 1.2;
 		display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -1081,7 +1083,7 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 
 	/* Perfil mobile (estilo xfree): avatar + stats lado a lado, @handle abaixo,
 	   Seguir de ponta a ponta e grade de 3 colunas. */
-	.xf-perfil__cab { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px 16px; align-items: center; }
+	.xf-perfil__cab { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px 16px; align-items: center; padding-bottom: 18px; margin-bottom: 16px; }
 	.xf-perfil__id { display: contents; }
 	.xf-perfil__foto { grid-row: 1; grid-column: 1; }
 	.xf-perfil__foto img, .xf-perfil__foto .tp-avatar { width: 96px; height: 96px; }
@@ -1100,7 +1102,7 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 	.xf-perfil__acao .xf-btn-cheio { width: 100%; }
 	.xf-perfil__social { grid-column: 1 / -1; }
 	.xf-perfil__filtro { padding: 7px 10px; }
-	body.author .xf-secao__titulo { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	body.author .xf-secao__titulo { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 	body.author .xf-grade { grid-template-columns: repeat(3, 1fr); gap: 3px; }
 }
 
