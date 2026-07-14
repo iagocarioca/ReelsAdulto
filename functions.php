@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.13.0' );
+define( 'TIKPORN_VERSION', '2.13.1' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -64,7 +64,7 @@ function tikporn_assets() {
 	wp_enqueue_style( 'tikporn-main', TIKPORN_URI . '/assets/css/main.css', array(), TIKPORN_VERSION );
 
 	// Fonte do tema: Poppins (Google Fonts).
-	wp_enqueue_style( 'tikporn-poppins', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap', array(), null );
+	wp_enqueue_style( 'tikporn-poppins', 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap', array(), null );
 
 	// Layout tube (estilo "xfree"): design claro do cabeçalho, home e cards.
 	wp_enqueue_style( 'tikporn-tube', TIKPORN_URI . '/assets/css/tube.css', array( 'tikporn-main' ), TIKPORN_VERSION );

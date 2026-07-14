@@ -292,12 +292,14 @@ body.xf-faixa-esq .xf-topo::before {
 	position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
 	padding: 22px 10px 9px; border-radius: 0 0 var(--xf-raio) var(--xf-raio);
 	background: linear-gradient(to top, rgba(0,0,0,.85), transparent);
-	color: #fff; font-size: 12.5px; font-weight: 600; line-height: 1.25;
+	color: #fff; font-size: 12.5px; font-weight: 300; line-height: 1.3;
 	opacity: 0; transform: translateY(6px); transition: opacity .15s, transform .15s;
 	display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 	pointer-events: none;
 }
 .xf-card:hover .xf-card__titulo { opacity: 1; transform: none; }
+/* Categoria como hashtag ao lado do título */
+.xf-card__cat { font-weight: 600; color: var(--xf-roxo-2); white-space: nowrap; }
 
 /* ── Sidebar Categorias ────────────────────────────────────── */
 .xf-sidebar {

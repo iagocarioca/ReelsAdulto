@@ -15,6 +15,19 @@ $tp_prev = '';
 if ( function_exists( 'tikporn_get_video_tipo' ) && 'arquivo' === tikporn_get_video_tipo( $tp_id ) ) {
 	$tp_prev = tikporn_get_video_url( $tp_id );
 }
+
+// Categoria como hashtag ao lado do título (#sexogostoso) — ignora a padrão.
+$tp_hash   = '';
+$tp_termos = get_the_terms( $tp_id, TIKPORN_TAX_CAT );
+if ( $tp_termos && ! is_wp_error( $tp_termos ) ) {
+	$tp_cat_padrao = (int) get_option( 'default_category' );
+	foreach ( $tp_termos as $tp_termo_cat ) {
+		if ( (int) $tp_termo_cat->term_id !== $tp_cat_padrao ) {
+			$tp_hash = '#' . str_replace( '-', '', $tp_termo_cat->slug );
+			break;
+		}
+	}
+}
 ?>
 <a class="xf-card" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>"<?php echo $tp_prev ? ' data-preview="' . esc_url( $tp_prev ) . '"' : ''; ?>>
 	<div class="xf-card__thumb">
@@ -29,5 +42,5 @@ if ( function_exists( 'tikporn_get_video_tipo' ) && 'arquivo' === tikporn_get_vi
 			<?php echo esc_html( $tp_num ); ?>
 		</span>
 	</div>
-	<span class="xf-card__titulo"><?php echo esc_html( wp_trim_words( get_the_title(), 8 ) ); ?></span>
+	<span class="xf-card__titulo"><?php echo esc_html( wp_trim_words( get_the_title(), 8 ) ); ?><?php echo $tp_hash ? ' <b class="xf-card__cat">' . esc_html( $tp_hash ) . '</b>' : ''; ?></span>
 </a>
