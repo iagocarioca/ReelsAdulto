@@ -19,6 +19,8 @@ function tikporn_opcoes_padrao() {
 	return array(
 		// Aparência.
 		'cor_destaque'         => '#FC30B7',
+		'topo_faixa_cor'       => '#fef6ff',
+		'topo_faixa_lado'      => 'direita',
 		// Página inicial (Home) — textos.
 		'home_playlists_titulo' => 'Playlist & Chill',
 		'home_playlists_link'   => 'Todas as Playlists',
@@ -105,6 +107,20 @@ function tikporn_opcoes_registrar() {
 		'cor_destaque',
 		__( 'Cor de destaque', 'tikporn' ),
 		'tikporn_campo_cor_destaque',
+		'tikporn-opcoes',
+		'tikporn_secao_aparencia'
+	);
+	add_settings_field(
+		'topo_faixa_cor',
+		__( 'Cor da faixa do topo', 'tikporn' ),
+		'tikporn_campo_topo_faixa_cor',
+		'tikporn-opcoes',
+		'tikporn_secao_aparencia'
+	);
+	add_settings_field(
+		'topo_faixa_lado',
+		__( 'Lado da faixa do topo', 'tikporn' ),
+		'tikporn_campo_topo_faixa_lado',
 		'tikporn-opcoes',
 		'tikporn_secao_aparencia'
 	);
@@ -232,6 +248,17 @@ function tikporn_opcoes_sanitizar( $entrada ) {
 		}
 	}
 
+	// Faixa do topo — cor (hex) e lado.
+	if ( isset( $entrada['topo_faixa_cor'] ) ) {
+		$cor = sanitize_hex_color( $entrada['topo_faixa_cor'] );
+		if ( $cor ) {
+			$saida['topo_faixa_cor'] = $cor;
+		}
+	}
+	if ( isset( $entrada['topo_faixa_lado'] ) && in_array( $entrada['topo_faixa_lado'], array( 'direita', 'esquerda' ), true ) ) {
+		$saida['topo_faixa_lado'] = $entrada['topo_faixa_lado'];
+	}
+
 	// Página inicial — textos (vazio = usa o padrão via tikporn_opcao).
 	foreach ( array( 'home_playlists_titulo', 'home_playlists_link', 'home_tendencias_titulo', 'busca_placeholder', 'criadores_titulo' ) as $chave_txt ) {
 		if ( isset( $entrada[ $chave_txt ] ) ) {
@@ -281,20 +308,53 @@ function tikporn_opcoes_sanitizar( $entrada ) {
  * Campos do formulário.
  * ---------------------------------------------------------------------- */
 
-function tikporn_campo_cor_destaque() {
-	$valor = sanitize_hex_color( tikporn_opcao( 'cor_destaque' ) ) ?: '#FC30B7';
+/**
+ * Renderiza um seletor de cor do painel (swatch + hex + reset).
+ *
+ * @param string $chave  Chave da opção.
+ * @param string $padrao Cor padrão (hex).
+ * @param string $desc   Texto de ajuda.
+ * @param bool   $accent Se true, o preview ao vivo também atualiza o accent do painel.
+ */
+function tikporn_campo_cor_render( $chave, $padrao, $desc, $accent = false ) {
+	$valor = sanitize_hex_color( tikporn_opcao( $chave ) ) ?: $padrao;
 	?>
-	<div class="tp-cor" data-tp-cor>
+	<div class="tp-cor" data-tp-cor data-tp-cor-padrao="<?php echo esc_attr( $padrao ); ?>"<?php echo $accent ? ' data-tp-cor-accent' : ''; ?>>
 		<label class="tp-cor__swatch">
 			<input type="color" value="<?php echo esc_attr( $valor ); ?>" data-tp-cor-picker aria-label="<?php esc_attr_e( 'Escolher cor', 'tikporn' ); ?>" />
 		</label>
-		<input type="text" name="tikporn_opcoes[cor_destaque]" value="<?php echo esc_attr( $valor ); ?>"
+		<input type="text" name="tikporn_opcoes[<?php echo esc_attr( $chave ); ?>]" value="<?php echo esc_attr( $valor ); ?>"
 			class="tp-cor__hex" data-tp-cor-hex maxlength="7" spellcheck="false" aria-label="<?php esc_attr_e( 'Código da cor', 'tikporn' ); ?>" />
 		<button type="button" class="tp-cor__reset" data-tp-cor-reset title="<?php esc_attr_e( 'Voltar ao padrão', 'tikporn' ); ?>">
 			<?php esc_html_e( 'Padrão', 'tikporn' ); ?>
 		</button>
 	</div>
-	<p class="description"><?php esc_html_e( 'Cor principal do tema (botões, links, destaques).', 'tikporn' ); ?></p>
+	<p class="description"><?php echo esc_html( $desc ); ?></p>
+	<?php
+}
+
+function tikporn_campo_cor_destaque() {
+	tikporn_campo_cor_render( 'cor_destaque', '#FC30B7', __( 'Cor principal do tema (botões, links, destaques).', 'tikporn' ), true );
+}
+
+function tikporn_campo_topo_faixa_cor() {
+	tikporn_campo_cor_render( 'topo_faixa_cor', '#fef6ff', __( 'Cor da faixa com corte diagonal no cabeçalho do site.', 'tikporn' ) );
+}
+
+function tikporn_campo_topo_faixa_lado() {
+	$valor = tikporn_opcao( 'topo_faixa_lado' );
+	?>
+	<div class="tp-seg" role="radiogroup" aria-label="<?php esc_attr_e( 'Lado da faixa', 'tikporn' ); ?>">
+		<label class="tp-seg__opt">
+			<input type="radio" name="tikporn_opcoes[topo_faixa_lado]" value="direita" <?php checked( $valor, 'direita' ); ?> />
+			<span><?php esc_html_e( 'Direita', 'tikporn' ); ?></span>
+		</label>
+		<label class="tp-seg__opt">
+			<input type="radio" name="tikporn_opcoes[topo_faixa_lado]" value="esquerda" <?php checked( $valor, 'esquerda' ); ?> />
+			<span><?php esc_html_e( 'Esquerda', 'tikporn' ); ?></span>
+		</label>
+	</div>
+	<p class="description"><?php esc_html_e( 'Direita: a cor fica depois da logo. Esquerda: a cor fica atrás da logo.', 'tikporn' ); ?></p>
 	<?php
 }
 
@@ -713,6 +773,22 @@ function tikporn_opcoes_css() {
 .tp-cor__reset:hover { color: var(--tp-text); background: var(--tp-surface-raised); }
 .tp-cor__reset:focus-visible { outline: 2px solid var(--tp-accent); outline-offset: 2px; }
 
+/* Controle segmentado (ex.: lado da faixa do topo) */
+.tp-seg {
+	display: inline-flex; gap: 4px; padding: 4px;
+	background: var(--tp-surface); border: 1px solid var(--tp-border); border-radius: 10px;
+}
+.tp-seg__opt { position: relative; }
+.tp-seg__opt input { position: absolute; opacity: 0; pointer-events: none; }
+.tp-seg__opt span {
+	display: inline-flex; padding: 7px 16px; border-radius: 7px; cursor: pointer;
+	font-size: 13px; font-weight: 500; color: var(--tp-text-muted);
+	transition: background .15s ease, color .15s ease;
+}
+.tp-seg__opt span:hover { color: var(--tp-text); }
+.tp-seg__opt input:checked + span { background: var(--tp-accent); color: #fff; }
+.tp-seg__opt input:focus-visible + span { outline: 2px solid var(--tp-accent); outline-offset: 2px; }
+
 /* -------- Componente: AÇÕES (rodapé sticky) --------------------------- */
 .tp-opt__actions {
 	position: sticky; bottom: 0; z-index: var(--tp-z-sticky);
@@ -756,14 +832,14 @@ jQuery(function ($) {
 	var $wrap = $('.tp-opt');
 	if (!$wrap.length) { return; }
 
-	/* Seletor de cor nativo: swatch + campo hex sincronizados, preview ao vivo */
-	(function () {
-		var box = document.querySelector('[data-tp-cor]');
-		if (!box) { return; }
+	/* Seletores de cor nativos: swatch + campo hex sincronizados, preview ao vivo.
+	   O que tiver data-tp-cor-accent também atualiza o accent do painel. */
+	document.querySelectorAll('[data-tp-cor]').forEach(function (box) {
 		var picker = box.querySelector('[data-tp-cor-picker]');
 		var hex    = box.querySelector('[data-tp-cor-hex]');
 		var reset  = box.querySelector('[data-tp-cor-reset]');
-		var PADRAO = '#FC30B7';
+		var PADRAO = box.getAttribute('data-tp-cor-padrao') || '#FC30B7';
+		var accent = box.hasAttribute('data-tp-cor-accent');
 
 		function normalizar(v) {
 			v = String(v || '').trim();
@@ -773,7 +849,7 @@ jQuery(function ($) {
 		function aplicar(v, origem) {
 			var c = normalizar(v);
 			if (!c) { return; }
-			$wrap[0].style.setProperty('--tp-accent', c);
+			if (accent) { $wrap[0].style.setProperty('--tp-accent', c); }
 			box.style.setProperty('--tp-cor', c);
 			if (origem !== 'picker') { picker.value = c; }
 			if (origem !== 'hex') { hex.value = c; }
@@ -783,7 +859,7 @@ jQuery(function ($) {
 		hex.addEventListener('input', function () { aplicar(hex.value, 'hex'); });
 		hex.addEventListener('blur', function () { if (!normalizar(hex.value)) { aplicar(picker.value, 'hex'); } });
 		reset.addEventListener('click', function () { aplicar(PADRAO); });
-	})();
+	});
 
 	/* Navegação por abas (persiste a aba ativa em sessionStorage) */
 	function ativar(id) {
@@ -885,25 +961,56 @@ function tikporn_clarear_cor( $hex, $percent ) {
  * @return string CSS pronto para injeção (vazio se for a cor padrão).
  */
 function tikporn_css_cor_destaque() {
+	$css = '';
+
+	// Cor de destaque (só injeta se for diferente do padrão do CSS).
 	$cor = sanitize_hex_color( tikporn_opcao( 'cor_destaque' ) );
-	if ( ! $cor ) {
-		return '';
-	}
-	// Se for igual ao padrão do CSS, não precisa injetar nada.
-	if ( strtoupper( $cor ) === '#FC30B7' ) {
-		return '';
+	if ( $cor && strtoupper( $cor ) !== '#FC30B7' ) {
+		$css .= sprintf(
+			':root{--xf-roxo:%s;--xf-roxo-2:%s;--xf-roxo-suave:%s;}',
+			$cor,
+			tikporn_clarear_cor( $cor, 0.28 ),
+			tikporn_clarear_cor( $cor, 0.90 )
+		);
 	}
 
-	$clara = tikporn_clarear_cor( $cor, 0.28 );
-	$suave = tikporn_clarear_cor( $cor, 0.90 );
+	// Faixa do topo.
+	$faixa = sanitize_hex_color( tikporn_opcao( 'topo_faixa_cor' ) );
+	if ( $faixa && strtolower( $faixa ) !== '#fef6ff' ) {
+		$css .= sprintf( ':root{--xf-topo-faixa:%s;}', $faixa );
+	}
 
-	return sprintf(
-		':root{--xf-roxo:%s;--xf-roxo-2:%s;--xf-roxo-suave:%s;}',
-		$cor,
-		$clara,
-		$suave
-	);
+	return $css;
 }
+
+/**
+ * True se a cor (hex) é escura — para garantir contraste sobre a faixa.
+ */
+function tikporn_cor_eh_escura( $hex ) {
+	$hex = ltrim( (string) $hex, '#' );
+	if ( 6 !== strlen( $hex ) ) {
+		return false;
+	}
+	$r = hexdec( substr( $hex, 0, 2 ) );
+	$g = hexdec( substr( $hex, 2, 2 ) );
+	$b = hexdec( substr( $hex, 4, 2 ) );
+	return ( 0.2126 * $r + 0.7152 * $g + 0.0722 * $b ) < 128;
+}
+
+/**
+ * Body classes da faixa do topo: lado (padrão: direita) e contraste
+ * (faixa escura deixa brancos os ícones que ficam sobre ela).
+ */
+function tikporn_body_class_faixa( $classes ) {
+	if ( 'esquerda' === tikporn_opcao( 'topo_faixa_lado' ) ) {
+		$classes[] = 'xf-faixa-esq';
+	}
+	if ( tikporn_cor_eh_escura( tikporn_opcao( 'topo_faixa_cor' ) ) ) {
+		$classes[] = 'xf-faixa-escura';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'tikporn_body_class_faixa' );
 
 /**
  * Estrutura das abas do painel: id, rótulo, ícone (dashicon) e campos.
@@ -917,6 +1024,8 @@ function tikporn_opcoes_abas() {
 			'desc'  => __( 'Cor e identidade visual do tema.', 'tikporn' ),
 			'campos' => array(
 				array( 'label' => __( 'Cor de destaque', 'tikporn' ), 'icon' => 'art', 'cb' => 'tikporn_campo_cor_destaque' ),
+				array( 'label' => __( 'Cor da faixa do topo', 'tikporn' ), 'icon' => 'admin-appearance', 'cb' => 'tikporn_campo_topo_faixa_cor' ),
+				array( 'label' => __( 'Lado da faixa do topo', 'tikporn' ), 'icon' => 'leftright', 'cb' => 'tikporn_campo_topo_faixa_lado' ),
 			),
 		),
 		'home' => array(
