@@ -173,6 +173,70 @@ function tikporn_criadores( $limite = 6, $ordem = 'videos' ) {
 }
 
 /**
+ * Links públicos do perfil (site e redes sociais) preenchidos pelo usuário.
+ *
+ * @param int $user_id ID do usuário.
+ * @return array chave => array( 'url', 'rotulo' ).
+ */
+function tikporn_links_perfil( $user_id ) {
+	$campos = array(
+		'site'      => __( 'Site', 'tikporn' ),
+		'x'         => 'X (Twitter)',
+		'tiktok'    => 'TikTok',
+		'instagram' => 'Instagram',
+	);
+	$links = array();
+	foreach ( $campos as $chave => $rotulo ) {
+		$url = get_user_meta( $user_id, 'tikporn_link_' . $chave, true );
+		if ( $url ) {
+			$links[ $chave ] = array(
+				'url'    => $url,
+				'rotulo' => $rotulo,
+			);
+		}
+	}
+	return $links;
+}
+
+/**
+ * Categorias usadas nos vídeos de um autor (mais frequentes primeiro).
+ *
+ * @param int $user_id ID do autor.
+ * @param int $limite  Máximo de categorias.
+ * @return array Lista de WP_Term.
+ */
+function tikporn_categorias_do_autor( $user_id, $limite = 12 ) {
+	$ids = get_posts(
+		array(
+			'post_type'      => 'video',
+			'author'         => (int) $user_id,
+			'post_status'    => 'publish',
+			'posts_per_page' => 100,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+	if ( empty( $ids ) ) {
+		return array();
+	}
+	$terms = wp_get_object_terms( $ids, TIKPORN_TAX_CAT, array( 'orderby' => 'count', 'order' => 'DESC' ) );
+	if ( is_wp_error( $terms ) ) {
+		return array();
+	}
+	// Ignora a categoria padrão ("Sem categoria").
+	$padrao = (int) get_option( 'default_category' );
+	$terms  = array_values(
+		array_filter(
+			$terms,
+			function ( $t ) use ( $padrao ) {
+				return (int) $t->term_id !== $padrao;
+			}
+		)
+	);
+	return array_slice( $terms, 0, max( 1, (int) $limite ) );
+}
+
+/**
  * Formata número grande de forma curta (1200 -> "1,2 mil").
  */
 function tikporn_numero_curto( $n ) {

@@ -235,6 +235,50 @@
 		iniciarGis();
 	}
 
+	/* --------- Compartilhar (perfil): share nativo ou copiar link --------- */
+	function iniciarCompartilhar() {
+		document.addEventListener( 'click', function ( e ) {
+			var botao = e.target.closest( '[data-compartilhar]' );
+			if ( ! botao ) {
+				return;
+			}
+			e.preventDefault();
+			var dados = { title: document.title, url: window.location.href };
+			if ( navigator.share ) {
+				navigator.share( dados ).catch( function () {} );
+				return;
+			}
+			if ( navigator.clipboard && navigator.clipboard.writeText ) {
+				navigator.clipboard.writeText( dados.url ).then( function () {
+					botao.classList.add( 'is-copiado' );
+					setTimeout( function () {
+						botao.classList.remove( 'is-copiado' );
+					}, 1500 );
+				} );
+			}
+		} );
+	}
+
+	/* --------- Filtro de ordenação do perfil (Tudo / Mais vistos / Mais curtidos) --------- */
+	function iniciarFiltroPerfil() {
+		var sel = document.querySelector( '[data-perfil-ordem]' );
+		if ( ! sel ) {
+			return;
+		}
+		sel.addEventListener( 'change', function () {
+			var url = new URL( window.location.href );
+			url.searchParams.delete( 'paged' );
+			if ( sel.value ) {
+				url.searchParams.set( 'ordem', sel.value );
+			} else {
+				url.searchParams.delete( 'ordem' );
+			}
+			// Volta para a primeira página ao trocar a ordenação.
+			url.pathname = url.pathname.replace( /\/page\/\d+\/?$/, '/' );
+			window.location.href = url.toString();
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
@@ -243,5 +287,7 @@
 		iniciarVerMais();
 		centralizarCatsTab();
 		iniciarGoogle();
+		iniciarCompartilhar();
+		iniciarFiltroPerfil();
 	} );
 } )();

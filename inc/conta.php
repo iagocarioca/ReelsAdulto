@@ -38,6 +38,16 @@ function tikporn_processar_conta() {
 	}
 	wp_update_user( $campos );
 
+	// Links públicos (site e redes sociais) mostrados no perfil.
+	foreach ( array( 'site', 'x', 'tiktok', 'instagram' ) as $rede ) {
+		$url = esc_url_raw( wp_unslash( $_POST[ 'link_' . $rede ] ?? '' ) );
+		if ( $url ) {
+			update_user_meta( $user_id, 'tikporn_link_' . $rede, $url );
+		} else {
+			delete_user_meta( $user_id, 'tikporn_link_' . $rede );
+		}
+	}
+
 	if ( ! empty( $_FILES['foto']['name'] ) ) {
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';

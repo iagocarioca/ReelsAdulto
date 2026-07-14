@@ -132,6 +132,22 @@ $tp_seg   = tikporn_seguindo_do_usuario( $tp_uid );
 				<span><?php esc_html_e( 'Foto de perfil', 'tikporn' ); ?></span>
 				<input type="file" name="foto" accept="image/*">
 			</label>
+			<label class="xf-form__campo">
+				<span><?php esc_html_e( 'Site', 'tikporn' ); ?></span>
+				<input type="url" name="link_site" value="<?php echo esc_attr( get_user_meta( $tp_uid, 'tikporn_link_site', true ) ); ?>" placeholder="https://seusite.com">
+			</label>
+			<label class="xf-form__campo">
+				<span>X (Twitter)</span>
+				<input type="url" name="link_x" value="<?php echo esc_attr( get_user_meta( $tp_uid, 'tikporn_link_x', true ) ); ?>" placeholder="https://x.com/usuario">
+			</label>
+			<label class="xf-form__campo">
+				<span>TikTok</span>
+				<input type="url" name="link_tiktok" value="<?php echo esc_attr( get_user_meta( $tp_uid, 'tikporn_link_tiktok', true ) ); ?>" placeholder="https://tiktok.com/@usuario">
+			</label>
+			<label class="xf-form__campo">
+				<span>Instagram</span>
+				<input type="url" name="link_instagram" value="<?php echo esc_attr( get_user_meta( $tp_uid, 'tikporn_link_instagram', true ) ); ?>" placeholder="https://instagram.com/usuario">
+			</label>
 			<button type="submit" name="tikporn_salvar_conta" value="1" class="xf-btn"><?php esc_html_e( 'Salvar', 'tikporn' ); ?></button>
 		</form>
 	</section>
