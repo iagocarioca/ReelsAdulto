@@ -128,8 +128,8 @@
 						'<span class="xf-rel__thumb"' + ( r.poster ? ' style="background-image:url(\'' + esc( r.poster ) + '\')"' : '' ) + '>' +
 							'<span class="xf-rel__play" aria-hidden="true">' + SVG.play + '</span>' +
 							( r.views ? '<span class="xf-rel__views">' + SVG.eye + ' ' + esc( r.views ) + '</span>' : '' ) +
+							'<span class="xf-rel__titulo">' + esc( r.title ) + '</span>' +
 						'</span>' +
-						'<span class="xf-rel__titulo">' + esc( r.title ) + '</span>' +
 					'</a>';
 				} ).join( '' );
 				atual.innerHTML = '<h2 class="xf-watch__rel-titulo">Recomendados</h2><div class="xf-rel-lista">' + itens + '</div>';

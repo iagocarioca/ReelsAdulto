@@ -669,13 +669,19 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-rel:hover .xf-rel__play { opacity: 1; transform: scale(1); }
 .xf-rel:hover .xf-rel__thumb { transform: translateY(-2px); }
 .xf-rel__thumb { transition: transform .15s; }
-.xf-rel__views { position: absolute; left: 7px; bottom: 7px; z-index: 2; display: inline-flex; align-items: center; gap: 3px; color: #fff; font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+.xf-rel__views { position: absolute; left: 8px; bottom: 8px; z-index: 2; display: inline-flex; align-items: center; gap: 3px; color: #fff; font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,.6); transition: opacity .15s; }
 .xf-rel__views svg { width: 13px; height: 13px; }
+/* Título sobre a thumb, aparece só no hover (views dá lugar a ele) */
 .xf-rel__titulo {
-	font-size: 12.5px; font-weight: 600; line-height: 1.3; color: var(--xf-texto); margin-top: 7px;
+	position: absolute; left: 10px; right: 10px; bottom: 8px; z-index: 2;
+	font-size: 12.5px; font-weight: 600; line-height: 1.35; color: #fff;
+	text-shadow: 0 1px 2px rgba(0,0,0,.5);
 	display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+	opacity: 0; transform: translateY(5px); transition: opacity .15s, transform .15s;
 }
-.xf-rel:hover .xf-rel__titulo { color: var(--xf-roxo); }
+.xf-rel:hover .xf-rel__titulo { opacity: 1; transform: none; }
+.xf-rel:hover .xf-rel__views { opacity: 0; }
+.xf-rel:hover .xf-rel__thumb::after { background: linear-gradient(to top, rgba(0,0,0,.72), transparent 55%); }
 
 /* Mobile: feed em tela cheia, rail/caption aparecem, painel some */
 @media (max-width: 900px) {
