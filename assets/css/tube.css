@@ -835,7 +835,9 @@ body.single-video .xf-app { min-height: 100vh; }
 .xf-plhead__cover--img .xf-plhead__cover-badge { display: grid; }
 .xf-plhead__info { min-width: 0; }
 .xf-plhead__label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--xf-muted); }
-.xf-plhead__title { font-size: 34px; font-weight: 800; margin: 4px 0 8px; line-height: 1.12; letter-spacing: -.02em; }
+.xf-plhead__title { display: flex; align-items: center; gap: 12px; font-size: 34px; font-weight: 800; margin: 4px 0 8px; line-height: 1.12; letter-spacing: -.02em; }
+.xf-plhead__title-ico { display: inline-flex; flex: 0 0 auto; color: var(--xf-roxo); }
+.xf-plhead__title-ico svg { width: 1em; height: 1em; display: block; }
 .xf-plhead__meta { font-size: 14px; color: var(--xf-muted); }
 .xf-plhead__meta a { color: var(--xf-texto); font-weight: 700; }
 /* Descrição da categoria/playlist: recolhida em 3 linhas com "ver mais" */

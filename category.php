@@ -35,7 +35,7 @@ $tp_capa   = ( $tp_termo && ! is_wp_error( $tp_termo ) && function_exists( 'tikp
 				</div>
 				<div class="xf-plhead__info">
 					<span class="xf-plhead__label"><?php esc_html_e( 'Categoria', 'tikporn' ); ?></span>
-					<h1 class="xf-plhead__title"><?php echo esc_html( $tp_nome ); ?></h1>
+					<h1 class="xf-plhead__title"><?php tikporn_icone_playlist_titulo(); ?><?php echo esc_html( $tp_nome ); ?></h1>
 					<div class="xf-plhead__meta">
 						<?php echo esc_html( sprintf( _n( '%d vídeo', '%d vídeos', $tp_total, 'tikporn' ), $tp_total ) ); ?>
 					</div>

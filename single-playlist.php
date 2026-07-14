@@ -37,7 +37,7 @@ while ( have_posts() ) :
 						<span class="xf-plhead__label">
 							<?php echo $tp_publica ? esc_html__( 'Playlist pública', 'tikporn' ) : esc_html__( 'Playlist privada', 'tikporn' ); ?>
 						</span>
-						<h1 class="xf-plhead__title"><?php the_title(); ?></h1>
+						<h1 class="xf-plhead__title"><?php tikporn_icone_playlist_titulo(); ?><?php the_title(); ?></h1>
 						<div class="xf-plhead__meta">
 							<a href="<?php echo esc_url( tikporn_url_perfil( $tp_dono ) ); ?>"><?php echo esc_html( $tp_nome ); ?></a>
 							· <?php echo esc_html( sprintf( _n( '%d vídeo', '%d vídeos', count( $tp_videos ), 'tikporn' ), count( $tp_videos ) ) ); ?>
