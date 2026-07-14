@@ -325,9 +325,12 @@
 		var vid = btn.getAttribute( 'data-video-id' );
 		var menu = document.createElement( 'div' );
 		menu.className = 'xf-plmenu';
-		menu.innerHTML = '<div class="xf-pl-menu__cab">' + SVG.save + '<span>Salvar em playlist</span></div><div class="xf-pl-menu__lista">…</div>' +
-			'<form class="xf-pl-menu__nova"><input type="text" name="titulo" placeholder="Nova playlist…" maxlength="80" autocomplete="off">' +
-			'<button type="submit" aria-label="Criar playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></form>';
+		menu.innerHTML = '<div class="xf-pl-menu__cab"><span>Salvar em playlist</span>' +
+			'<button type="button" class="xf-pl-menu__x" data-pl-x aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>' +
+			'<div class="xf-pl-menu__lista">…</div>' +
+			'<button type="button" class="xf-pl-menu__abrir" data-pl-abrir><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Criar nova playlist</span></button>' +
+			'<form class="xf-pl-menu__nova" hidden><input type="text" name="titulo" placeholder="Nome da playlist…" maxlength="80" autocomplete="off">' +
+			'<button type="submit" aria-label="Criar playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></button></form>';
 		document.body.appendChild( menu );
 		posicionarMenu( menu, btn );
 		track.addEventListener( 'scroll', fecharMenus, { once: true, passive: true } );
@@ -335,7 +338,13 @@
 		var lista = menu.querySelector( '.xf-pl-menu__lista' );
 		function render( pls ) {
 			lista.innerHTML = pls.length ? pls.map( function ( p ) {
-				return '<button type="button" class="xf-pl-menu__item' + ( p.contem ? ' is-in' : '' ) + '" data-pl-item data-id="' + p.id + '"><span class="xf-pl-menu__check"></span><span class="xf-pl-menu__nome">' + esc( p.titulo ) + '</span>' + ( p.publica ? '' : '<span class="xf-pl-menu__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>privada</span>' ) + '</button>';
+				var vis = p.publica
+					? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/></svg>Pública'
+					: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Privada';
+				return '<button type="button" class="xf-pl-menu__item' + ( p.contem ? ' is-in' : '' ) + '" data-pl-item data-id="' + p.id + '">' +
+					'<span class="xf-pl-menu__icone">' + SVG.save + '</span>' +
+					'<span class="xf-pl-menu__info"><span class="xf-pl-menu__nome">' + esc( p.titulo ) + '</span><span class="xf-pl-menu__vis">' + vis + '</span></span>' +
+					'<span class="xf-pl-menu__check"></span></button>';
 			} ).join( '' ) : '<p class="xf-pl-menu__vazio">Crie sua primeira playlist abaixo.</p>';
 		}
 		function recarregar() { ajax( 'tikporn_playlist_listar', { video_id: vid }, 'POST' ).then( function ( r ) { if ( r && r.success ) { render( r.data.playlists ); } } ); }
@@ -347,10 +356,28 @@
 				if ( r && r.success ) { it.classList.toggle( 'is-in', r.data.contem ); }
 			} );
 		} );
-		menu.querySelector( '.xf-pl-menu__nova' ).addEventListener( 'submit', function ( e ) {
+		menu.querySelector( '[data-pl-x]' ).addEventListener( 'click', fecharMenus );
+
+		// "Criar nova playlist" expande o formulário.
+		var abrir = menu.querySelector( '[data-pl-abrir]' );
+		var formNova = menu.querySelector( '.xf-pl-menu__nova' );
+		abrir.addEventListener( 'click', function () {
+			abrir.hidden = true;
+			formNova.hidden = false;
+			formNova.querySelector( 'input' ).focus();
+		} );
+
+		formNova.addEventListener( 'submit', function ( e ) {
 			e.preventDefault();
 			var campo = e.target.querySelector( 'input' ); var titulo = campo.value.trim(); if ( ! titulo ) { return; }
-			ajax( 'tikporn_playlist_criar', { titulo: titulo, publica: 0, video_id: vid }, 'POST' ).then( function ( r ) { if ( r && r.success ) { campo.value = ''; recarregar(); } } );
+			ajax( 'tikporn_playlist_criar', { titulo: titulo, publica: 0, video_id: vid }, 'POST' ).then( function ( r ) {
+				if ( r && r.success ) {
+					campo.value = '';
+					formNova.hidden = true;
+					abrir.hidden = false;
+					recarregar();
+				}
+			} );
 		} );
 	}
 
