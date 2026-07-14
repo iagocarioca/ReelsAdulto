@@ -16,6 +16,7 @@
 	--xf-borda: #ececf0;
 	--xf-chip: #f2f2f5;
 	--xf-topo-altura: 74px;
+	--xf-topo-faixa: #16161a; /* faixa escura atrás da logo no cabeçalho */
 	--xf-max: 1400px;
 	--xf-raio: 7px;
 	--xf-pilula: 9px; /* antes pílula (999px); agora retângulo levemente arredondado */
@@ -48,8 +49,17 @@ body.xf-body {
 	height: var(--xf-topo-altura);
 	background: var(--xf-bg);
 	border-bottom: 1px solid var(--xf-borda);
+	overflow: hidden;
+}
+/* Faixa escura atrás da logo, com corte diagonal */
+.xf-topo::before {
+	content: ""; position: absolute; top: 0; left: 0; bottom: 0;
+	width: max(380px, calc((100% - var(--xf-max)) / 2 + 360px));
+	background: var(--xf-topo-faixa);
+	clip-path: polygon(0 0, 100% 0, calc(100% - 52px) 100%, 0 100%);
 }
 .xf-topo__inner {
+	position: relative;
 	max-width: var(--xf-max);
 	height: 100%;
 	margin: 0 auto;
@@ -395,7 +405,9 @@ body.xf-body {
 @media (max-width: 760px) {
 	:root { --xf-topo-altura: 58px; }
 	.xf-topo__inner { grid-template-columns: auto auto 1fr auto; gap: 8px; padding: 0 12px; }
+	.xf-topo::before { width: 225px; clip-path: polygon(0 0, 100% 0, calc(100% - 36px) 100%, 0 100%); }
 	.xf-menu-btn { display: grid; }
+	.xf-topo .xf-menu-btn { color: #fff; } /* hambúrguer fica sobre a faixa escura */
 	body.home .xf-cats-tab { display: flex; }
 	.xf-topo__inner { grid-template-columns: auto max-content minmax(0, 1fr) auto; gap: 8px; }
 	.xf-logo img { height: 30px; max-width: none; }
