@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.15.0' );
+define( 'TIKPORN_VERSION', '2.16.0' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -114,6 +114,7 @@ $tikporn_modulos = array(
 	'conta',             // Minha conta (perfil do usuário).
 	'feed',              // Feed vertical (pushState) na página do vídeo.
 	'busca',             // Sugestões de busca (autocomplete).
+	'comentarios',       // Comentários dos vídeos (AJAX).
 	'scroll-infinito',   // Scroll infinito das grades.
 	'api-canais',        // REST: criar/atualizar canais (usuário modelo).
 	'paginas-padrao',    // Cria páginas ao ativar o tema.

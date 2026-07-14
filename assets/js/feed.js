@@ -34,7 +34,9 @@
 		eye:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
 		muted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>',
 		sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>',
-		check: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>'
+		check: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>',
+		coment: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.5 3 2 6.9 2 11.6c0 2.7 1.5 5.2 3.8 6.8-.2 1.1-.8 2.5-1.7 3.6 0 0 2.9-.4 5-1.9 1 .2 1.9.3 2.9.3 5.5 0 10-3.9 10-8.8S17.5 3 12 3z"/></svg>',
+		send:  '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11z"/></svg>'
 	};
 
 	function esc( s ) {
@@ -64,6 +66,7 @@
 				( d.autor.segue ? '' : '<button class="xf-feed__av-plus" type="button" data-fb-follow data-modelo-id="' + d.autor.id + '" aria-label="Seguir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>' ) +
 			'</span>' +
 			'<button class="xf-rail-btn' + ( d.curtiu ? ' ativo' : '' ) + '" type="button" data-fb-like data-video-id="' + d.id + '">' + SVG.heart + '<span data-like-num>' + esc( d.likes ) + '</span></button>' +
+			'<button class="xf-rail-btn" type="button" data-fb-coments data-video-id="' + d.id + '" aria-label="Comentários">' + SVG.coment + '<span data-coment-num>' + esc( d.coments || 0 ) + '</span></button>' +
 			'<button class="xf-rail-btn" type="button" data-fb-share data-url="' + esc( d.permalink ) + '" aria-label="Compartilhar">' + SVG.share + '</button>' +
 			'<button class="xf-rail-btn" type="button" data-fb-save data-video-id="' + d.id + '">' + SVG.save + '</button>' +
 			'</div>';
@@ -110,8 +113,105 @@
 				'<a class="xf-act" href="' + esc( d.permalink ) + '"><span class="xf-act__ic">' + SVG.share + '</span><span>Compartilhar</span></a>' +
 				'<div class="xf-act-save"><button class="xf-act" type="button" data-fb-save data-video-id="' + d.id + '"><span class="xf-act__ic">' + SVG.save + '</span><span>Salvar</span></button></div>' +
 			'</div>' +
+			'<div class="xf-coments" data-coments data-video-id="' + d.id + '">' +
+				'<h2 class="xf-coments__titulo">Comentários <span class="xf-coments__total" data-coments-total>' + esc( d.coments || 0 ) + '</span></h2>' +
+				formComentar( d.id ) +
+				'<div class="xf-coments__lista" data-coments-lista></div>' +
+			'</div>' +
 			'<div class="xf-watch__rel" data-rel hidden></div>';
 	}
+
+	/* ── Comentários ── */
+	function formComentar( videoId ) {
+		if ( ! D.logado ) {
+			return '<a class="xf-coments__login" href="' + esc( D.loginUrl || '/entrar/' ) + '">Entre para comentar</a>';
+		}
+		return '<form class="xf-coments__form" data-coments-form data-video-id="' + videoId + '">' +
+			'<input type="text" name="texto" maxlength="600" placeholder="Adicione um comentário…" autocomplete="off">' +
+			'<button type="submit" aria-label="Enviar">' + SVG.send + '</button></form>';
+	}
+
+	function comentarioHtml( c ) {
+		return '<div class="xf-coment">' +
+			'<img class="xf-coment__avatar" src="' + esc( c.avatar ) + '" alt="" loading="lazy">' +
+			'<div class="xf-coment__corpo"><span class="xf-coment__autor">' + esc( c.autor ) + ' <em>' + esc( c.tempo ) + '</em></span>' +
+			'<p class="xf-coment__texto">' + esc( c.texto ) + '</p></div></div>';
+	}
+
+	function renderComentarios( alvo, items ) {
+		alvo.innerHTML = items.length
+			? items.map( comentarioHtml ).join( '' )
+			: '<p class="xf-coments__vazio">Seja o primeiro a comentar.</p>';
+	}
+
+	// Carrega a lista dentro de um container [data-coments] (painel ou folha mobile).
+	function carregarComentarios( box ) {
+		var lista = box.querySelector( '[data-coments-lista]' );
+		var vid   = box.getAttribute( 'data-video-id' );
+		if ( ! lista || ! vid ) { return; }
+		lista.innerHTML = '<p class="xf-coments__vazio">Carregando…</p>';
+		ajax( 'tikporn_comentarios', { video_id: vid } ).then( function ( res ) {
+			if ( ! res || ! res.success || ! box.isConnected ) { return; }
+			renderComentarios( lista, res.data.items || [] );
+			var tot = box.querySelector( '[data-coments-total]' );
+			if ( tot ) { tot.textContent = res.data.total; }
+		} );
+	}
+
+	// Folha de comentários (mobile).
+	function abrirFolhaComentarios( videoId ) {
+		fecharFolhaComentarios();
+		var sheet = document.createElement( 'div' );
+		sheet.className = 'xf-csheet';
+		sheet.innerHTML = '<div class="xf-csheet__backdrop" data-csheet-close></div>' +
+			'<div class="xf-csheet__painel" data-coments data-video-id="' + videoId + '">' +
+				'<div class="xf-csheet__cab"><span>Comentários <b class="xf-coments__total" data-coments-total></b></span>' +
+					'<button type="button" class="xf-csheet__x" data-csheet-close aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>' +
+				'<div class="xf-coments__lista" data-coments-lista></div>' +
+				formComentar( videoId ) +
+			'</div>';
+		document.body.appendChild( sheet );
+		requestAnimationFrame( function () { sheet.classList.add( 'is-aberta' ); } );
+		carregarComentarios( sheet.querySelector( '[data-coments]' ) );
+	}
+	function fecharFolhaComentarios() {
+		document.querySelectorAll( '.xf-csheet' ).forEach( function ( s ) { s.remove(); } );
+	}
+	document.addEventListener( 'click', function ( e ) {
+		if ( e.target.closest( '[data-csheet-close]' ) ) { fecharFolhaComentarios(); }
+	} );
+
+	// Envio (delegado no documento: vale para o painel e para a folha).
+	document.addEventListener( 'submit', function ( e ) {
+		var form = e.target.closest( '[data-coments-form]' );
+		if ( ! form ) { return; }
+		e.preventDefault();
+		var campo = form.querySelector( 'input[name="texto"]' );
+		var texto = campo.value.trim();
+		var vid   = form.getAttribute( 'data-video-id' );
+		if ( ! texto || ! vid || form.classList.contains( 'is-enviando' ) ) { return; }
+		form.classList.add( 'is-enviando' );
+		ajax( 'tikporn_comentar', { video_id: vid, texto: texto, nonce: D.nonce }, 'POST' ).then( function ( res ) {
+			form.classList.remove( 'is-enviando' );
+			if ( ! res || ! res.success ) {
+				if ( res && res.data && res.data.msg ) { alert( res.data.msg ); }
+				return;
+			}
+			campo.value = '';
+			// Adiciona no topo de todas as listas abertas deste vídeo e atualiza contadores.
+			document.querySelectorAll( '[data-coments][data-video-id="' + vid + '"]' ).forEach( function ( box ) {
+				var lista = box.querySelector( '[data-coments-lista]' );
+				var vazio = lista && lista.querySelector( '.xf-coments__vazio' );
+				if ( vazio ) { vazio.remove(); }
+				if ( lista ) { lista.insertAdjacentHTML( 'afterbegin', comentarioHtml( res.data.item ) ); }
+				var tot = box.querySelector( '[data-coments-total]' );
+				if ( tot ) { tot.textContent = res.data.total; }
+			} );
+			document.querySelectorAll( '[data-fb-coments][data-video-id="' + vid + '"] [data-coment-num]' ).forEach( function ( n ) {
+				n.textContent = res.data.total;
+			} );
+		} );
+	} );
 
 	// Carrega os vídeos relacionados via AJAX (isolado: nunca afeta o painel/vídeo).
 	function carregarRelacionados( d ) {
@@ -161,6 +261,8 @@
 		if ( item._data ) {
 			buildPanel( item._data );
 			carregarRelacionados( item._data );
+			var cbox = panel.querySelector( '[data-coments]' );
+			if ( cbox ) { carregarComentarios( cbox ); }
 			document.title = item._data.title;
 			// Atualiza o @handle do topo mobile.
 			var mh = watch.querySelector( '[data-mtop-handle]' );
@@ -231,7 +333,7 @@
 	function itemDe( el ) { return el.closest( '.xf-feed__item' ); }
 
 	track.addEventListener( 'click', function ( e ) {
-		if ( e.target.closest( '[data-fb-like],[data-fb-save],[data-fb-follow],[data-fb-share],.xf-feed__ui,.xf-feed__rail,.xf-feed__caption a' ) ) { return; }
+		if ( e.target.closest( '[data-fb-like],[data-fb-save],[data-fb-follow],[data-fb-share],[data-fb-coments],.xf-feed__ui,.xf-feed__rail,.xf-feed__caption a' ) ) { return; }
 		var st = e.target.closest( '[data-stage]' ) || e.target.closest( '[data-pp]' );
 		if ( ! st ) { return; }
 		var v = videoDe( itemDe( e.target ) );
@@ -311,6 +413,15 @@
 			e.stopPropagation();
 			if ( ! D.logado ) { window.location.href = D.loginUrl; return; }
 			abrirMenuSalvar( save );
+			return;
+		}
+
+		// Comentários (rail mobile): abre a folha.
+		var com = e.target.closest( '[data-fb-coments]' );
+		if ( com ) {
+			e.preventDefault();
+			e.stopPropagation();
+			abrirFolhaComentarios( com.getAttribute( 'data-video-id' ) );
 			return;
 		}
 

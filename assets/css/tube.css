@@ -708,6 +708,61 @@ body.single-video .xf-app { min-height: 100vh; }
 }
 @keyframes xf-menu-in { from { opacity: 0; transform: translateY(6px) scale(.98); } }
 
+/* Comentários (painel desktop + folha mobile) */
+.xf-coments { margin: 4px 0 24px; }
+.xf-coments__titulo { font-size: 15px; font-weight: 700; margin: 0 0 12px; }
+.xf-coments__total { color: var(--xf-muted); font-weight: 600; }
+.xf-coments__vazio { font-size: 13px; color: var(--xf-muted); margin: 8px 0; }
+.xf-coments__form { display: flex; gap: 8px; margin-bottom: 16px; }
+.xf-coments__form input {
+	flex: 1; min-width: 0; height: 42px; border: 1px solid transparent; border-radius: 999px;
+	padding: 0 16px; font-size: 13.5px; font-family: inherit; outline: none; background: var(--xf-suave);
+	transition: background .12s ease, border-color .12s ease;
+}
+.xf-coments__form input:focus { background: #fff; border-color: var(--xf-roxo-2); }
+.xf-coments__form button {
+	flex: 0 0 auto; width: 42px; height: 42px; border: 0; border-radius: 999px;
+	background: var(--xf-roxo); color: #fff; cursor: pointer; display: grid; place-items: center;
+	transition: filter .12s ease;
+}
+.xf-coments__form button svg { width: 17px; height: 17px; }
+.xf-coments__form button:hover { filter: brightness(1.08); }
+.xf-coments__form.is-enviando { opacity: .6; pointer-events: none; }
+.xf-coments__login {
+	display: block; text-align: center; margin-bottom: 16px; padding: 11px 14px;
+	background: var(--xf-roxo-suave); color: var(--xf-roxo); border-radius: 999px;
+	font-size: 13.5px; font-weight: 600;
+}
+.xf-coments__lista { display: flex; flex-direction: column; gap: 14px; }
+.xf-coment { display: flex; gap: 10px; }
+.xf-coment__avatar { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 999px; object-fit: cover; }
+.xf-coment__corpo { flex: 1; min-width: 0; }
+.xf-coment__autor { display: block; font-size: 13px; font-weight: 700; }
+.xf-coment__autor em { font-style: normal; font-weight: 500; font-size: 11.5px; color: var(--xf-muted); margin-left: 4px; }
+.xf-coment__texto { margin: 3px 0 0; font-size: 13.5px; line-height: 1.45; color: #333; overflow-wrap: break-word; }
+
+/* Folha de comentários (mobile) */
+.xf-csheet { position: fixed; inset: 0; z-index: 90; }
+.xf-csheet__backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+.xf-csheet__painel {
+	position: absolute; left: 0; right: 0; bottom: 0; max-height: 72vh;
+	display: flex; flex-direction: column;
+	background: #fff; border-radius: 16px 16px 0 0; padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+	transform: translateY(100%); transition: transform .22s ease;
+}
+.xf-csheet.is-aberta .xf-csheet__painel { transform: none; }
+.xf-csheet__cab {
+	display: flex; align-items: center; justify-content: space-between;
+	font-size: 15px; font-weight: 700; padding-bottom: 10px; margin-bottom: 10px;
+	border-bottom: 1px solid var(--xf-borda);
+}
+.xf-csheet__x { width: 32px; height: 32px; border: 0; border-radius: 999px; background: transparent; color: var(--xf-muted); cursor: pointer; display: grid; place-items: center; }
+.xf-csheet__x:hover { background: var(--xf-suave); color: var(--xf-texto); }
+.xf-csheet__x svg { width: 16px; height: 16px; }
+.xf-csheet__painel .xf-coments__lista { flex: 1; overflow-y: auto; padding-bottom: 12px; }
+.xf-csheet__painel .xf-coments__form { margin: 10px 0 0; }
+.xf-csheet__painel .xf-coments__login { margin: 10px 0 0; }
+
 /* Recomendados na lateral (desktop) — grade de shorts (2 colunas, thumb vertical) */
 .xf-watch__rel { margin-top: 6px; }
 .xf-watch__rel-titulo { font-size: 15px; font-weight: 700; margin: 0 0 14px; color: var(--xf-texto); }

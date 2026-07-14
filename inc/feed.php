@@ -54,6 +54,7 @@ function tikporn_video_para_feed( $post_id ) {
 		'poster'    => tikporn_capa_url( $post_id ),
 		'views'     => tikporn_numero_k( tikporn_views( $post_id ) ),
 		'likes'     => tikporn_numero_k( tikporn_curtidas( $post_id ) ),
+		'coments'   => (int) get_comments_number( $post_id ),
 		'curtiu'    => tikporn_usuario_curtiu( $post_id ),
 		'autor'     => array(
 			'id'      => $autor,
