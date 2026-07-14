@@ -266,16 +266,36 @@
 			box.hidden = false;
 		}
 
+		// Cache local por termo + descarte de respostas fora de ordem:
+		// digitar rápido nunca gera request duplicado nem resultado "velho".
+		var memoria = {};
+		var reqAtual = 0;
+
 		input.addEventListener( 'input', function () {
-			var q = input.value.trim();
+			var q = input.value.trim().toLowerCase();
 			clearTimeout( timer );
 			if ( q.length < 2 ) { box.hidden = true; return; }
 			if ( q === ultimo ) { return; }
+
+			if ( memoria[ q ] ) {
+				ultimo = q;
+				reqAtual++; // invalida qualquer resposta em voo
+				render( memoria[ q ] );
+				return;
+			}
+
 			timer = setTimeout( function () {
 				ultimo = q;
+				var id = ++reqAtual;
 				fetch( D.ajaxUrl + '?action=tikporn_busca&q=' + encodeURIComponent( q ), { credentials: 'same-origin' } )
 					.then( function ( r ) { return r.json(); } )
-					.then( function ( res ) { if ( res && res.success ) { render( res.data.items ); } } )
+					.then( function ( res ) {
+						if ( id !== reqAtual ) { return; } // já digitou outra coisa
+						if ( res && res.success ) {
+							memoria[ q ] = res.data.items;
+							render( res.data.items );
+						}
+					} )
 					.catch( function () {} );
 			}, 220 );
 		} );
