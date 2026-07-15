@@ -1317,9 +1317,23 @@ body.xf-nav-open { overflow: hidden; }
 .xf-drawer__top .xf-logo img { height: 34px; }
 .xf-drawer__x { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: var(--xf-suave); border-radius: 999px; color: var(--xf-texto); cursor: pointer; }
 .xf-drawer__x svg { width: 20px; height: 20px; }
-.xf-drawer__link { display: block; padding: 14px 10px; border-radius: var(--xf-raio); font-size: 16px; font-weight: 700; color: var(--xf-texto); }
+/* Card de identidade no topo do drawer (logado) */
+.xf-drawer__perfil {
+	display: flex; align-items: center; gap: 11px; padding: 12px; margin-bottom: 10px;
+	border-radius: 12px; background: var(--xf-suave);
+}
+.xf-drawer__perfil img { width: 46px; height: 46px; border-radius: 999px; object-fit: cover; flex: 0 0 auto; }
+.xf-drawer__link {
+	display: flex; align-items: center; gap: 12px; padding: 14px 10px;
+	border-radius: var(--xf-raio); font-size: 15.5px; font-weight: 600; color: var(--xf-texto);
+}
+.xf-drawer__link svg { width: 19px; height: 19px; flex: 0 0 auto; color: var(--xf-muted); }
 .xf-drawer__link:hover, .xf-drawer__link:active { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
-.xf-drawer__link--sair { color: #d11; margin-top: auto; }
+.xf-drawer__link:hover svg, .xf-drawer__link:active svg { color: var(--xf-roxo); }
+.xf-drawer__link--sair { color: #d11; margin-top: auto; border-top: 1px solid var(--xf-borda); border-radius: 0; padding-top: 16px; }
+.xf-drawer__link--sair svg { color: #d11; opacity: .75; }
+.xf-drawer__link--sair:hover { background: #fdeaea; color: #d11; border-radius: var(--xf-raio); }
+.xf-drawer__link--sair:hover svg { color: #d11; }
 
 /* Aba "Categorias" vertical, centralizada na fileira de playlists (rola junto; só mobile/home).
    O --xf-cats-top é calculado por JS (centro da thumb); 170px é só um fallback inicial. */

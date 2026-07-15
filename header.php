@@ -121,16 +121,49 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
 				</button>
 			</div>
-			<a class="xf-drawer__link" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Início', 'tikporn' ); ?></a>
-			<a class="xf-drawer__link" href="<?php echo esc_url( get_post_type_archive_link( 'video' ) ); ?>"><?php esc_html_e( 'Categorias', 'tikporn' ); ?></a>
 			<?php if ( $tp_logado ) : ?>
-				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/minhas-playlists/' ) ); ?>"><?php esc_html_e( 'Minhas playlists', 'tikporn' ); ?></a>
-				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/minha-conta/' ) ); ?>"><?php esc_html_e( 'Minha conta', 'tikporn' ); ?></a>
-				<a class="xf-drawer__link" href="<?php echo esc_url( $tp_url_env ); ?>"><?php esc_html_e( 'Enviar vídeo', 'tikporn' ); ?></a>
-				<a class="xf-drawer__link xf-drawer__link--sair" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>"><?php esc_html_e( 'Sair', 'tikporn' ); ?></a>
+				<a class="xf-drawer__perfil" href="<?php echo esc_url( site_url( '/minha-conta/' ) ); ?>">
+					<img src="<?php echo esc_url( function_exists( 'tikporn_avatar_url' ) ? tikporn_avatar_url( $tp_uid ) : get_avatar_url( $tp_uid ) ); ?>" alt="">
+					<span class="xf-conta__topo-info">
+						<b><?php echo esc_html( get_the_author_meta( 'display_name', $tp_uid ) ); ?></b>
+						<em>@<?php echo esc_html( get_the_author_meta( 'user_nicename', $tp_uid ) ); ?></em>
+					</span>
+				</a>
+			<?php endif; ?>
+			<a class="xf-drawer__link" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+				<?php esc_html_e( 'Início', 'tikporn' ); ?>
+			</a>
+			<a class="xf-drawer__link" href="<?php echo esc_url( get_post_type_archive_link( 'video' ) ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+				<?php esc_html_e( 'Categorias', 'tikporn' ); ?>
+			</a>
+			<?php if ( $tp_logado ) : ?>
+				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/minhas-playlists/' ) ); ?>">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6h13v2H3V6zm0 4h13v2H3v-2zm0 4h9v2H3v-2zm12 0 6 3-6 3v-6z"/></svg>
+					<?php esc_html_e( 'Minhas playlists', 'tikporn' ); ?>
+				</a>
+				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/minha-conta/' ) ); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+					<?php esc_html_e( 'Minha conta', 'tikporn' ); ?>
+				</a>
+				<a class="xf-drawer__link" href="<?php echo esc_url( $tp_url_env ); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+					<?php esc_html_e( 'Enviar vídeo', 'tikporn' ); ?>
+				</a>
+				<a class="xf-drawer__link xf-drawer__link--sair" href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+					<?php esc_html_e( 'Sair', 'tikporn' ); ?>
+				</a>
 			<?php else : ?>
-				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/entrar/' ) ); ?>"><?php esc_html_e( 'Entrar', 'tikporn' ); ?></a>
-				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/cadastro/' ) ); ?>"><?php esc_html_e( 'Criar conta', 'tikporn' ); ?></a>
+				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/entrar/' ) ); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+					<?php esc_html_e( 'Entrar', 'tikporn' ); ?>
+				</a>
+				<a class="xf-drawer__link" href="<?php echo esc_url( site_url( '/cadastro/' ) ); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+					<?php esc_html_e( 'Criar conta', 'tikporn' ); ?>
+				</a>
 			<?php endif; ?>
 		</nav>
 	</div>
