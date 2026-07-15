@@ -65,7 +65,7 @@ $tp_cats = is_wp_error( $tp_cats ) ? array() : $tp_cats;
 						<span><?php echo esc_html( $tp_titulo_playlists ); ?></span>
 					</h2>
 					<?php if ( '' !== $tp_link_playlists ) : ?>
-						<a class="xf-secao__link" href="<?php echo esc_url( get_post_type_archive_link( 'video' ) ); ?>">
+						<a class="xf-secao__link" href="<?php echo esc_url( site_url( '/playlists/' ) ); ?>">
 							<?php echo esc_html( $tp_link_playlists ); ?> &rsaquo;
 						</a>
 					<?php endif; ?>

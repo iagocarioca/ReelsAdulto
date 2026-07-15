@@ -20,6 +20,7 @@ function tikporn_paginas_do_tema() {
 		'area-modelo' => array( __( 'Área da modelo', 'tikporn' ), 'page-templates/area-modelo.php' ),
 		'buscar'      => array( __( 'Buscar', 'tikporn' ), 'page-templates/buscar.php' ),
 		'minhas-playlists' => array( __( 'Minhas playlists', 'tikporn' ), 'page-templates/minhas-playlists.php' ),
+		'playlists'        => array( __( 'Playlists', 'tikporn' ), 'page-templates/playlists.php' ),
 		'minha-conta'      => array( __( 'Minha conta', 'tikporn' ), 'page-templates/minha-conta.php' ),
 	);
 }
