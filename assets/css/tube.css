@@ -515,14 +515,21 @@ body.xf-faixa-esq .xf-topo::before {
 	/* Igual ao desktop: sem título, mostrando as views no card */
 	.xf-card__titulo { display: none; }
 	.xf-card__stat { display: inline-flex; }
-	/* Título de seção pode quebrar em 2 linhas (sem cortar); o recuo p/ liberar
-	   a aba Categorias só existe na home (a aba só aparece lá). */
+	/* Título de seção alinhado com a borda do conteúdo (grades/carrossel);
+	   pode quebrar em 2 linhas sem cortar. */
 	.xf-secao__cab { min-width: 0; }
-	body.home .xf-secao__cab { padding-left: 42px; }
 	.xf-secao__titulo {
 		font-size: 19px; flex: 1; min-width: 0; line-height: 1.2;
 		display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 	}
+	/* Com ícone: mantém o flex (centraliza svg + texto); o clamp vai pro texto */
+	.xf-secao__titulo--icone { display: inline-flex; align-items: center; }
+	/* Seção de playlists: título alinha com o 1º card do carrossel (recuo da aba) */
+	.xf-secao:has(.xf-playlists) .xf-secao__cab { padding-left: 48px; }
+	.xf-secao__titulo--icone > span:last-child {
+		display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+	}
+	.xf-secao__ico svg { width: 24px; height: 24px; }
 	.xf-sidebar__titulo { font-size: 18px; }
 	.xf-sidebar { margin-top: 20px; }
 }
