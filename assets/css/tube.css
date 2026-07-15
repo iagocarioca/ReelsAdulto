@@ -172,15 +172,34 @@ body.xf-faixa-esq .xf-topo::before {
 .xf-conta__btn svg { width: 26px; height: 26px; }
 .xf-conta__btn:hover { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
 .xf-conta__menu {
-	position: absolute; top: calc(100% + 10px); right: 0; z-index: 60;
-	min-width: 210px; background: #fff; border: 1px solid var(--xf-borda);
-	border-radius: var(--xf-raio); box-shadow: 0 16px 44px -10px rgba(0,0,0,.28); padding: 8px;
+	position: absolute; top: calc(100% + 12px); right: 0; z-index: 60;
+	min-width: 252px; background: #fff; border: 1px solid var(--xf-borda);
+	border-radius: 14px; box-shadow: 0 24px 60px -16px rgba(0, 0, 0, .28), 0 4px 14px rgba(0, 0, 0, .08);
+	padding: 8px; animation: xf-menu-in .16s ease;
 }
-.xf-conta__nome { display: block; padding: 8px 12px 10px; font-size: 14px; font-weight: 800; border-bottom: 1px solid var(--xf-borda); margin-bottom: 4px; }
-.xf-conta__link { display: block; padding: 11px 12px; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--xf-texto); }
+/* Cabeçalho do menu: avatar + nome + @handle */
+.xf-conta__topo {
+	display: flex; align-items: center; gap: 11px; padding: 10px; margin-bottom: 6px;
+	border-radius: 10px; background: var(--xf-suave); transition: background .12s ease;
+}
+.xf-conta__topo:hover { background: var(--xf-roxo-suave); }
+.xf-conta__topo img { width: 42px; height: 42px; border-radius: 999px; object-fit: cover; flex: 0 0 auto; }
+.xf-conta__topo-info { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.xf-conta__topo-info b { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xf-conta__topo-info em { font-style: normal; font-size: 12px; color: var(--xf-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xf-conta__link {
+	display: flex; align-items: center; gap: 11px; padding: 10px 12px;
+	border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--xf-texto);
+	transition: background .12s ease, color .12s ease;
+}
+.xf-conta__link svg { width: 17px; height: 17px; flex: 0 0 auto; color: var(--xf-muted); transition: color .12s ease; }
 .xf-conta__link:hover { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
+.xf-conta__link:hover svg { color: var(--xf-roxo); }
+.xf-conta__sep { height: 1px; background: var(--xf-borda); margin: 6px 10px; }
 .xf-conta__sair { color: #d11; }
+.xf-conta__sair svg { color: #d11; opacity: .7; }
 .xf-conta__sair:hover { background: #fdeaea; color: #d11; }
+.xf-conta__sair:hover svg { color: #d11; }
 
 /* ── Conteúdo / Home ───────────────────────────────────────── */
 .xf-conteudo {
