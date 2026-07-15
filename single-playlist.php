@@ -57,6 +57,7 @@ while ( have_posts() ) :
 				</div>
 
 				<?php if ( ! empty( $tp_videos ) ) : ?>
+					<?php $GLOBALS['tikporn_playlist_ctx'] = $tp_id; // Cards levam ?playlist= p/ o feed seguir a playlist. ?>
 					<div class="xf-grade"<?php if ( function_exists( 'tikporn_grade_attrs' ) ) { tikporn_grade_attrs( array( 'tipo' => 'playlist', 'playlist' => $tp_id, 'qtd' => 24, 'tem_mais' => count( $tp_videos ) > 24 ? 1 : 0 ) ); } ?>>
 						<?php
 						$tp_q = new WP_Query(

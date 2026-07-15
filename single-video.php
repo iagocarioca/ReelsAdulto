@@ -15,6 +15,12 @@ while ( have_posts() ) :
 	$tp_id    = get_the_ID();
 	$tp_first = tikporn_video_para_feed( $tp_id );
 
+	// Contexto de playlist (?pl=ID): o feed rola pelos vídeos dela.
+	$tp_playlist = absint( $_GET['pl'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( $tp_playlist && ( ! function_exists( 'tikporn_playlist_visivel' ) || ! tikporn_playlist_visivel( $tp_playlist ) ) ) {
+		$tp_playlist = 0;
+	}
+
 	tikporn_registrar_view( $tp_id );
 	?>
 
@@ -65,7 +71,7 @@ while ( have_posts() ) :
 	</div>
 
 	<script type="application/json" data-feed-config>
-		<?php echo wp_json_encode( array( 'first' => $tp_first, 'exclude' => $tp_id ) ); // phpcs:ignore ?>
+		<?php echo wp_json_encode( array( 'first' => $tp_first, 'exclude' => $tp_id, 'playlist' => $tp_playlist ) ); // phpcs:ignore ?>
 	</script>
 
 	<?php

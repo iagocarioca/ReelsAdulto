@@ -72,12 +72,55 @@ function tikporn_video_para_feed( $post_id ) {
 /**
  * Endpoint AJAX: próxima página de vídeos do feed (público).
  */
+/**
+ * A playlist pode ser usada como contexto do feed?
+ * Pública sempre; privada só para o dono.
+ *
+ * @param int $playlist_id ID da playlist.
+ * @return bool
+ */
+function tikporn_playlist_visivel( $playlist_id ) {
+	$pl = $playlist_id ? get_post( $playlist_id ) : null;
+	if ( ! $pl || 'playlist' !== $pl->post_type ) {
+		return false;
+	}
+	return 'publish' === $pl->post_status || get_current_user_id() === (int) $pl->post_author;
+}
+
 function tikporn_ajax_feed() {
-	$cursor  = absint( $_GET['cursor'] ?? 0 );
-	$exclude = absint( $_GET['exclude'] ?? 0 );
+	$cursor   = absint( $_GET['cursor'] ?? 0 );
+	$exclude  = absint( $_GET['exclude'] ?? 0 );
+	$playlist = absint( $_GET['playlist'] ?? 0 );
 
 	$per = 5;
-	$q   = new WP_Query(
+
+	// Modo playlist: o feed segue os vídeos da playlist, na ordem dela.
+	if ( $playlist && ! tikporn_playlist_visivel( $playlist ) ) {
+		$playlist = 0;
+	}
+	if ( $playlist && function_exists( 'tikporn_playlist_videos' ) ) {
+		$ids = tikporn_playlist_videos( $playlist );
+		if ( $exclude ) {
+			$ids = array_values( array_diff( $ids, array( $exclude ) ) );
+		}
+		$lote  = array_slice( $ids, $cursor, $per );
+		$items = array();
+		foreach ( $lote as $vid ) {
+			$d = tikporn_video_para_feed( $vid );
+			if ( $d ) {
+				$items[] = $d;
+			}
+		}
+		wp_send_json_success(
+			array(
+				'items'       => $items,
+				'next_cursor' => $cursor + count( $lote ),
+				'has_more'    => ( $cursor + count( $lote ) ) < count( $ids ),
+			)
+		);
+	}
+
+	$q = new WP_Query(
 		array(
 			'post_type'      => 'video',
 			'post_status'    => 'publish',
@@ -204,10 +247,36 @@ function tikporn_videos_relacionados( $post_id, $limite = 8 ) {
  * Isolado do feed principal — se falhar, não afeta a reprodução.
  */
 function tikporn_ajax_relacionados() {
-	$id = absint( $_GET['video_id'] ?? 0 );
+	$id       = absint( $_GET['video_id'] ?? 0 );
+	$playlist = absint( $_GET['playlist'] ?? 0 );
 	if ( ! $id || 'video' !== get_post_type( $id ) ) {
 		wp_send_json_error();
 	}
+
+	// Modo playlist: a lateral mostra os vídeos da playlist (na ordem dela).
+	if ( $playlist && ! tikporn_playlist_visivel( $playlist ) ) {
+		$playlist = 0;
+	}
+	if ( $playlist && function_exists( 'tikporn_playlist_videos' ) ) {
+		$ids   = array_values( array_diff( tikporn_playlist_videos( $playlist ), array( $id ) ) );
+		$itens = array();
+		foreach ( array_slice( $ids, 0, 12 ) as $vid ) {
+			$itens[] = array(
+				'id'        => (int) $vid,
+				'permalink' => add_query_arg( 'pl', $playlist, get_permalink( $vid ) ),
+				'title'     => get_the_title( $vid ),
+				'poster'    => tikporn_capa_url( $vid ),
+				'views'     => tikporn_numero_k( tikporn_views( $vid ) ),
+			);
+		}
+		wp_send_json_success(
+			array(
+				'itens'  => $itens,
+				'titulo' => get_post_field( 'post_title', $playlist ),
+			)
+		);
+	}
+
 	wp_send_json_success( array( 'itens' => tikporn_videos_relacionados( $id ) ) );
 }
 add_action( 'wp_ajax_tikporn_relacionados', 'tikporn_ajax_relacionados' );

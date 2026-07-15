@@ -28,8 +28,13 @@ if ( $tp_termos && ! is_wp_error( $tp_termos ) ) {
 		}
 	}
 }
+// Contexto de playlist: o link leva o feed a seguir a playlist.
+$tp_link = get_permalink();
+if ( ! empty( $GLOBALS['tikporn_playlist_ctx'] ) ) {
+	$tp_link = add_query_arg( 'pl', (int) $GLOBALS['tikporn_playlist_ctx'], $tp_link );
+}
 ?>
-<a class="xf-card" href="<?php the_permalink(); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>"<?php echo $tp_prev ? ' data-preview="' . esc_url( $tp_prev ) . '"' : ''; ?>>
+<a class="xf-card" href="<?php echo esc_url( $tp_link ); ?>" aria-label="<?php echo esc_attr( get_the_title() ); ?>"<?php echo $tp_prev ? ' data-preview="' . esc_url( $tp_prev ) . '"' : ''; ?>>
 	<div class="xf-card__thumb">
 		<?php if ( $tp_capa ) : ?>
 			<img src="<?php echo esc_url( $tp_capa ); ?>" alt="" loading="lazy" decoding="async">

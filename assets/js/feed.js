@@ -219,12 +219,13 @@
 			if ( ! d || ! d.id ) { return; }
 			var alvo = panel.querySelector( '[data-rel]' );
 			if ( ! alvo ) { return; }
-			ajax( 'tikporn_relacionados', { video_id: d.id } ).then( function ( res ) {
+			ajax( 'tikporn_relacionados', { video_id: d.id, playlist: cfg.playlist || '' } ).then( function ( res ) {
 				if ( ! res || ! res.success || ! res.data || ! res.data.itens || ! res.data.itens.length ) { return; }
 				// Painel pode ter trocado de vídeo: só preenche se ainda for o mesmo.
 				if ( ! active || ! active._data || active._data.id !== d.id ) { return; }
 				var atual = panel.querySelector( '[data-rel]' );
 				if ( ! atual ) { return; }
+				var tituloRel = res.data.titulo ? 'Playlist · ' + res.data.titulo : 'Recomendados';
 				var itens = res.data.itens.map( function ( r ) {
 					return '<a class="xf-rel" href="' + esc( r.permalink ) + '">' +
 						'<span class="xf-rel__thumb"' + ( r.poster ? ' style="background-image:url(\'' + esc( r.poster ) + '\')"' : '' ) + '>' +
@@ -234,7 +235,7 @@
 						'</span>' +
 					'</a>';
 				} ).join( '' );
-				atual.innerHTML = '<h2 class="xf-watch__rel-titulo">Recomendados</h2><div class="xf-rel-lista">' + itens + '</div>';
+				atual.innerHTML = '<h2 class="xf-watch__rel-titulo">' + esc( tituloRel ) + '</h2><div class="xf-rel-lista">' + itens + '</div>';
 				atual.hidden = false;
 			} ).catch( function () {} );
 		} catch ( e ) {}
@@ -254,9 +255,13 @@
 		if ( v ) { v.muted = muted; v.play().catch( function () {} ); }
 		item.classList.toggle( 'is-muted', muted );
 
-		// URL + título + painel
+		// URL + título + painel (mantém o contexto de playlist na URL)
 		if ( item.dataset.permalink && window.history.replaceState ) {
-			window.history.pushState( { id: item.dataset.id }, '', item.dataset.permalink );
+			var urlFeed = item.dataset.permalink;
+			if ( cfg.playlist ) {
+				urlFeed += ( urlFeed.indexOf( '?' ) > -1 ? '&' : '?' ) + 'pl=' + cfg.playlist;
+			}
+			window.history.pushState( { id: item.dataset.id }, '', urlFeed );
 		}
 		if ( item._data ) {
 			buildPanel( item._data );
@@ -316,7 +321,7 @@
 	function carregarMais() {
 		if ( loading || ! hasMore ) { return; }
 		loading = true;
-		ajax( 'tikporn_feed', { cursor: cursor, exclude: exclude } ).then( function ( res ) {
+		ajax( 'tikporn_feed', { cursor: cursor, exclude: exclude, playlist: cfg.playlist || '' } ).then( function ( res ) {
 			loading = false;
 			if ( ! res || ! res.success ) { hasMore = false; return; }
 			cursor  = res.data.next_cursor;

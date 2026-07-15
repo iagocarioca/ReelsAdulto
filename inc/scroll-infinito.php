@@ -89,6 +89,11 @@ function tikporn_ajax_grade() {
 
 	$q = new WP_Query( $args );
 
+	// Cards de playlist carregam o contexto (?playlist=) no link.
+	if ( 'playlist' === $tipo && ! empty( $pl ) ) {
+		$GLOBALS['tikporn_playlist_ctx'] = $pl;
+	}
+
 	ob_start();
 	while ( $q->have_posts() ) {
 		$q->the_post();
