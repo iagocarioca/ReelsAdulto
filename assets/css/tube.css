@@ -142,12 +142,12 @@ body.xf-faixa-esq .xf-topo::before {
 /* Ações do topo */
 .xf-topo__acoes { display: flex; align-items: center; gap: 12px; }
 .xf-icone-btn {
-	width: 46px; height: 46px; border-radius: 999px;
+	width: 50px; height: 50px; border-radius: 999px;
 	display: grid; place-items: center; color: var(--xf-texto);
 	background: var(--xf-suave);
 }
 .xf-icone-btn:hover { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
-.xf-icone-btn svg { width: 22px; height: 22px; }
+.xf-icone-btn svg { width: 27px; height: 27px; }
 .xf-app a.xf-enviar,
 .xf-enviar {
 	display: inline-flex; align-items: center; gap: 8px;
@@ -163,13 +163,13 @@ body.xf-faixa-esq .xf-topo::before {
 /* Conta: avatar + menu (dropdown) */
 .xf-conta { position: relative; }
 .xf-conta__btn {
-	width: 42px; height: 42px; border: 0; padding: 0; cursor: pointer;
+	width: 50px; height: 50px; border: 0; padding: 0; cursor: pointer;
 	border-radius: 999px; overflow: hidden; background: var(--xf-suave);
 	display: grid; place-items: center; color: var(--xf-texto);
 	transition: background .12s, color .12s;
 }
 .xf-conta__btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.xf-conta__btn svg { width: 22px; height: 22px; }
+.xf-conta__btn svg { width: 26px; height: 26px; }
 .xf-conta__btn:hover { background: var(--xf-roxo-suave); color: var(--xf-roxo); }
 .xf-conta__menu {
 	position: absolute; top: calc(100% + 10px); right: 0; z-index: 60;
