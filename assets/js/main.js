@@ -407,6 +407,20 @@
 		} );
 	}
 
+	/* --------- Nome do arquivo no upload custom (Minha conta) --------- */
+	function iniciarArquivo() {
+		document.addEventListener( 'change', function ( e ) {
+			if ( ! e.target.matches( '[data-arquivo]' ) ) {
+				return;
+			}
+			var alvo = e.target.closest( '.xf-arquivo' );
+			var nome = alvo && alvo.querySelector( '[data-arquivo-nome]' );
+			if ( nome && e.target.files && e.target.files[ 0 ] ) {
+				nome.textContent = e.target.files[ 0 ].name;
+			}
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		iniciarAutoplay();
 		iniciarPlayToggle();
@@ -418,5 +432,6 @@
 		iniciarCompartilhar();
 		iniciarScrollInfinito();
 		iniciarPreviews();
+		iniciarArquivo();
 	} );
 } )();

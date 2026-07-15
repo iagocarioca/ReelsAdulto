@@ -1095,13 +1095,47 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-seguindo__nome { font-size: 13px; font-weight: 700; }
 
 /* Formulário (editar perfil) */
-.xf-form { max-width: 520px; display: flex; flex-direction: column; gap: 16px; }
-.xf-form__campo { display: flex; flex-direction: column; gap: 6px; }
-.xf-form__campo > span { font-size: 14px; font-weight: 700; }
-.xf-form__campo input[type="text"], .xf-form__campo textarea {
-	border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); padding: 11px 14px; font-size: 15px; font-family: inherit; outline: none; background: #fff; resize: vertical;
+.xf-form { max-width: 580px; display: flex; flex-direction: column; gap: 16px; }
+.xf-form__campo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.xf-form__campo > span:first-child { font-size: 13.5px; font-weight: 700; }
+.xf-form__campo input[type="text"], .xf-form__campo input[type="url"], .xf-form__campo input[type="email"], .xf-form__campo textarea {
+	width: 100%; border: 1px solid transparent; border-radius: var(--xf-raio); padding: 12px 14px;
+	font-size: 14.5px; font-family: inherit; outline: none; background: var(--xf-suave); resize: vertical;
+	transition: background .12s ease, border-color .12s ease, box-shadow .12s ease;
 }
-.xf-form__campo input:focus, .xf-form__campo textarea:focus { border-color: var(--xf-roxo-2); }
+.xf-form__campo input:focus, .xf-form__campo textarea:focus {
+	background: #fff; border-color: var(--xf-roxo-2); box-shadow: 0 0 0 3px var(--xf-roxo-suave);
+}
+.xf-form__campo input::placeholder, .xf-form__campo textarea::placeholder { color: var(--xf-muted); }
+
+/* Seções e dicas do form */
+.xf-form__sec { font-size: 16px; font-weight: 700; margin: 14px 0 0; padding-top: 20px; border-top: 1px solid var(--xf-borda); }
+.xf-form__dica { font-size: 13px; color: var(--xf-muted); margin: -8px 0 0; }
+.xf-form__linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .xf-form__linha { grid-template-columns: 1fr; } }
+
+/* Campo com ícone dentro */
+.xf-form__ic { position: relative; display: block; }
+.xf-form__ic > svg {
+	position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+	width: 16px; height: 16px; color: var(--xf-muted); pointer-events: none;
+}
+.xf-form__campo .xf-form__ic input { padding-left: 40px; }
+
+/* Upload de foto: preview + botão custom */
+.xf-arquivo { display: flex; align-items: center; gap: 14px; }
+.xf-arquivo__preview img, .xf-arquivo__preview .tp-avatar { width: 64px; height: 64px; border-radius: 999px; object-fit: cover; display: block; }
+.xf-arquivo__info { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
+.xf-arquivo__btn {
+	display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; cursor: pointer;
+	border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); background: #fff;
+	font-size: 13.5px; font-weight: 600; transition: border-color .12s ease, color .12s ease;
+}
+.xf-arquivo__btn:hover { border-color: var(--xf-roxo); color: var(--xf-roxo); }
+.xf-arquivo__btn svg { width: 16px; height: 16px; }
+.xf-arquivo__nome { font-size: 12.5px; color: var(--xf-muted); }
+
+.xf-form__salvar { align-self: flex-start; min-width: 200px; margin-top: 6px; }
 .xf-aviso { padding: 12px 16px; border-radius: var(--xf-raio); font-weight: 700; margin-bottom: 16px; }
 .xf-aviso--ok { background: color-mix(in srgb, var(--xf-roxo) 12%, transparent); color: var(--xf-roxo); }
 
