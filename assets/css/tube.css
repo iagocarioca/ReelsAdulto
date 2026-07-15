@@ -464,7 +464,8 @@ body.xf-faixa-esq .xf-topo::before {
 	.xf-menu-btn { display: grid; }
 	body.home .xf-cats-tab { display: flex; }
 	.xf-topo__inner { grid-template-columns: auto max-content minmax(0, 1fr) auto; gap: 8px; }
-	.xf-logo img { height: 30px; max-width: none; }
+	/* Logo maior no mobile; encolhe proporcional se faltar largura até a lupa */
+	.xf-logo img { height: 50px; width: auto; max-width: calc(100vw - 178px); object-fit: contain; object-position: left center; }
 	/* Busca = ícone que expande na horizontal por cima da logo */
 	.xf-busca {
 		position: absolute; top: 8px; right: 58px; left: auto; margin: 0; z-index: 60;

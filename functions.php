@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Impede acesso direto.
 }
 
-define( 'TIKPORN_VERSION', '2.16.2' );
+define( 'TIKPORN_VERSION', '2.17.0' );
 define( 'TIKPORN_DIR', get_template_directory() );
 define( 'TIKPORN_URI', get_template_directory_uri() );
 
@@ -39,6 +39,20 @@ function tikporn_setup() {
 	);
 }
 add_action( 'after_setup_theme', 'tikporn_setup' );
+
+/**
+ * Favicon do tema (assets/img/favicon.png). O Site Icon do WP, se definido
+ * em Personalizar, tem prioridade.
+ */
+function tikporn_favicon() {
+	if ( has_site_icon() ) {
+		return;
+	}
+	$url = TIKPORN_URI . '/assets/img/favicon.png?v=' . TIKPORN_VERSION;
+	echo '<link rel="icon" type="image/png" href="' . esc_url( $url ) . '">' . "\n";
+	echo '<link rel="apple-touch-icon" href="' . esc_url( $url ) . '">' . "\n";
+}
+add_action( 'wp_head', 'tikporn_favicon', 5 );
 
 /**
  * Atualiza as regras de rewrite quando a versão do tema muda (CPTs novos etc.).
