@@ -39,7 +39,11 @@ $tp_seg   = tikporn_seguindo_do_usuario( $tp_uid );
 				<span><strong><?php echo esc_html( count( $tp_likes ) ); ?></strong> <?php esc_html_e( 'curtidos', 'tikporn' ); ?></span>
 				<span><strong><?php echo esc_html( count( $tp_seg ) ); ?></strong> <?php esc_html_e( 'seguindo', 'tikporn' ); ?></span>
 			</div>
-			<a class="xf-conta__perfil-link" href="<?php echo esc_url( tikporn_url_perfil( $tp_uid ) ); ?>"><?php esc_html_e( 'Ver meu perfil público', 'tikporn' ); ?> ›</a>
+			<a class="xf-conta__perfil-link" href="<?php echo esc_url( tikporn_url_perfil( $tp_uid ) ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+				<span><?php esc_html_e( 'Ver meu perfil público', 'tikporn' ); ?></span>
+				<svg class="xf-conta__perfil-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+			</a>
 		</div>
 	</header>
 

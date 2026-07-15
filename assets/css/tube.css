@@ -1081,7 +1081,19 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-conta__nome { font-size: 24px; font-weight: 800; margin: 0 0 6px; }
 .xf-conta__stats { display: flex; gap: 18px; font-size: 14px; color: var(--xf-muted); }
 .xf-conta__stats strong { color: var(--xf-texto); font-weight: 800; }
-.xf-conta__perfil-link { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--xf-roxo); }
+.xf-conta__perfil-link {
+	display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; padding: 8px 16px;
+	border-radius: 999px; background: var(--xf-roxo-suave); color: var(--xf-roxo);
+	font-size: 13px; font-weight: 700;
+	transition: background .15s ease, color .15s ease, transform .12s ease, box-shadow .15s ease;
+}
+.xf-conta__perfil-link svg { width: 15px; height: 15px; flex: 0 0 auto; }
+.xf-conta__perfil-seta { transition: transform .15s ease; }
+.xf-conta__perfil-link:hover {
+	background: linear-gradient(135deg, var(--xf-roxo), var(--xf-roxo-2)); color: #fff;
+	transform: translateY(-1px); box-shadow: 0 6px 16px rgba(252, 48, 183, .3);
+}
+.xf-conta__perfil-link:hover .xf-conta__perfil-seta { transform: translateX(3px); }
 
 .xf-conta__nav { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--xf-borda); margin: 18px 0 24px; }
 .xf-conta__nav a { padding: 12px 16px; font-size: 15px; font-weight: 700; color: var(--xf-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; }
