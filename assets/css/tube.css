@@ -1180,6 +1180,54 @@ body.page-template-cadastro .xf-app > footer { display: none; }
 .xf-form__salvar { align-self: flex-start; min-width: 200px; margin-top: 6px; }
 .xf-aviso { padding: 12px 16px; border-radius: var(--xf-raio); font-weight: 700; margin-bottom: 16px; }
 .xf-aviso--ok { background: color-mix(in srgb, var(--xf-roxo) 12%, transparent); color: var(--xf-roxo); }
+.xf-aviso--erro { background: #fdeaea; color: #c11; }
+
+/* ── Área da modelo ────────────────────────────────────────── */
+/* Bloqueio (usuário comum): card central convidando a virar modelo */
+.xf-bloqueio { display: flex; justify-content: center; padding: 70px 20px 90px; }
+.xf-bloqueio__card {
+	max-width: 440px; width: 100%; text-align: center;
+	background: #fff; border: 1px solid var(--xf-borda); border-radius: 16px;
+	padding: 40px 34px; box-shadow: 0 18px 50px -22px rgba(0, 0, 0, .18);
+}
+.xf-bloqueio__ico {
+	display: inline-grid; place-items: center; width: 72px; height: 72px; margin-bottom: 18px;
+	border-radius: 999px; background: var(--xf-roxo-suave); color: var(--xf-roxo);
+}
+.xf-bloqueio__ico svg { width: 32px; height: 32px; }
+.xf-bloqueio__titulo { font-size: 24px; font-weight: 700; margin: 0 0 10px; letter-spacing: -.01em; }
+.xf-bloqueio__texto { font-size: 14.5px; line-height: 1.6; color: var(--xf-muted); margin: 0 0 22px; }
+.xf-bloqueio__card .xf-btn { width: 100%; margin-top: 0; }
+.xf-bloqueio__voltar { display: inline-block; margin-top: 16px; font-size: 13px; font-weight: 600; color: var(--xf-muted); }
+.xf-bloqueio__voltar:hover { color: var(--xf-roxo); }
+
+/* Painel da modelo */
+.xf-painel { max-width: 1060px; margin: 0 auto; }
+.xf-painel > .xf-secao__cab { margin-bottom: 22px; }
+.xf-painel__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
+@media (max-width: 860px) { .xf-painel__grid { grid-template-columns: 1fr; gap: 0; } }
+.xf-painel__bloco { padding: 22px 0 26px; border-top: 1px solid var(--xf-borda); }
+.xf-painel__bloco--cheio { margin-top: 4px; }
+.xf-painel__subtitulo { font-size: 18px; font-weight: 700; margin: 0 0 16px; letter-spacing: -.01em; }
+
+/* Lista "Meus vídeos" */
+.xf-mv { display: flex; flex-direction: column; gap: 10px; max-width: 640px; }
+.xf-mv__item {
+	display: flex; align-items: center; gap: 14px; padding: 10px;
+	border: 1px solid var(--xf-borda); border-radius: var(--xf-raio); background: #fff;
+	transition: border-color .12s ease;
+}
+.xf-mv__item:hover { border-color: var(--xf-roxo-2); }
+.xf-mv__thumb {
+	flex: 0 0 auto; width: 48px; height: 64px; border-radius: 6px;
+	background: var(--xf-suave) center/cover no-repeat; display: block;
+}
+.xf-mv__dados { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.xf-mv__titulo { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xf-mv__titulo:hover { color: var(--xf-roxo); }
+.xf-mv__stats { display: flex; gap: 14px; font-size: 12.5px; font-weight: 600; color: var(--xf-muted); }
+.xf-mv__stats span { display: inline-flex; align-items: center; gap: 4px; }
+.xf-mv__stats svg { width: 13px; height: 13px; }
 
 /* ── Perfil público (estilo xfree) ─────────────────────────── */
 .xf-perfil__cab { display: flex; align-items: flex-start; gap: 28px; padding-bottom: 26px; border-bottom: 1px solid var(--xf-borda); margin-bottom: 26px; flex-wrap: wrap; }
