@@ -91,4 +91,27 @@ if ( ! $tp_dest->have_posts() ) {
 
 	<?php get_template_part( 'template-parts/sidebar-criadores' ); ?>
 
+	<?php
+	// Rodapé institucional: links das páginas legais + aviso 18+.
+	$tp_inst = function_exists( 'tikporn_links_institucionais' ) ? tikporn_links_institucionais() : array();
+	if ( ! empty( $tp_inst ) ) :
+		?>
+		<div class="xf-sidefoot">
+			<nav class="xf-sidefoot__links" aria-label="<?php esc_attr_e( 'Links institucionais', 'tikporn' ); ?>">
+				<?php foreach ( $tp_inst as $tp_l ) : ?>
+					<a href="<?php echo esc_url( $tp_l['url'] ); ?>"><?php echo esc_html( $tp_l['titulo'] ); ?></a>
+				<?php endforeach; ?>
+			</nav>
+			<p class="xf-sidefoot__nota">
+				<?php
+				printf(
+					/* translators: %s: ano atual */
+					esc_html__( '© %s — Conteúdo destinado a maiores de 18 anos.', 'tikporn' ),
+					esc_html( gmdate( 'Y' ) )
+				);
+				?>
+			</p>
+		</div>
+	<?php endif; ?>
+
 </aside>

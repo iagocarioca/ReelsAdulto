@@ -237,6 +237,33 @@ function tikporn_categorias_do_autor( $user_id, $limite = 12 ) {
 }
 
 /**
+ * Links institucionais (Categorias, DMCA, 2257, Contato).
+ * Só entram as páginas que existem e estão publicadas.
+ *
+ * @return array Lista de array( 'url', 'titulo' ).
+ */
+function tikporn_links_institucionais() {
+	$paginas = array(
+		'categorias' => __( 'Categorias', 'tikporn' ),
+		'dmca'       => __( 'DMCA', 'tikporn' ),
+		'usc-2257'   => __( '2257', 'tikporn' ),
+		'contato'    => __( 'Contato', 'tikporn' ),
+	);
+
+	$links = array();
+	foreach ( $paginas as $slug => $rotulo ) {
+		$pg = get_page_by_path( $slug );
+		if ( $pg && 'publish' === $pg->post_status ) {
+			$links[] = array(
+				'url'    => get_permalink( $pg ),
+				'titulo' => $rotulo,
+			);
+		}
+	}
+	return $links;
+}
+
+/**
  * Ícone de playlist com coração usado nos títulos de playlist/categoria.
  *
  * @param string $classe Classe do wrapper (padrão: ícone do H1 do plhead).
