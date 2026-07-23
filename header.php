@@ -185,6 +185,13 @@ $tp_menu_cats = is_wp_error( $tp_menu_cats ) ? array() : $tp_menu_cats;
 						<a class="xf-chip" href="<?php echo esc_url( get_term_link( $tp_mc ) ); ?>"><?php echo esc_html( $tp_mc->name ); ?></a>
 					<?php endforeach; ?>
 				</div>
+				<?php $tp_pg_cats = get_page_by_path( 'categorias' ); ?>
+				<?php if ( $tp_pg_cats && 'publish' === $tp_pg_cats->post_status ) : ?>
+					<a class="xf-mais-cats xf-mais-cats--link" href="<?php echo esc_url( get_permalink( $tp_pg_cats ) ); ?>">
+						<span><?php esc_html_e( 'Ver todas as categorias', 'tikporn' ); ?></span>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+					</a>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 	</div>
